@@ -1,0 +1,12 @@
+CREATE TABLE ROL(
+cod_rol int PRIMARY KEY,
+nom_rol varchar(50)
+);
+
+CREATE TABLE USUARIO(
+cod_usuario int PRIMARY KEY,
+username_usuario varchar(50),
+password_usuario varchar(50),
+cod_rol int,
+FOREIGN KEY (cod_rol) REFERENCES ROL(cod_rol)
+);

@@ -13,6 +13,12 @@ define("UPDATE_QUERY",4);
 
 /**
  * Clase que representa la conexión con la base de datos
+ * @author Daniel Beltrán Penagos
+ * <br>
+ * <center> <b> Universidad El Bosque<br>
+ * Ingeniería de Software<br>
+ * Profesor Ricardo Camargo Lemos <br>
+ * Proyecto E.R.P Bienes y Servicios de Manufactura</b> </center>
  */
 class Database
 {
