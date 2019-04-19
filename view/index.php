@@ -1,3 +1,13 @@
+<?php 
+session_set_cookie_params(0);
+session_start();
+if($_SESSION["loggedIn"] != true)
+{
+    header("Location:http://localhost/erpbienesyservicios/view/login.php");
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 

@@ -10,19 +10,14 @@ if (isset($_POST['submit']))
     $password = $_POST['password'];
 
     $usuarioDAO = new UsuarioDAO();
-    $usuario = $usuarioDAO->getUsuarioLogin($username, $password);
+    
+    $salt = md5($password);
+    $pasword_encriptado = crypt($password, $salt);
+    
+    $usuario = $usuarioDAO->getUsuarioLogin($username, $pasword_encriptado);
 
     if ($usuario) 
     {
-
-        // $salt = md5($password);
-        // $pasword_encriptado = crypt($password, $salt);
-        // Aunque aún no este encriptado, se dejará la posibilidad para despues
-
-        $pasword_encriptado = $password;
-
-        if (($pasword_encriptado == $usuario->password)) 
-        {
             $_SESSION["loggedIn"] = true;
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
@@ -33,16 +28,31 @@ if (isset($_POST['submit']))
                 header("Location:http://localhost/erpbienesyservicios/view/index.php");
             }
             
-        } 
-        else 
-        {
-            header("Location:https://ferresuministros.webcindario.com/indexInicio.php");
-        }
+            else if($usuario->rol==2)
+            {
+                header("Location:");
+            }
+            
+            else if($usuario->rol==3)
+            {
+                header("Location:");
+            }
     } 
     
     else 
     {
-        header("Location:https://ferresuministros.webcindario.com/indexInicio.php");
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>';
+        
+        echo '<script type="text/javascript">';
+        echo "setTimeout(function () { Swal.fire({
+                position: 'top-end',
+                type: 'error',
+                title: 'Error en inicio de sesi&oacute;n',
+                showConfirmButton: false,
+                timer: 3000
+                });";
+        echo '}, 1000);</script>';
+
     }
 }
 
@@ -165,6 +175,7 @@ if (isset($_POST['submit']))
 	<script src="js/main.js"></script>
 
 </body>
-
+    
+    
 </html>
 <!-- end document-->

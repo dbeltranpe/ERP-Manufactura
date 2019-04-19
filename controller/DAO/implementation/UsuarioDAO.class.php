@@ -39,7 +39,7 @@ class UsuarioDAO implements iUserDAO
         $pPassword = $usArr['password_usuario'];
         $pRol = $usArr['cod_rol'];
         
-        $usuario = new Usuario($codUsuario, $pUsername, $pPassword, $pRol);
+        $usuario = new Usuario($pCodUsuario, $pUsername, $pPassword, $pRol);
         
         $db->disconnect();
         
@@ -50,7 +50,26 @@ class UsuarioDAO implements iUserDAO
     {}
 
     public function getUsuarioPorNombre($userName)
-    {}
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM USUARIO WHERE username_usuario='".$userName."'";
+        $db->doQuery($query, SELECT_QUERY);
+        $usArr = $db->results[0];
+        
+        $pCodUsuario = $usArr['cod_usuario'];
+        $pUsername = $usArr['username_usuario'];
+        $pPassword = $usArr['password_usuario'];
+        $pRol = $usArr['cod_rol'];
+        
+        $usuario = new Usuario($pCodUsuario, $pUsername, $pPassword, $pRol);
+        
+        $db->disconnect();
+        
+        return $usuario;
+        
+    }
 
     
    
