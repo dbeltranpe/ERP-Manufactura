@@ -10,3 +10,12 @@ password_usuario varchar(50),
 cod_rol int,
 FOREIGN KEY (cod_rol) REFERENCES ROL(cod_rol)
 );
+
+CREATE TABLE TRABAJADOR(
+codigo_trabajador int primary key,
+nombre_trabajador varchar(50),
+correo_trabajador varchar(50),
+cod_usuario int,
+img_trabajador longblob,
+FOREIGN KEY (cod_usuario) REFERENCES usuario(cod_usuario)
+);
