@@ -1,3 +1,18 @@
+<?php 
+require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/DAO/implementation/UsuarioDAO.class.php');
+
+if(isset($_POST['submit']))
+{
+    $username = $_POST['username'];
+    $password = $_POST['password'];
+    
+    $usuarioDAO = new UsuarioDAO();
+    $usuarioDAO->getUsuarioLogin($username, $password);
+  
+}
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -51,7 +66,7 @@
                             <form action="" method="post">
                                 <div class="form-group">
                                     <label>Usuario</label>
-                                    <input class="au-input au-input--full" type="email" name="email" placeholder="User">
+                                    <input class="au-input au-input--full" type="text" name="username" placeholder="User">
                                 </div>
                                 <div class="form-group">
                                     <label>Contrase&ntilde;a</label>
@@ -62,7 +77,7 @@
                                         <a href="#">Se me olvido mi contrase&ntilde;a</a>
                                     </label>
                                 </div>
-                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit">Ingresar</button>
+                                <button class="au-btn au-btn--block au-btn--green m-b-20" type="submit" name="submit">Ingresar</button>
                                 
                             </form>
                             <!-- Documento esto porque todavía no se sabe si registrarse se utilizará

@@ -77,7 +77,7 @@ class Database
         $this->results = null;
         $this->db = "ERP";
         $this->user = "root";
-        $this->pwd = "12345678";
+        $this->pwd = "";
         $this->host = "localhost:3306";
         $this->path = "http://localhost/erpbienesyservicios";
         $this->rows = 0;
@@ -93,13 +93,14 @@ class Database
      */
     function connect()
     {
-        $this->conn = mysql_connect($this->host,$this->user,$this->pwd);
+        $this->conn = new mysqli($this->host, $this->user, $this->pwd, $this->db);
+       
         if (!$this->conn)
         {
             die($this->messages[CONN_ERROR]);
             return false;
         }
-        mysql_select_db($this->db);
+        
         return $this->conn;
     }
     
@@ -115,10 +116,10 @@ class Database
     function doQuery($query,$type)
     {
         $this->results=null;
-        mysql_query("SET NAMES utf8");
-        if (!$execute = mysql_query($query,$this->conn))
+        
+        if (!$execute = $this->conn->query($query))
         {
-            die('Invalid query: '.utf8_encode($query).'-'. mysql_error());
+            die('Invalid query: '.utf8_encode($query).'-'. $this->conn->error);
             return null;
         }
         else
@@ -126,11 +127,12 @@ class Database
             switch($type)
             {
                 case SELECT_QUERY:
-                    $this->rows = mysql_num_rows($execute);
+                    $this->rows = $execute->num_rows;
+                 
                     $i = 0;
                     while ($i < $this->rows)
                     {
-                        $this->results[$i] = mysql_fetch_assoc($execute);
+                        $this->results[$i] = $execute->fetch_assoc();
                         $i++;
                     }
                     return true;
@@ -202,7 +204,7 @@ class Database
     function disconnect()
     {
         if($this->conn)
-            mysql_close($this->conn);
+            $this->conn->close();
     }
        
 }
