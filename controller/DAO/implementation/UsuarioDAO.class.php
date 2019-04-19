@@ -32,13 +32,18 @@ class UsuarioDAO implements iUserDAO
         
         $query = "SELECT * FROM USUARIO WHERE username_usuario='".$userName."' AND password_usuario='".$password."';";
         $db->doQuery($query, SELECT_QUERY);
+        $usArr = $db->results[0];
         
+        $pCodUsuario = $usArr['cod_usuario'];
+        $pUsername = $usArr['username_usuario'];
+        $pPassword = $usArr['password_usuario'];
+        $pRol = $usArr['cod_rol'];
         
-        $usuario = new Usuario();
-       
-        print_r($db->results);
+        $usuario = new Usuario($codUsuario, $pUsername, $pPassword, $pRol);
         
         $db->disconnect();
+        
+        return $usuario;
     }
 
     public function updateUsuario($cod_usuario)
