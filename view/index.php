@@ -19,7 +19,7 @@ if($_SESSION["loggedIn"] != true)
     <meta name="author" content="Hau Nguyen">
     <meta name="keywords" content="au theme template">
 
-    <!-- Title Page Daniel Beltran Y Estefania-->
+    <!-- Title Page-->
     <title>Dashboard</title>
 
     <!-- Fontfaces CSS-->
@@ -66,24 +66,28 @@ if($_SESSION["loggedIn"] != true)
             <nav class="navbar-mobile">
                 <div class="container-fluid">
                     <ul class="navbar-mobile__list list-unstyled">
-                        <li class="has-sub">
-                            <a class="js-arrow" href="#">
+                        <li>
+                           <a href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                          
+                        </li>
+                        
+                          <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-copy"></i>Inventario</a>
                             <ul class="navbar-mobile-sub__list list-unstyled js-sub-list">
                                 <li>
-                                    <a href="index.html">Dashboard 1</a>
+                                    <a href="login.html">Reportes</a>
                                 </li>
                                 <li>
-                                    <a href="index2.html">Dashboard 2</a>
+                                    <a href="register.html">Agregar Insumos</a>
                                 </li>
                                 <li>
-                                    <a href="index3.html">Dashboard 3</a>
-                                </li>
-                                <li>
-                                    <a href="index4.html">Dashboard 4</a>
+                                    <a href="forget-pass.html">Agregar Producto Terminado </a>
                                 </li>
                             </ul>
                         </li>
+                        
                         <li>
                             <a href="chart.html">
                                 <i class="fas fa-chart-bar"></i>Charts</a>
@@ -92,10 +96,7 @@ if($_SESSION["loggedIn"] != true)
                             <a href="table.html">
                                 <i class="fas fa-table"></i>Tables</a>
                         </li>
-                        <li>
-                            <a href="form.html">
-                                <i class="far fa-check-square"></i>Forms</a>
-                        </li>
+                       
                         <li>
                             <a href="#">
                                 <i class="fas fa-calendar-alt"></i>Calendar</a>
@@ -174,24 +175,27 @@ if($_SESSION["loggedIn"] != true)
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
                     <ul class="list-unstyled navbar__list">
-                        <li class="active has-sub">
-                            <a class="js-arrow" href="#">
+                        <li>
+                            <a href="index.php">
                                 <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                        </li>
+                        
+                        <li class="has-sub">
+                            <a class="js-arrow" href="#">
+                                <i class="fas fa-home"></i>Inventario</a>
                             <ul class="list-unstyled navbar__sub-list js-sub-list">
                                 <li>
-                                    <a href="index.html">Dashboard 1</a>
+                                    <a href="reporte-inventario.php">Reportes</a>
                                 </li>
                                 <li>
-                                    <a href="index2.html">Dashboard 2</a>
+                                    <a href="register.html">Insumos</a>
                                 </li>
                                 <li>
-                                    <a href="index3.html">Dashboard 3</a>
-                                </li>
-                                <li>
-                                    <a href="index4.html">Dashboard 4</a>
+                                    <a href="forget-pass.html">Producto Terminado</a>
                                 </li>
                             </ul>
                         </li>
+                        
                         <li>
                             <a href="chart.html">
                                 <i class="fas fa-chart-bar"></i>Charts</a>
