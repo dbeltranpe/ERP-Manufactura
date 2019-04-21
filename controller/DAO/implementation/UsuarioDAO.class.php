@@ -1,5 +1,5 @@
 <?php
-require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/database.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/database.class.php');
 require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/model/Usuario.class.php');
 require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/DAO/interfaces/iUserDAO.interface.php');
 
@@ -46,8 +46,21 @@ class UsuarioDAO implements iUserDAO
         return $usuario;
     }
 
-    public function updateUsuario($cod_usuario)
-    {}
+    public function updateUsuario($cod_usuario, $pPassword)
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $salt = md5($pPassword);
+        $pasword_encriptado = crypt($pPassword, $salt);
+        $pPassword = $pasword_encriptado;
+        
+        $query = "UPDATE USUARIO SET password_usuario = '". $pPassword ."' WHERE cod_usuario=" . $cod_usuario . ";";
+        $db->doQuery($query, UPDATE_QUERY);
+        
+        $db->disconnect();
+      
+    }
 
     public function getUsuarioPorNombre($userName)
     {

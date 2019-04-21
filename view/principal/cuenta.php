@@ -3,6 +3,7 @@ session_set_cookie_params(0);
 session_start();
 
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/UsuarioDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -17,8 +18,53 @@ if (isset($_POST['logout'])) {
 
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
+$usuarioDAO = new UsuarioDAO();
 
-$trabajador->nombre;
+if (isset($_POST['actualizar']))
+{
+    $viejaContraseña = $_POST['vieja_password'];
+    
+    if($viejaContraseña != $_SESSION["password"])
+    {
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>';
+        
+        echo '<script type="text/javascript">';
+        echo "setTimeout(function () { Swal.fire({
+                position: 'top-end',
+                type: 'error',
+                title: 'La vieja contrase&ntilde;a no coincide',
+                showConfirmButton: false,
+                timer: 3000
+                });";
+        echo '}, 1000);</script>';
+    }
+    
+    else
+    {
+        $nuevoNombre     = $_POST['nom_cuenta'];
+        $nuevoCorreo     = $_POST['email'];
+        $nuevaContraseña = $_POST['nueva_password'];
+        $cod_usuario = $_SESSION["loggedIn"];
+        
+        $trabajadorDAO->updateTrabajador($cod_usuario, $nuevoNombre, $nuevoCorreo);
+        $usuarioDAO->updateUsuario($cod_usuario, $nuevaContraseña);
+        
+        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>';
+        
+        echo '<script type="text/javascript">';
+        echo "setTimeout(function () { Swal.fire({
+                position: 'top-end',
+                type: 'success',
+                title: 'Se ha actualizado la informaci&oacute;n',
+                showConfirmButton: false,
+                timer: 3000
+                });";
+        echo '}, 1000);</script>';
+        
+    }
+    
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -66,6 +112,7 @@ $trabajador->nombre;
 
 <!-- Main CSS-->
 <link href="../css/theme.css" rel="stylesheet" media="all">
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 </head>
 <body class="animsition">
@@ -288,17 +335,14 @@ $trabajador->nombre;
 					<div class="card">
 						<div class="card-header">Cambiar Datos Cuenta</div>
 						<div class="card-body card-block">
-							<form action="" method="post" class="">
+							<form method="post">
 								<div class="form-group">
 									<div class="input-group">
 										<div class="input-group-addon">
 											<i class="fa fa-user"></i>
 										</div>
-										<input type="text" id="username" name="username"
-											placeholder="Username" class="form-control">
-											
-									<button type="submit" class="btn btn-success btn-sm" name="cambioUsuario">Cambiar</button>
-								
+										<input type="text" id="nom_cuenta" name="nom_cuenta"
+											placeholder="Nombre Cuenta" class="form-control" value=<?php echo "'" . utf8_encode($trabajador->nombre) . "'"; ?>>
 									</div>
 								</div>
 								<div class="form-group">
@@ -307,7 +351,7 @@ $trabajador->nombre;
 											<i class="fa fa-envelope"></i>
 										</div>
 										<input type="email" id="email" name="email"
-											placeholder="Email" class="form-control">
+											placeholder="Email" class="form-control" value=<?php echo "'" . utf8_encode($trabajador->correo) . "'"; ?>>
 									</div>
 								</div>
 								<div class="form-group">
@@ -315,12 +359,23 @@ $trabajador->nombre;
 										<div class="input-group-addon">
 											<i class="fa fa-asterisk"></i>
 										</div>
-										<input type="password" id="password" name="password"
-											placeholder="Password" class="form-control">
+										<input type="password" name="nueva_password"
+											placeholder="Nueva Contrase&ntilde;a" class="form-control">
 									</div>
 								</div>
+								
+								<div class="form-group">
+									<div class="input-group">
+										<div class="input-group-addon">
+											<i class="fa fa-asterisk"></i>
+										</div>
+										<input type="password" name="vieja_password"
+											placeholder="Vieja Contrase&ntilde;a" class="form-control" >
+									</div>
+								</div>
+								
 								<div class="form-actions form-group">
-									<button type="submit" class="btn btn-success btn-sm">Submit</button>
+									<button type="submit" class="btn btn-success btn-sm"  name="actualizar" >Actualizar Informaci&oacute;n</button>
 								</div>
 							</form>
 						</div>

@@ -30,9 +30,11 @@ interface iTrabajadorDAO
     /**
      * Modifica un trabajador de la base de datos en referencia a su id<br>
      * <b> post:</b> Se modificó el trabajador de la base de datos<br>
-     * @param number cod_trabajador trabajador referencia a actualizar
+     * @param number cod_usuario trabajador referencia a actualizar
+     * @param String pNombre Nuevo nombre del Trabajador
+     * @param String pCorreo Nuevo Correo del trabajador
      */
-    public function updateTrabajador($cod_trabajador);
+    public function updateTrabajador($cod_usuario, $pNombre, $pCorreo);
     
     /**
      * Elimina un trabajador de la base de datos en referencia a su id<br>

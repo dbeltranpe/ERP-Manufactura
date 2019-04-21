@@ -1,5 +1,5 @@
 <?php
-require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/database.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/database.class.php');
 require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/model/Trabajador.class.php');
 require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/DAO/interfaces/iTrabajadorDAO.interface.php');
 
@@ -42,8 +42,20 @@ class TrabajadorDAO implements iTrabajadorDAO
         
     }
 
-    public function updateTrabajador($cod_trabajador)
-    {}
+    public function updateTrabajador($cod_usuario, $pNombre, $pCorreo)
+    {
+        $db = new Database();
+        $db->connect();
+        $db->conn->set_charset("utf8");
+        
+        $pNombre = mysqli_real_escape_string($db->conn, $pNombre);
+       
+        $query = "UPDATE TRABAJADOR SET nombre_trabajador='" . $pNombre . "', correo_trabajador='" . $pCorreo . "' WHERE cod_usuario = " . $cod_usuario . "; ";
+        $db->doQuery($query, SELECT_QUERY);
+        
+        $db->disconnect();
+        
+    }
 
 
 

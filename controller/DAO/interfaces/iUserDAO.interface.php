@@ -31,8 +31,9 @@ interface iUserDAO
      * Modifica un usuario de la base de datos en referencia a su id<br>
      * <b> post:</b> Se modificó el usuario de la base de datos<br>
      * @param number cod_usuario usuario referencia a actualizar
+     * @param String pPassword contraseña nueva
      */
-    public function updateUsuario($cod_usuario);
+    public function updateUsuario($cod_usuario, $pPassword);
     
     /**
      * Obtiene un usuario con respecto a su username y contraseña
