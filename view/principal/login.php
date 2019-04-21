@@ -127,10 +127,10 @@ if (isset($_POST['submit']))
 										class="au-input au-input--full" type="password"
 										name="password" placeholder="Password">
 								</div>
-								<div class="login-checkbox">
-									<label> <a href="#">Se me olvido mi contrase&ntilde;a</a>
-									</label>
-								</div>
+<!-- 								<div class="login-checkbox"> -->
+<!-- 									<label> <a href="#">Se me olvido mi contrase&ntilde;a</a> -->
+<!-- 									</label> -->
+<!-- 								</div> -->
 								<button class="au-btn au-btn--block au-btn--green m-b-20"
 									type="submit" name="submit">Ingresar</button>
 
