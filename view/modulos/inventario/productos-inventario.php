@@ -78,10 +78,10 @@ $trabajador->nombre;
 								class="fas fa-home"></i>Inventario
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="#">Reportes</a>
+								<li><a href="reporte-inventario.php">Reportes</a>
 								</li>
 								<li><a href="insumos-inventario.php">Insumos</a></li>
-								<li><a href="productos-inventario.php">Producto Terminado</a></li>
+								<li><a href="#">Producto Terminado</a></li>
 							</ul></li>
 
 						<li class="has-sub"><a class="js-arrow" href="#"> <i

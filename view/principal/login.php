@@ -134,6 +134,7 @@ if (isset($_POST['submit']))
 								<button class="au-btn au-btn--block au-btn--green m-b-20"
 									type="submit" name="submit">Ingresar</button>
 
+
 							</form>
 							<!-- Documento esto porque todavía no se sabe si registrarse se utilizará
                             <div class="register-link">

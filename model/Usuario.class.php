@@ -52,29 +52,6 @@ class Usuario
         return $this->rol;
     }
     
-    /**
-     * @param mixed $username
-     */
-    public function setUsername($username)
-    {
-        $this->username = $username;
-    }
-    
-    /**
-     * @param mixed $password
-     */
-    public function setPassword($password)
-    {
-        $this->password = $password;
-    }
-    
-    /**
-     * @param mixed $rol
-     */
-    public function setRol($rol)
-    {
-        $this->rol = $rol;
-    }
     
 }
 

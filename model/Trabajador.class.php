@@ -47,29 +47,7 @@ class Trabajador
         return $this->imagen;
     }
 
-    /**
-     * @param mixed $nombre
-     */
-    public function setNombre($nombre)
-    {
-        $this->nombre = $nombre;
-    }
 
-    /**
-     * @param mixed $correo
-     */
-    public function setCorreo($correo)
-    {
-        $this->correo = $correo;
-    }
-
-    /**
-     * @param mixed $imagen
-     */
-    public function setImagen($imagen)
-    {
-        $this->imagen = $imagen;
-    }
 
 }
 

@@ -20,3 +20,34 @@ img_trabajador longblob,
 FOREIGN KEY (cod_usuario) REFERENCES usuario(cod_usuario),
 PRIMARY KEY(codigo_trabajador, cod_usuario)
 );
+
+CREATE TABLE PRODUCTO(
+cod_producto int primary key,
+nom_producto varchar(50),
+vl_unitario_producto int,
+iva_producto double
+);
+
+CREATE TABLE INSUMO(
+cod_insumo int primary key,
+nom_insumo varchar(50),
+valor_insumo int,
+iva_insumo double
+);
+
+CREATE TABLE INV_PRODUCTO(
+cod_inv_producto int,
+cod_producto int,
+cantidad int,
+fecha date,
+primary key(cod_inv_producto, cod_producto)
+);
+
+CREATE TABLE INV_INSUMO(
+cod_inv_insumo int,
+cod_insumo int,
+cantidad int,
+fecha date,
+primary key(cod_inv_insumo, cod_insumo)
+);
+
