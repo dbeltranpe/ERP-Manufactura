@@ -51,3 +51,12 @@ fecha date,
 primary key(cod_inv_insumo, cod_insumo)
 );
 
+INSERT INTO ROL VALUES(1,'GERENTE');;
+INSERT INTO USUARIO VALUES(1,'admin','25xN9KMCwh/SU',1);
+INSERT INTO INSUMO VALUES(1,'Agujeta',15, 0.19);
+INSERT INTO INSUMO VALUES(2,'Cuero',38, 0.19);
+INSERT INTO INSUMO VALUES(3,'Solapa',22, 0.19);
+INSERT INTO INSUMO VALUES(3,'Plastico',5, 0.19);
+
+
+
