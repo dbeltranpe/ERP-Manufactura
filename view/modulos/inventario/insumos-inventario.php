@@ -3,6 +3,7 @@ session_set_cookie_params(0);
 session_start();
 
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InsumoDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -18,7 +19,8 @@ if (isset($_POST['logout'])) {
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
-$trabajador->nombre;
+$insumoDAO = new InsumoDAO();
+
 ?>
 
 <!DOCTYPE html>
@@ -233,10 +235,20 @@ $trabajador->nombre;
 									<form action="" method="post" novalidate="novalidate">
 
 										<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">Producto</label>
-											<input id="cc-pament" name="cc-payment" type="text"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
+											<label for="cc-payment" class="control-label mb-1">Insumo</label>
+
+											<select id='ins_1' name="ins_1" class=" form-control">
+                                                <?php
+
+                                                $insumos = $insumoDAO->listarInsumos();
+
+                                                for ($i = 0; $i < sizeof($insumos); $i ++) {
+                                                    echo "<option value='" . $insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
+                                                }
+
+                                                ?>
+											</select>
+
 										</div>
 
 										<div class="form-group">
@@ -271,10 +283,20 @@ $trabajador->nombre;
 									<form action="" method="post" novalidate="novalidate">
 
 										<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">Producto</label>
-											<input id="cc-pament" name="cc-payment" type="text"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
+											<label for="cc-payment" class="control-label mb-1">Insumo</label>
+
+											<select id='ins_2' name="ins_2" class=" form-control">
+                                                <?php
+
+                                                $insumos = $insumoDAO->listarInsumos();
+
+                                                for ($i = 0; $i < sizeof($insumos); $i ++) {
+                                                    echo "<option value='" . $insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
+                                                }
+
+                                                ?>
+											</select>
+
 										</div>
 
 										<div>
