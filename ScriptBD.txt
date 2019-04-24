@@ -40,7 +40,8 @@ cod_inv_producto int,
 cod_producto int,
 cantidad int,
 fecha date,
-primary key(cod_inv_producto, cod_producto)
+primary key(cod_inv_producto, cod_producto),
+FOREIGN KEY (cod_producto) REFERENCES PRODUCTO(cod_producto)
 );
 
 CREATE TABLE INV_INSUMO(
@@ -48,7 +49,8 @@ cod_inv_insumo int,
 cod_insumo int,
 cantidad int,
 fecha date,
-primary key(cod_inv_insumo, cod_insumo)
+primary key(cod_inv_insumo, cod_insumo),
+FOREIGN KEY (cod_insumo) REFERENCES INSUMO(cod_insumo)
 );
 
 ALTER TABLE `inv_insumo` CHANGE `cod_inv_insumo` `cod_inv_insumo` INT(11) NOT NULL AUTO_INCREMENT;
@@ -59,6 +61,10 @@ INSERT INTO INSUMO VALUES(1,'Agujeta',15, 0.19);
 INSERT INTO INSUMO VALUES(2,'Cuero',38, 0.19);
 INSERT INTO INSUMO VALUES(3,'Solapa',22, 0.19);
 INSERT INTO INSUMO VALUES(4,'Plastico', 5, 0.19);
+INSERT INTO producto VALUES(1,'Zapatos de Cuero',15000, 0.19);
+INSERT INTO producto VALUES(2,'Botas de Lluvia',38000, 0.19);
+INSERT INTO producto VALUES(3,'Zapatos Colegial',22000, 0.19);
+INSERT INTO producto VALUES(4,'Zapatillas Deportiva', 5000, 0.19);
 
 
 
