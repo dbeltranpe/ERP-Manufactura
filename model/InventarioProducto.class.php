@@ -16,7 +16,7 @@ class InventarioProducto
     private $cantidad;
     private $fecha;
     
-    function InventarioInsumo($pCodigoProducto, $pCantidad, $pFecha)
+    function InventarioProducto($pCodigoProducto, $pCantidad, $pFecha)
     {
         $this->codigoProducto = $pCodigoProducto;
         $this->cantidad = $pCantidad;
