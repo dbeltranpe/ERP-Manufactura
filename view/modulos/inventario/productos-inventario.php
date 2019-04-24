@@ -340,7 +340,7 @@ if (isset($_POST['eliminarProducto'])) {
 										<tr>
 											<th>Fecha</th>
 											<th>Cantidad</th>
-											<th>Insumo</th>
+											<th>Producto</th>
 											<th class="text-right">Valor Unitario</th>
 											<th class="text-right">I.V.A.</th>
 											<th class="text-right">Total</th>
