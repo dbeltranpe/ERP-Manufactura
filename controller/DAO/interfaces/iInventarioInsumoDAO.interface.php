@@ -13,13 +13,13 @@
 interface iInventarioInsumoDAO
 {
     
-    public function save($codigo);
+    public function save($pCodigoInsumo, $pCantidad);
     
-    public function getInventarioInsumos($codigo);
+    public function getInventarioInsumo($codigo);
     
-    public function updateInventarioInsumos($codigo, $cantidad);
+    public function updateInventarioInsumo($codigo, $cantidad);
     
-    public function deleteInventarioInsumos($codigo);
+    public function deleteInventarioInsumo($codigo);
     
     
 }

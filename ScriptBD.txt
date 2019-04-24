@@ -51,6 +51,8 @@ fecha date,
 primary key(cod_inv_insumo, cod_insumo)
 );
 
+ALTER TABLE `inv_insumo` CHANGE `cod_inv_insumo` `cod_inv_insumo` INT(11) NOT NULL AUTO_INCREMENT;
+
 INSERT INTO ROL VALUES(1,'GERENTE');;
 INSERT INTO USUARIO VALUES(1,'admin','25xN9KMCwh/SU',1);
 INSERT INTO INSUMO VALUES(1,'Agujeta',15, 0.19);

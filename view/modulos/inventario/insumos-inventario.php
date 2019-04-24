@@ -4,6 +4,7 @@ session_start();
 
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InsumoDAO.class.php');
+require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioInsumoDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -20,6 +21,22 @@ $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
 $insumoDAO = new InsumoDAO();
+$invInsDAO = new InventarioInsumoDAO();
+
+if (isset($_POST['agregarInsumo'])) {
+    $codIns= $_POST['ins_1'];
+    $cantidadIns= $_POST['cant_1'];
+    
+    $invInsDAO->save($codIns, $cantidadIns);
+}
+
+if (isset($_POST['eliminarInsumo'])) {
+    $codIns= $_POST['ins_2'];
+    
+    $invInsDAO->deleteInventarioInsumo($codIns);
+}
+
+
 
 ?>
 
@@ -225,14 +242,14 @@ $insumoDAO = new InsumoDAO();
 
 						<div class="col">
 							<section class="card">
-								<div class="card-header">Agregar Insumos al Inventario</div>
+								<div class="card-header">Agregar o Quitar Insumos al Inventario</div>
 								<div class="card-body">
 									<div class="card-title">
 										<h3 class="text-center title-2">Informaci&oacute;n para el
 											Inventario</h3>
 									</div>
 									<hr>
-									<form action="" method="post" novalidate="novalidate">
+									<form action="#" method="post" novalidate="novalidate">
 
 										<div class="form-group">
 											<label for="cc-payment" class="control-label mb-1">Insumo</label>
@@ -252,15 +269,15 @@ $insumoDAO = new InsumoDAO();
 										</div>
 
 										<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">Cantidad</label>
-											<input id="cc-pament" name="cc-payment" type="text"
+											<label for="cant_1" class="control-label mb-1">Cantidad</label>
+											<input id="cant_1" name="cant_1" type="number"
 												class="form-control" aria-required="true"
 												aria-invalid="false">
 										</div>
 
 
 										<div>
-											<button id="payment-button" type="submit"
+											<button id="agregarInsumo" name="agregarInsumo" type="submit"
 												class="btn btn-lg btn-info btn-block">
 												<i class="fa fa-check-circle"></i>&nbsp; <span
 													id="payment-button-amount">Enviar</span>
@@ -280,7 +297,7 @@ $insumoDAO = new InsumoDAO();
 											Inventario</h3>
 									</div>
 									<hr>
-									<form action="" method="post" novalidate="novalidate">
+									<form action="#" method="post" novalidate="novalidate">
 
 										<div class="form-group">
 											<label for="cc-payment" class="control-label mb-1">Insumo</label>
@@ -300,7 +317,7 @@ $insumoDAO = new InsumoDAO();
 										</div>
 
 										<div>
-											<button id="payment-button" type="submit"
+											<button id="eliminarInsumo" name="eliminarInsumo" type="submit"
 												class="btn btn-danger btn-lg btn-block">
 												<i class="fa fa-times-circle"></i>&nbsp; <span
 													id="payment-button-amount">Eliminar</span>
@@ -318,81 +335,37 @@ $insumoDAO = new InsumoDAO();
 							<div class="table-responsive table--no-card m-b-30">
 								<table
 									class="table table-borderless table-striped table-earning">
+								
 									<thead>
 										<tr>
 											<th>Fecha</th>
 											<th>Cantidad</th>
-											<th>Producto</th>
+											<th>Insumo</th>
 											<th class="text-right">Valor Unitario</th>
 											<th class="text-right">I.V.A.</th>
 											<th class="text-right">Total</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>2018-09-29 05:57</td>
-											<td>100398</td>
-											<td>iPhone X 64Gb Grey</td>
-											<td class="text-right">$999.00</td>
-											<td class="text-right">1</td>
-											<td class="text-right">$999.00</td>
-										</tr>
-										<tr>
-											<td>2018-09-28 01:22</td>
-											<td>100397</td>
-											<td>Samsung S8 Black</td>
-											<td class="text-right">$756.00</td>
-											<td class="text-right">1</td>
-											<td class="text-right">$756.00</td>
-										</tr>
-										<tr>
-											<td>2018-09-27 02:12</td>
-											<td>100396</td>
-											<td>Game Console Controller</td>
-											<td class="text-right">$22.00</td>
-											<td class="text-right">2</td>
-											<td class="text-right">$44.00</td>
-										</tr>
-										<tr>
-											<td>2018-09-26 23:06</td>
-											<td>100395</td>
-											<td>iPhone X 256Gb Black</td>
-											<td class="text-right">$1199.00</td>
-											<td class="text-right">1</td>
-											<td class="text-right">$1199.00</td>
-										</tr>
-										<tr>
-											<td>2018-09-25 19:03</td>
-											<td>100393</td>
-											<td>USB 3.0 Cable</td>
-											<td class="text-right">$10.00</td>
-											<td class="text-right">3</td>
-											<td class="text-right">$30.00</td>
-										</tr>
-										<tr>
-											<td>2018-09-29 05:57</td>
-											<td>100392</td>
-											<td>Smartwatch 4.0 LTE Wifi</td>
-											<td class="text-right">$199.00</td>
-											<td class="text-right">6</td>
-											<td class="text-right">$1494.00</td>
-										</tr>
-										<tr>
-											<td>2018-09-24 19:10</td>
-											<td>100391</td>
-											<td>Camera C430W 4k</td>
-											<td class="text-right">$699.00</td>
-											<td class="text-right">1</td>
-											<td class="text-right">$699.00</td>
-										</tr>
-										<tr>
-											<td>2018-09-22 00:43</td>
-											<td>100393</td>
-											<td>USB 3.0 Cable</td>
-											<td class="text-right">$10.00</td>
-											<td class="text-right">3</td>
-											<td class="text-right">$30.00</td>
-										</tr>
+									
+									   <?php
+
+                                                $insumos = $invInsDAO->listarInventarioInsumos();
+
+                                                for ($i = 0; $i < sizeof($insumos); $i ++) 
+                                                {
+                                                    echo "<tr>";
+                                                    echo "<td> " . $insumos[$i]['fecha'] . "</td>";
+                                                    echo "<td> " . $insumos[$i]['cantidad'] . "</td>";
+                                                    echo "<td> " . $insumos[$i]['nom_insumo'] . "</td>";
+                                                    echo "<td class='text-right'> " . $insumos[$i]['valor_insumo'] . "</td>";
+                                                    echo "<td class='text-right'> " . $insumos[$i]['iva_insumo'] . "</td>";
+                                                    echo "<td class='text-right'> " . $insumos[$i]['total'] . "</td>";
+                                                    echo "</tr>";
+                                                }
+
+                                        ?>
+									
 									</tbody>
 								</table>
 							</div>

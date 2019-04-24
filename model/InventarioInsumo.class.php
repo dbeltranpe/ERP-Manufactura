@@ -12,13 +12,13 @@
 class InventarioInsumo
 {
     
-    var $codigoProducto;
-    var $cantidad;
-    var $fecha;
+    private $codigoInsumo;
+    private $cantidad;
+    private $fecha;
     
-    function InventarioInsumo($pCodigoProducto, $pCantidad, $pFecha)
+    function InventarioInsumo($pCodigoInsumo, $pCantidad, $pFecha)
     {
-        $this->codigoProducto = $pCodigoProducto;
+        $this->codigoInsumo = $pCodigoInsumo;
         $this->cantidad = $pCantidad;
         $this->fecha = $pFecha;
     }
@@ -27,9 +27,9 @@ class InventarioInsumo
     /**
      * @return mixed
      */
-    public function getCodigoProducto()
+    public function getCodigoInsumo()
     {
-        return $this->codigoProducto;
+        return $this->codigoInsumo;
     }
 
     /**
