@@ -22,6 +22,7 @@ if (isset($_POST['submit']))
             $_SESSION['username'] = $username;
             $_SESSION['password'] = $password;
             $_SESSION["loggedIn"] = $usuario->codigo;
+            $_SESSION["rol"] = $usuario->rol;
             
             if($usuario->rol==1)
             {
@@ -30,7 +31,7 @@ if (isset($_POST['submit']))
             
             else if($usuario->rol==2)
             {
-                header("Location:");
+                header("Location:http://localhost/erpbienesyservicios/view/modulos/inventario/reporte-inventario.php");
             }
             
             else if($usuario->rol==3)

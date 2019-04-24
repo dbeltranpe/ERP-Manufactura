@@ -85,47 +85,68 @@ $invProdDAO = new InventarioProductoDAO();
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-						<li><a href="../../principal/index.php"> <i
-								class="fas fa-tachometer-alt"></i>Dashboard
-						</a></li>
-
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-home"></i>Inventario
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="#">Reportes</a></li>
-								<li><a href="insumos-inventario.php">Insumos</a></li>
-								<li><a href="productos-inventario.php">Producto Terminado</a></li>
-							</ul></li>
-
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-truck"></i>Producci&oacute;n
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="">A</a></li>
-								<li><a href="">B</a></li>
-								<li><a href="">C</a></li>
-							</ul></li>
-
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-credit-card"></i>Ventas
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="">A</a></li>
-								<li><a href="">B</a></li>
-								<li><a href="">C</a></li>
-							</ul></li>
-
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-dollar"></i>Finanzas
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="">A</a></li>
-								<li><a href="">B</a></li>
-								<li><a href="">C</a></li>
-							</ul></li>
-
-
+						
+						
+						<?php 
+						
+						if($_SESSION["rol"]==1)
+						{
+						    echo '<li><a href="../../principal/index.php"> <i';
+						    echo ' class="fas fa-tachometer-alt"></i>Dashboard</a></li>';
+						}
+						
+						if($_SESSION["rol"]==1 || $_SESSION["rol"]==2 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4)
+						{
+						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+						    echo ' class="fas fa-home"></i>Inventario</a>';
+						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+						    echo '<li><a href="#">Reportes</a></li>';
+						    
+						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
+						    {
+						        echo '<li><a href="insumos-inventario.php">Insumos</a></li>';
+						        echo '<li><a href="productos-inventario.php">Producto Terminado</a></li>';
+						    }
+						    
+						    echo'</ul></li>';
+			
+						}
+						
+						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 )
+						{
+						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+						    echo ' class="fas fa-truck"></i>Producci&oacute;n </a>';
+						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+						    echo '<li><a href="">A</a></li>';
+						    echo '<li><a href="">B</a></li>';
+						    echo '<li><a href="">C</a></li>';
+						    echo '</ul></li>';
+						}
+						
+						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 || $_SESSION["rol"]==5 )
+						{
+						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+						    echo ' class="fas fa-credit-card"></i>Ventas</a>';
+						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+						    echo '<li><a href="">A</a></li>';
+						    echo '<li><a href="">B</a></li>';
+						    echo '<li><a href="">C</a></li>';
+						    echo '</ul></li>';
+						}
+						
+						if($_SESSION["rol"]==1 || $_SESSION["rol"]==5)
+						{
+						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+						    echo ' class="fas fa-dollar"></i>Finanzas</a>';
+						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+						    echo '<li><a href="">A</a></li>';
+						    echo '<li><a href="">B</a></li>';
+						    echo '<li><a href="">C</a></li>';
+						    echo ' </ul></li>';
+						}
+	
+						
+						?>
 
 					</ul>
 				</nav>
