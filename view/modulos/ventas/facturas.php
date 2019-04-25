@@ -3,7 +3,6 @@ session_set_cookie_params(0);
 session_start();
 
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/UsuarioDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -18,53 +17,8 @@ if (isset($_POST['logout'])) {
 
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
-$usuarioDAO = new UsuarioDAO();
 
-if (isset($_POST['actualizar']))
-{
-    $viejaContraseña = $_POST['vieja_password'];
-    
-    if($viejaContraseña != $_SESSION["password"])
-    {
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>';
-        
-        echo '<script type="text/javascript">';
-        echo "setTimeout(function () { Swal.fire({
-                position: 'top-end',
-                type: 'error',
-                title: 'La vieja contrase&ntilde;a no coincide',
-                showConfirmButton: false,
-                timer: 3000
-                });";
-        echo '}, 1000);</script>';
-    }
-    
-    else
-    {
-        $nuevoNombre     = $_POST['nom_cuenta'];
-        $nuevoCorreo     = $_POST['email'];
-        $nuevaContraseña = $_POST['nueva_password'];
-        $cod_usuario = $_SESSION["loggedIn"];
-        
-        $trabajadorDAO->updateTrabajador($cod_usuario, $nuevoNombre, $nuevoCorreo);
-        $usuarioDAO->updateUsuario($cod_usuario, $nuevaContraseña);
-        
-        echo '<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>';
-        
-        echo '<script type="text/javascript">';
-        echo "setTimeout(function () { Swal.fire({
-                position: 'top-end',
-                type: 'success',
-                title: 'Se ha actualizado la informaci&oacute;n',
-                showConfirmButton: false,
-                timer: 3000
-                });";
-        echo '}, 1000);</script>';
-        
-    }
-    
-}
-
+$trabajador->nombre;
 ?>
 
 <!DOCTYPE html>
@@ -83,45 +37,45 @@ if (isset($_POST['actualizar']))
 <title>Dashboard</title>
 
 <!-- Fontfaces CSS-->
-<link href="../css/font-face.css" rel="stylesheet" media="all">
-<link href="../vendor/font-awesome-4.7/css/font-awesome.min.css"
+<link href="../../css/font-face.css" rel="stylesheet" media="all">
+<link href="../../vendor/font-awesome-4.7/css/font-awesome.min.css"
 	rel="stylesheet" media="all">
-<link href="../vendor/font-awesome-5/css/fontawesome-all.min.css"
+<link href="../../vendor/font-awesome-5/css/fontawesome-all.min.css"
 	rel="stylesheet" media="all">
-<link href="../vendor/mdi-font/css/material-design-iconic-font.min.css"
+<link
+	href="../../vendor/mdi-font/css/material-design-iconic-font.min.css"
 	rel="stylesheet" media="all">
 
 <!-- Bootstrap CSS-->
-<link href="../vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet"
-	media="all">
+<link href="../../vendor/bootstrap-4.1/bootstrap.min.css"
+	rel="stylesheet" media="all">
 
 <!-- Vendor CSS-->
-<link href="../vendor/animsition/animsition.min.css" rel="stylesheet"
+<link href="../../vendor/animsition/animsition.min.css" rel="stylesheet"
 	media="all">
 <link
-	href="../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css"
+	href="../../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css"
 	rel="stylesheet" media="all">
-<link href="../vendor/wow/animate.css" rel="stylesheet" media="all">
-<link href="../vendor/css-hamburgers/hamburgers.min.css"
+<link href="../../vendor/wow/animate.css" rel="stylesheet" media="all">
+<link href="../../vendor/css-hamburgers/hamburgers.min.css"
 	rel="stylesheet" media="all">
-<link href="../vendor/slick/slick.css" rel="stylesheet" media="all">
-<link href="../vendor/select2/select2.min.css" rel="stylesheet"
+<link href="../../vendor/slick/slick.css" rel="stylesheet" media="all">
+<link href="../../vendor/select2/select2.min.css" rel="stylesheet"
 	media="all">
-<link href="../vendor/perfect-scrollbar/perfect-scrollbar.css"
+<link href="../../vendor/perfect-scrollbar/perfect-scrollbar.css"
 	rel="stylesheet" media="all">
 
 <!-- Main CSS-->
-<link href="../css/theme.css" rel="stylesheet" media="all">
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
+<link href="../../css/theme.css" rel="stylesheet" media="all">
 
 </head>
 <body class="animsition">
 	<div class="page-wrapper">
 
-	<!-- MENU SIDEBAR-->
+		<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
-				<a href="#"> <img src="../images/icon/logo.png" alt="Cool Admin" />
+				<a href="#"> <img src="../../images/icon/logo.png" alt="Cool Admin" />
 				</a>
 			</div>
 			<div class="menu-sidebar__content js-scrollbar1">
@@ -144,7 +98,7 @@ if (isset($_POST['actualizar']))
 						    
 						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
 						    {
-						        echo '<li><a href="#">Insumos</a></li>';
+						        echo '<li><a href="insumos-inventario.php">Insumos</a></li>';
 						        echo '<li><a href="productos-inventario.php">Producto Terminado</a></li>';
 						    }
 						    
@@ -167,7 +121,7 @@ if (isset($_POST['actualizar']))
 						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
 						    echo ' class="fas fa-credit-card"></i>Ventas</a>';
 						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../ventas/facturas.php">Facturas</a></li>';
+						    echo '<li><a href="#">Facturas</a></li>';
 						    echo '<li><a href="../ventas/estado-ventas.php">Estado de Ventas</a></li>';
 						    echo '</ul></li>';
 						}
@@ -187,7 +141,7 @@ if (isset($_POST['actualizar']))
 			</div>
 		</aside>
 		<!-- END MENU SIDEBAR-->
-		
+
 		<!-- PAGE CONTAINER-->
 		<div class="page-container">
 			<!-- HEADER DESKTOP-->
@@ -215,7 +169,7 @@ if (isset($_POST['actualizar']))
             file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
 
             ?>
-											<img src="../images/icon/avatar.jpg" />
+											<img src="../../images/icon/avatar.jpg" />
 										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
@@ -227,7 +181,7 @@ if (isset($_POST['actualizar']))
 										<div class="account-dropdown js-dropdown">
 											<div class="info clearfix">
 												<div class="image">
-													<a href="#"> <img src="../images/icon/avatar.jpg" />
+													<a href="#"> <img src="../../images/icon/avatar.jpg" />
 													</a>
 												</div>
 												<div class="content">
@@ -247,7 +201,8 @@ if (isset($_POST['actualizar']))
 											</div>
 											<div class="account-dropdown__body">
 												<div class="account-dropdown__item">
-													<a href="#"> <i class="zmdi zmdi-account"></i>Cuenta
+													<a href="../../principal/cuenta.php"> <i
+														class="zmdi zmdi-account"></i>Cuenta
 													</a>
 												</div>
 												<div class="account-dropdown__item">
@@ -274,92 +229,204 @@ if (isset($_POST['actualizar']))
 
 			<!-- MAIN CONTENT-->
 			<div class="main-content">
+				<div class="container-fluid">
+					<div class="row">
+						
+							<div class="col-sm-6 col-lg-3" style="width: 100%; align-self: center;">
+								<div class="overview-item overview-item--c1">
+									<div class="overview__inner">
+										<div class="overview-box clearfix">
+											<div class="icon">
+												<i class="zmdi zmdi-account-o"></i>
+											</div>
+											<div class="text">
+												<h2>2000</h2>
+												<span>Cantidad Facturas</span>
+											</div>
+										</div>
+										<div class="overview-chart">
+											<canvas id="widgetChart2"></canvas>
+										</div>
+									</div>
+								</div>
+							</div>
+						
+						<div class="col" style="width: 50%">
+							<section class="card">
+								<div class="card-header">Agregar Nueva Factura</div>
+								<div class="card-body">
+									<div>
+										<button id="payment-button" type="submit"
+											class="btn btn-lg btn-info btn-block" onclick="location='../produccion/agregar_orden.php'">
+											<i class="fa fa-check-circle"></i>&nbsp; <span
+												id="payment-button-amount">Agregar</span>
+										</button>
+									</div>
+								</div>
+							</section>
+						
+							<section class="card">
+								<div class="card-header">Eliminar Factura</div>
+								<div class="card-body">
+									<div class="card-title">
+										<h3 class="text-center title-2">C&oacute;digo de la Factura</h3>
+									</div>
+									<hr>
+									<form action="" method="post" novalidate="novalidate">
 
-				<div class="col-lg-6">
-					<div class="card">
-						<div class="card-header">Cambiar Datos Cuenta</div>
-						<div class="card-body card-block">
-							<form method="post">
-								<div class="form-group">
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-user"></i>
+										<div class="form-group">
+											<label for="cc-payment" class="control-label mb-1">N&uacute;mero</label>
+											<input id="cc-pament" name="cc-payment" type="text"
+												class="form-control" aria-required="true"
+												aria-invalid="false">
 										</div>
-										<input type="text" id="nom_cuenta" name="nom_cuenta"
-											placeholder="Nombre Cuenta" class="form-control" value=<?php echo "'" . utf8_encode($trabajador->nombre) . "'"; ?>>
-									</div>
-								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-envelope"></i>
+
+										<div>
+											<button id="payment-button" type="submit"
+												class="btn btn-danger btn-lg btn-block">
+												<i class="fa fa-times-circle"></i>&nbsp; <span
+													id="payment-button-amount">Eliminar</span>
+											</button>
 										</div>
-										<input type="email" id="email" name="email"
-											placeholder="Email" class="form-control" value=<?php echo "'" . utf8_encode($trabajador->correo) . "'"; ?>>
-									</div>
+									</form>
 								</div>
-								<div class="form-group">
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-asterisk"></i>
-										</div>
-										<input type="password" name="nueva_password"
-											placeholder="Nueva Contrase&ntilde;a" class="form-control">
-									</div>
-								</div>
-								
-								<div class="form-group">
-									<div class="input-group">
-										<div class="input-group-addon">
-											<i class="fa fa-asterisk"></i>
-										</div>
-										<input type="password" name="vieja_password"
-											placeholder="Vieja Contrase&ntilde;a" class="form-control" >
-									</div>
-								</div>
-								
-								<div class="form-actions form-group">
-									<button type="submit" class="btn btn-success btn-sm"  name="actualizar" >Actualizar Informaci&oacute;n</button>
-								</div>
-							</form>
+							</section>
 						</div>
+
 					</div>
+
+					<div class="row">
+						<div class="col">
+							<div class="table-responsive table--no-card m-b-30">
+								<table
+									class="table table-borderless table-striped table-earning">
+									<thead>
+										<tr>
+											<th>N&uacute;mero de factura</th>
+											<th>Cliente</th>
+											<th>Producto</th>
+											<th>Cantidad</th>
+											<th>Fecha de factura</th>
+											<th>Total</th>
+											<th>Estado</th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td>1</td>
+											<td>Roberto</td>
+											<td>Tornillos</td>
+											<td>1000</td>
+											<td>2019-05-05 08:00</td>
+											<td>5000</td>
+											<td>En proceso de pago</td>
+										</tr>
+										<tr>
+											<td>2</td>
+											<td>Surtimax</td>
+											<td>Ponque Ramo</td>
+											<td>500</td>
+											<td>2019-03-22 10:00</td>
+											<td>300000</td>
+											<td>Pagado</td>
+										</tr>
+										<tr>
+											<td>3</td>
+											<td>Alqur&iacute;a</td>
+											<td>Esferos</td>
+											<td>100</td>
+											<td>2019-10-22 14:30</td>
+											<td>25000</td>
+											<td>Pagado</td>
+										</tr>
+										<tr>
+											<td>4</td>
+											<td>Ramon</td>
+											<td>Carcasas Celulares</td>
+											<td>2</td>
+											<td>2019-08-10 12:47</td>
+											<td>150000</td>
+											<td>En porceso de pago</td>
+										</tr>
+										<tr>
+											<td>5</td>
+											<td>Brisa</td>
+											<td>Almohadas</td>
+											<td>60</td>
+											<td>2019-03-22 10:00</td>
+											<td>1000000</td>
+											<td>Pagado</td>
+										</tr>
+										<tr>
+											<td>6</td>
+											<td>Electr&oacute;nica S.A.S</td>
+											<td>Resistencias</td>
+											<td>200000</td>
+											<td>2019-03-22 10:00</td>
+											<td>500000</td>
+											<td>Pagado</td>
+										</tr>
+										<tr>
+											<td>7</td>
+											<td>Movilizador Andino</td>
+											<td>Barras de Acero</td>
+											<td>100</td>
+											<td>2019-03-22 10:00</td>
+											<td>2500000</td>
+											<td>En proceos de pago</td>
+										</tr>
+										<tr>
+											<td>8</td>
+											<td>Luis Salvador</td>
+											<td>Billeteras</td>
+											<td>5</td>
+											<td>2019-03-22 10:00</td>
+											<td>100000</td>
+											<td>Pagado</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+						</div>
+
+					</div>
+
+
 				</div>
-
-
-
-
 			</div>
 			<!-- END MAIN CONTENT-->
-			<!-- END PAGE CONTAINER-->
+
+
 		</div>
 
+		<!-- END PAGE CONTAINER-->
 	</div>
 
+
 	<!-- Jquery JS-->
-	<script src="../vendor/jquery-3.2.1.min.js"></script>
+	<script src="../../vendor/jquery-3.2.1.min.js"></script>
 	<!-- Bootstrap JS-->
-	<script src="../vendor/bootstrap-4.1/popper.min.js"></script>
-	<script src="../vendor/bootstrap-4.1/bootstrap.min.js"></script>
+	<script src="../../vendor/bootstrap-4.1/popper.min.js"></script>
+	<script src="../../vendor/bootstrap-4.1/bootstrap.min.js"></script>
 	<!-- Vendor JS       -->
-	<script src="../vendor/slick/slick.min.js">
+	<script src="../../vendor/slick/slick.min.js">
     </script>
-	<script src="../vendor/wow/wow.min.js"></script>
-	<script src="../vendor/animsition/animsition.min.js"></script>
+	<script src="../../vendor/wow/wow.min.js"></script>
+	<script src="../../vendor/animsition/animsition.min.js"></script>
 	<script
-		src="../vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+		src="../../vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
     </script>
-	<script src="../vendor/counter-up/jquery.waypoints.min.js"></script>
-	<script src="../vendor/counter-up/jquery.counterup.min.js">
+	<script src="../../vendor/counter-up/jquery.waypoints.min.js"></script>
+	<script src="../../vendor/counter-up/jquery.counterup.min.js">
     </script>
-	<script src="../vendor/circle-progress/circle-progress.min.js"></script>
-	<script src="../vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
-	<script src="../vendor/chartjs/Chart.bundle.min.js"></script>
-	<script src="../vendor/select2/select2.min.js">
+	<script src="../../vendor/circle-progress/circle-progress.min.js"></script>
+	<script src="../../vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+	<script src="../../vendor/chartjs/Chart.bundle.min.js"></script>
+	<script src="../../vendor/select2/select2.min.js">
     </script>
 
 	<!-- Main JS-->
-	<script src="../js/main.js"></script>
+	<script src="../../js/main.js"></script>
 
 </body>
 

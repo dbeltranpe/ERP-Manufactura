@@ -91,7 +91,7 @@ if (isset($_POST['eliminarProducto'])) {
 <body class="animsition">
 	<div class="page-wrapper">
 
-		<!-- MENU SIDEBAR-->
+<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
 				<a href="#"> <img src="../../images/icon/logo.png" alt="Cool Admin" />
@@ -100,48 +100,61 @@ if (isset($_POST['eliminarProducto'])) {
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-						<li><a href="../../principal/index.php"> <i
-								class="fas fa-tachometer-alt"></i>Dashboard
-						</a></li>
-
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-home"></i>Inventario
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="reporte-inventario.php">Reportes</a></li>
-								<li><a href="#">Insumos</a></li>
-								<li><a href="productos-inventario.php">Producto Terminado</a></li>
-							</ul></li>
-
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-truck"></i>Producci&oacute;n
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="">A</a></li>
-								<li><a href="">B</a></li>
-								<li><a href="">C</a></li>
-							</ul></li>
-
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-credit-card"></i>Ventas
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="">A</a></li>
-								<li><a href="">B</a></li>
-								<li><a href="">C</a></li>
-							</ul></li>
-
-						<li class="has-sub"><a class="js-arrow" href="#"> <i
-								class="fas fa-dollar"></i>Finanzas
-						</a>
-							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="">A</a></li>
-								<li><a href="">B</a></li>
-								<li><a href="">C</a></li>
-							</ul></li>
-
-
-
+						<?php 
+						
+						if($_SESSION["rol"]==1)
+						{
+						    echo '<li><a href="../../principal/index.php"> <i';
+						    echo ' class="fas fa-tachometer-alt"></i>Dashboard</a></li>';
+						}
+						
+						if($_SESSION["rol"]==1 || $_SESSION["rol"]==2 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4)
+						{
+						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+						    echo ' class="fas fa-home"></i>Inventario</a>';
+						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+						    echo '<li><a href="../inventario/reporte-inventario.php">Reportes</a></li>';
+						    
+						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
+						    {
+						        echo '<li><a href="#">Insumos</a></li>';
+						        echo '<li><a href="productos-inventario.php">Producto Terminado</a></li>';
+						    }
+						    
+						    echo'</ul></li>';
+			
+						}
+						
+						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 )
+						{
+						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+						    echo ' class="fas fa-truck"></i>Producci&oacute;n </a>';
+						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+						    echo '<li><a href="../produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>';
+						    echo '<li><a href="../produccion/trazabilidad-produccion.php">Ver Trazabilidad</a></li>';
+						    echo '</ul></li>';
+						}
+						
+						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 || $_SESSION["rol"]==5 )
+						{
+						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+						    echo ' class="fas fa-credit-card"></i>Ventas</a>';
+						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+						    echo '<li><a href="../ventas/facturas.php">Facturas</a></li>';
+						    echo '<li><a href="../ventas/estado-ventas.php">Estado de Ventas</a></li>';
+						    echo '</ul></li>';
+						}
+						
+						if($_SESSION["rol"]==1 || $_SESSION["rol"]==5)
+						{
+						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+						    echo ' class="fas fa-dollar"></i>Finanzas</a>';
+						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+						    echo '<li><a href="../finanzas/cuentas-finanzas.php">Cuentas</a></li>';
+						    echo '<li><a href="../finanzas/analisis-cuentas.php">An&aacute;lisis</a></li>';
+						    echo ' </ul></li>';
+						}	
+						?>
 					</ul>
 				</nav>
 			</div>
