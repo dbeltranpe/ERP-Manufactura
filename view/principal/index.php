@@ -5,14 +5,14 @@ session_start();
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout']))
 {
 session_unset();
 session_destroy();
-header("Location:localhost/erpbienesyservicios/view/principal/login.php");
+header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
 exit();
     
 }
