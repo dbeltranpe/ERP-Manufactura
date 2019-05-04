@@ -5,14 +5,14 @@ session_start();
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout']))
 {
 session_unset();
 session_destroy();
-header("location:http://localhost/erpbienesyservicios/view/principal/login.php");
+header("Location:localhost/erpbienesyservicios/view/principal/login.php");
 exit();
     
 }
@@ -74,8 +74,7 @@ $trabajador->nombre;
 
 <body class="animsition">
 	<div class="page-wrapper">
-
-		<!-- MENU SIDEBAR-->
+	<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
 				<a href="#"> <img src="../images/icon/logo.png" alt="Cool Admin" />
@@ -101,31 +100,25 @@ $trabajador->nombre;
 								class="fas fa-truck"></i>Producci&oacute;n
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="">A</a></li>
-								<li><a href="">B</a></li>
-								<li><a href="">C</a></li>
+								<li><a href="../modulos/produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>
+								<li><a href="../modulos/produccion/trazabilidad-produccion.php">Ver trazabilidad</a></li>
 							</ul></li>
 
 						<li class="has-sub"><a class="js-arrow" href="#"> <i
 								class="fas fa-credit-card"></i>Ventas
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="">A</a></li>
-								<li><a href="">B</a></li>
-								<li><a href="">C</a></li>
+								<li><a href="../modulos/ventas/facturas.php">Facturas</a></li>
+								<li><a href="../modulos/ventas/estado-ventas.php">Estado de Ventas</a></li>
 							</ul></li>
 
 						<li class="has-sub"><a class="js-arrow" href="#"> <i
 								class="fas fa-dollar"></i>Finanzas
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="">A</a></li>
-								<li><a href="">B</a></li>
-								<li><a href="">C</a></li>
+								<li><a href="../modulos/finanzas/cuentas-finanzas.php">Cuentas</a></li>
+								<li><a href="../modulos/finanzas/analisis-cuentas.php">An&aacute;lisis Cuentas</a></li>
 							</ul></li>
-
-
-
 					</ul>
 				</nav>
 			</div>

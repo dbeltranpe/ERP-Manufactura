@@ -5,13 +5,13 @@ session_start();
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
-    header("location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
     exit();
 }
 
@@ -98,8 +98,8 @@ $trabajador->nombre;
 						    
 						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
 						    {
-						        echo '<li><a href="insumos-inventario.php">Insumos</a></li>';
-						        echo '<li><a href="productos-inventario.php">Producto Terminado</a></li>';
+						        echo '<li><a href="../inventario/insumos-inventario.php">Insumos</a></li>';
+						        echo '<li><a href="../inventario/productos-inventario.php">Producto Terminado</a></li>';
 						    }
 						    
 						    echo'</ul></li>';

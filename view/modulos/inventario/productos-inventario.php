@@ -7,13 +7,13 @@ require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implem
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioProductoDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
-    header("location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
     exit();
 }
 
@@ -117,7 +117,7 @@ if (isset($_POST['eliminarProducto'])) {
 						    
 						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
 						    {
-						        echo '<li><a href="#">Insumos</a></li>';
+						        echo '<li><a href="insumos-inventario.php">Insumos</a></li>';
 						        echo '<li><a href="productos-inventario.php">Producto Terminado</a></li>';
 						    }
 						    

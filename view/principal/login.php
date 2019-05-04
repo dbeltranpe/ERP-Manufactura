@@ -26,17 +26,27 @@ if (isset($_POST['submit']))
             
             if($usuario->rol==1)
             {
-                header("Location:http://localhost/erpbienesyservicios/view/principal/index.php");
+                header("Location:localhost/erpbienesyservicios/view/principal/index.php");
             }
             
             else if($usuario->rol==2)
             {
-                header("Location:http://localhost/erpbienesyservicios/view/modulos/inventario/reporte-inventario.php");
+                header("Location:localhost/erpbienesyservicios/view/modulos/inventario/reporte-inventario.php");
             }
             
             else if($usuario->rol==3)
             {
-                header("Location:");
+                header("Location:localhost/erpbienesyservicios/view/modulos/produccion/ordenes-produccion.php");
+            }
+            
+            else if($usuario->rol==4)
+            {
+                header("Location:localhost/erpbienesyservicios/view/modulos/ventas/facturas.php");
+            }
+            
+            else if($usuario->rol==5)
+            {
+                header("Location:localhost/erpbienesyservicios/view/modulos/finanzas/cuentas-finanzas.php");
             }
     } 
     

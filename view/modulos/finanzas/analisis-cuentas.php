@@ -7,13 +7,13 @@ require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implem
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioInsumoDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
-    header("location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
     exit();
 }
 
@@ -117,8 +117,8 @@ if (isset($_POST['eliminarInsumo'])) {
 						    
 						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
 						    {
-						        echo '<li><a href="insumos-inventario.php">Insumos</a></li>';
-						        echo '<li><a href="productos-inventario.php">Producto Terminado</a></li>';
+						        echo '<li><a href="../inventario/insumos-inventario.php">Insumos</a></li>';
+						        echo '<li><a href="../inventario/productos-inventario.php">Producto Terminado</a></li>';
 						    }
 						    
 						    echo'</ul></li>';
@@ -163,6 +163,88 @@ if (isset($_POST['eliminarInsumo'])) {
 
 		<!-- PAGE CONTAINER-->
         <div class="page-container2">
+
+                        <!-- HEADER DESKTOP-->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <form class="form-header" action="" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search"
+                                    placeholder="Search for datas &amp; reports..." />
+                                <button class="au-btn--submit" type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
+                            </form>
+                            <div class="header-button">
+
+
+                                <!-- Información Cuenta -->
+
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                           <?php
+
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
+
+            ?>
+                                            <img src="../../images/icon/avatar.jpg" />
+                                        </div>
+                                        <div class="content">
+                                            <a class="js-acc-btn" href="#" id="nombre_cuenta_1">
+                                            <?php
+        echo utf8_encode($trabajador->nombre);
+        ?>
+                                            </a>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="info clearfix">
+                                                <div class="image">
+                                                    <a href="#"> <img src="../images/icon/avatar.jpg" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a href="#" id="nombre_cuenta_2">
+                                                        <?php
+            echo utf8_encode($_SESSION["username"]);
+            ?>
+                                                        </a>
+                                                    </h5>
+                                                    <span class="email" id="correo_cuenta">
+                                                    <?php
+            echo utf8_encode($trabajador->correo);
+            ?>
+                                                    </span>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__body">
+                                                <div class="account-dropdown__item">
+                                                    <a href="#"> <i class="zmdi zmdi-account"></i>Cuenta
+                                                    </a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#"> <i class="zmdi zmdi-settings"></i>Configuraciones
+                                                    </a>
+                                                </div>
+
+                                            </div>
+                                            <div class="account-dropdown__footer">
+                                                <form action="" method="post">
+                                                    <button class="au-btn au-btn--block au-btn--red m-b-20"
+                                                        type="submit" name="logout">Cerrar Sesi&oacute;n</button>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- HEADER DESKTOP-->
         	<!-- HEADER DESKTOP-->
 			<div class="main-content">
                 <div class="section_content section_content--p30">

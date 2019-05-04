@@ -87,10 +87,10 @@ class Database
     {
         $this->conn = null;
         $this->results = null;
-        $this->db = "ERP";
-        $this->user = "root";
-        $this->pwd = "";
-        $this->host = "localhost:3306";
+        $this->db = "bienesyservicios";
+        $this->user = "bienesyservicios";
+        $this->pwd = "ERP2019";
+        $this->host = "mysql.webcindario.com";
         $this->path = "http://localhost/erpbienesyservicios";
         $this->rows = 0;
         $this->messages = array("Error en la conexi&oacute;n","No se pudo realizar la operaci&oacute;n, comun&iacute;quese con el administrador");

@@ -7,13 +7,13 @@ require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implem
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioInsumoDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
-    header("location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:localhost/erpbienesyservicios/view/principal/login.php");
     exit();
 }
 
@@ -85,8 +85,6 @@ $invProdDAO = new InventarioProductoDAO();
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-						
-						
 						<?php 
 						
 						if($_SESSION["rol"]==1)
@@ -100,7 +98,7 @@ $invProdDAO = new InventarioProductoDAO();
 						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
 						    echo ' class="fas fa-home"></i>Inventario</a>';
 						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="#">Reportes</a></li>';
+						    echo '<li><a href="../inventario/reporte-inventario.php">Reportes</a></li>';
 						    
 						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
 						    {
@@ -117,9 +115,8 @@ $invProdDAO = new InventarioProductoDAO();
 						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
 						    echo ' class="fas fa-truck"></i>Producci&oacute;n </a>';
 						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="">A</a></li>';
-						    echo '<li><a href="">B</a></li>';
-						    echo '<li><a href="">C</a></li>';
+						    echo '<li><a href="../produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>';
+						    echo '<li><a href="../produccion/trazabilidad-produccion.php">Ver Trazabilidad</a></li>';
 						    echo '</ul></li>';
 						}
 						
@@ -128,9 +125,8 @@ $invProdDAO = new InventarioProductoDAO();
 						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
 						    echo ' class="fas fa-credit-card"></i>Ventas</a>';
 						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="">A</a></li>';
-						    echo '<li><a href="">B</a></li>';
-						    echo '<li><a href="">C</a></li>';
+						    echo '<li><a href="../ventas/facturas.php">Facturas</a></li>';
+						    echo '<li><a href="../ventas/estado-ventas.php">Estado de Ventas</a></li>';
 						    echo '</ul></li>';
 						}
 						
@@ -139,21 +135,16 @@ $invProdDAO = new InventarioProductoDAO();
 						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
 						    echo ' class="fas fa-dollar"></i>Finanzas</a>';
 						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="">A</a></li>';
-						    echo '<li><a href="">B</a></li>';
-						    echo '<li><a href="">C</a></li>';
+						    echo '<li><a href="../finanzas/cuentas-finanzas.php">Cuentas</a></li>';
+						    echo '<li><a href="../finanzas/analisis-cuentas.php">An&aacute;lisis</a></li>';
 						    echo ' </ul></li>';
-						}
-	
-						
+						}	
 						?>
-
 					</ul>
 				</nav>
 			</div>
 		</aside>
 		<!-- END MENU SIDEBAR-->
-
 		<!-- PAGE CONTAINER-->
 		<div class="page-container">
 			<!-- HEADER DESKTOP-->
