@@ -1268,7 +1268,7 @@
       timeout: false,
       timeoutCountdown: 5000,
       onLoadEvent: true,
-      browser: ['animation-duration', '-webkit-animation-duration'],
+//      browser: ['animation-duration', '-webkit-animation-duration'],
       overlay: false,
       overlayClass: 'animsition-overlay-slide',
       overlayParentElement: 'html',

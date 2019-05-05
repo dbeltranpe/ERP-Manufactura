@@ -76,5 +76,28 @@ INSERT INTO producto VALUES(2,'Botas de Lluvia',38000, 0.19);
 INSERT INTO producto VALUES(3,'Zapatos Colegial',22000, 0.19);
 INSERT INTO producto VALUES(4,'Zapatillas Deportiva', 5000, 0.19);
 
+CREATE TABLE M_PAGO(
+cod_m_pago INT PRIMARY KEY,
+nom_m_pago VARCHAR(30)
+);
+
+INSERT INTO M_PAGO VALUES(1,'Efectivo');
+INSERT INTO M_PAGO VALUES(2,'Credito');
+INSERT INTO M_PAGO VALUES(3,'Sodexo');
+
+CREATE TABLE FACTURA(
+cod_factura INT PRIMARY KEY AUTO INCREMENT,
+nom_cli_factura VARCHAR(50),
+cc_nit_factura VARCHAR(20),
+dir_factura VARCHAR(50),
+tel_factura VARCHAR(20),
+cod_m_pago INT,
+subtotal DOUBLE,
+iva DOUBLE,
+total DOUBLE,
+fecha date,
+FOREIGN KEY (cod_m_pago) REFERENCES M_PAGO(cod_m_pago)
+);
+
 
 

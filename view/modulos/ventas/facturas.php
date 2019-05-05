@@ -3,6 +3,7 @@ session_set_cookie_params(0);
 session_start();
 
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/FacturaDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -18,7 +19,23 @@ if (isset($_POST['logout'])) {
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
-$trabajador->nombre;
+$facturaDAO = new FacturaDAO();
+
+if (isset($_POST['enviarFactura'])) {
+
+    $nomCliente = $_POST['nomCliente'];
+    $ccNit = $_POST['ccNit'];
+    $direccion = $_POST['direccion'];
+    $telefono = $_POST['telefono'];
+    $medio = $_POST['medio'];
+
+    $subtotal = $_POST['subtotal'];
+    $iva = $_POST['iva'];
+    $total = $_POST['total'];
+
+    $facturaDAO->save($nomCliente, $ccNit, $direccion, $telefono, $medio, $subtotal, $iva, $total);
+}
+
 ?>
 
 <!DOCTYPE html>
@@ -32,6 +49,15 @@ $trabajador->nombre;
 <meta name="description" content="au theme template">
 <meta name="author" content="Hau Nguyen">
 <meta name="keywords" content="au theme template">
+
+<!-- Angular -->
+<meta charset='utf-8'>
+<link rel="stylesheet"
+	href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
+<link rel="stylesheet" type="text/css" href="../../css/style.css">
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+<script type="text/javascript" src="../../js/mainAngular.js"></script>
 
 <!-- Title Page-->
 <title>Dashboard</title>
@@ -69,7 +95,7 @@ $trabajador->nombre;
 <link href="../../css/theme.css" rel="stylesheet" media="all">
 
 </head>
-<body class="animsition">
+<body ng-app="invoicing" ng-controller="InvoiceCtrl">
 	<div class="page-wrapper">
 
 		<!-- MENU SIDEBAR-->
@@ -81,61 +107,54 @@ $trabajador->nombre;
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-						<?php 
-						
-						if($_SESSION["rol"]==1)
-						{
-						    echo '<li><a href="../../principal/index.php"> <i';
-						    echo ' class="fas fa-tachometer-alt"></i>Dashboard</a></li>';
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==2 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4)
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-home"></i>Inventario</a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../inventario/reporte-inventario.php">Reportes</a></li>';
-						    
-						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
-						    {
-						        echo '<li><a href="../inventario/insumos-inventario.php">Insumos</a></li>';
-						        echo '<li><a href="../inventario/productos-inventario.php">Producto Terminado</a></li>';
-						    }
-						    
-						    echo'</ul></li>';
-			
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 )
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-truck"></i>Producci&oacute;n </a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>';
-						    echo '<li><a href="../produccion/trazabilidad-produccion.php">Ver Trazabilidad</a></li>';
-						    echo '</ul></li>';
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 || $_SESSION["rol"]==5 )
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-credit-card"></i>Ventas</a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="#">Facturas</a></li>';
-						    echo '<li><a href="../ventas/estado-ventas.php">Estado de Ventas</a></li>';
-						    echo '</ul></li>';
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==5)
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-dollar"></i>Finanzas</a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../finanzas/cuentas-finanzas.php">Cuentas</a></li>';
-						    echo '<li><a href="../finanzas/analisis-cuentas.php">An&aacute;lisis</a></li>';
-						    echo ' </ul></li>';
-						}	
-						?>
+						<?php
+
+    if ($_SESSION["rol"] == 1) {
+        echo '<li><a href="../../principal/index.php"> <i';
+        echo ' class="fas fa-tachometer-alt"></i>Dashboard</a></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 2 || $_SESSION["rol"] == 3 || $_SESSION["rol"] == 4) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-home"></i>Inventario</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../inventario/reporte-inventario.php">Reportes</a></li>';
+
+        if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 2) {
+            echo '<li><a href="../inventario/insumos-inventario.php">Insumos</a></li>';
+            echo '<li><a href="../inventario/productos-inventario.php">Producto Terminado</a></li>';
+        }
+
+        echo '</ul></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 3 || $_SESSION["rol"] == 4) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-truck"></i>Producci&oacute;n </a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>';
+        echo '<li><a href="../produccion/trazabilidad-produccion.php">Ver Trazabilidad</a></li>';
+        echo '</ul></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 3 || $_SESSION["rol"] == 4 || $_SESSION["rol"] == 5) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-credit-card"></i>Ventas</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="#">Facturas</a></li>';
+        echo '<li><a href="../ventas/estado-ventas.php">Estado de Ventas</a></li>';
+        echo '</ul></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 5) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-dollar"></i>Finanzas</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../finanzas/cuentas-finanzas.php">Cuentas</a></li>';
+        echo '<li><a href="../finanzas/analisis-cuentas.php">An&aacute;lisis</a></li>';
+        echo ' </ul></li>';
+    }
+    ?>
 					</ul>
 				</nav>
 			</div>
@@ -164,18 +183,12 @@ $trabajador->nombre;
 								<div class="account-wrap">
 									<div class="account-item clearfix js-item-menu">
 										<div class="image">
-										   <?php
-
-            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
-
-            ?>
+										   <?php file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen); ?>
 											<img src="../../images/icon/avatar.jpg" />
 										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
-											<?php
-        echo utf8_encode($trabajador->nombre);
-        ?>
+											<?php echo utf8_encode($trabajador->nombre); ?>
 											</a>
 										</div>
 										<div class="account-dropdown js-dropdown">
@@ -187,15 +200,11 @@ $trabajador->nombre;
 												<div class="content">
 													<h5 class="name">
 														<a href="#" id="nombre_cuenta_2">
-														<?php
-            echo utf8_encode($_SESSION["username"]);
-            ?>
+														<?php echo utf8_encode($_SESSION["username"]); ?>
 														</a>
 													</h5>
 													<span class="email" id="correo_cuenta">
-													<?php
-            echo utf8_encode($trabajador->correo);
-            ?>
+													<?php echo utf8_encode($trabajador->correo); ?>
 													</span>
 												</div>
 											</div>
@@ -230,167 +239,133 @@ $trabajador->nombre;
 			<!-- MAIN CONTENT-->
 			<div class="main-content">
 				<div class="container-fluid">
-					<div class="row">
-						
-							<div class="col-sm-6 col-lg-3" style="width: 100%; align-self: center;">
-								<div class="overview-item overview-item--c1">
-									<div class="overview__inner">
-										<div class="overview-box clearfix">
-											<div class="icon">
-												<i class="zmdi zmdi-account-o"></i>
-											</div>
-											<div class="text">
-												<h2>2000</h2>
-												<span>Cantidad Facturas</span>
-											</div>
-										</div>
-										<div class="overview-chart">
-											<canvas id="widgetChart2"></canvas>
-										</div>
-									</div>
+
+					<div class="container" width="800px" id="invoice"
+						style="background-color: white;">
+						<div class="row">
+							<div class="col-xs-12 heading">FACTURACI&Oacute;N</div>
+						</div>
+						<div class="row branding">
+
+							<div class="col-xs-6">
+
+								<div class="invoice-number-container">
+									<label for="invoice-number">Factura #</label>
 								</div>
+
 							</div>
-						
-						<div class="col" style="width: 50%">
-							<section class="card">
-								<div class="card-header">Agregar Nueva Factura</div>
-								<div class="card-body">
-									<div>
-										<button id="payment-button" type="submit"
-											class="btn btn-lg btn-info btn-block" onclick="location='../produccion/agregar_orden.php'">
-											<i class="fa fa-check-circle"></i>&nbsp; <span
-												id="payment-button-amount">Agregar</span>
-										</button>
-									</div>
-								</div>
-							</section>
-						
-							<section class="card">
-								<div class="card-header">Eliminar Factura</div>
-								<div class="card-body">
-									<div class="card-title">
-										<h3 class="text-center title-2">C&oacute;digo de la Factura</h3>
-									</div>
-									<hr>
-									<form action="" method="post" novalidate="novalidate">
 
-										<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">N&uacute;mero</label>
-											<input id="cc-pament" name="cc-payment" type="text"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
-										</div>
-
-										<div>
-											<button id="payment-button" type="submit"
-												class="btn btn-danger btn-lg btn-block">
-												<i class="fa fa-times-circle"></i>&nbsp; <span
-													id="payment-button-amount">Eliminar</span>
-											</button>
-										</div>
-									</form>
-								</div>
-							</section>
 						</div>
 
-					</div>
+						<form action="#" method="post" >
 
-					<div class="row">
-						<div class="col">
-							<div class="table-responsive table--no-card m-b-30">
-								<table
-									class="table table-borderless table-striped table-earning">
-									<thead>
-										<tr>
-											<th>N&uacute;mero de factura</th>
-											<th>Cliente</th>
-											<th>Producto</th>
-											<th>Cantidad</th>
-											<th>Fecha de factura</th>
-											<th>Total</th>
-											<th>Estado</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Roberto</td>
-											<td>Tornillos</td>
-											<td>1000</td>
-											<td>2019-05-05 08:00</td>
-											<td>5000</td>
-											<td>En proceso de pago</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>Surtimax</td>
-											<td>Ponque Ramo</td>
-											<td>500</td>
-											<td>2019-03-22 10:00</td>
-											<td>300000</td>
-											<td>Pagado</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Alqur&iacute;a</td>
-											<td>Esferos</td>
-											<td>100</td>
-											<td>2019-10-22 14:30</td>
-											<td>25000</td>
-											<td>Pagado</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>Ramon</td>
-											<td>Carcasas Celulares</td>
-											<td>2</td>
-											<td>2019-08-10 12:47</td>
-											<td>150000</td>
-											<td>En porceso de pago</td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>Brisa</td>
-											<td>Almohadas</td>
-											<td>60</td>
-											<td>2019-03-22 10:00</td>
-											<td>1000000</td>
-											<td>Pagado</td>
-										</tr>
-										<tr>
-											<td>6</td>
-											<td>Electr&oacute;nica S.A.S</td>
-											<td>Resistencias</td>
-											<td>200000</td>
-											<td>2019-03-22 10:00</td>
-											<td>500000</td>
-											<td>Pagado</td>
-										</tr>
-										<tr>
-											<td>7</td>
-											<td>Movilizador Andino</td>
-											<td>Barras de Acero</td>
-											<td>100</td>
-											<td>2019-03-22 10:00</td>
-											<td>2500000</td>
-											<td>En proceos de pago</td>
-										</tr>
-										<tr>
-											<td>8</td>
-											<td>Luis Salvador</td>
-											<td>Billeteras</td>
-											<td>5</td>
-											<td>2019-03-22 10:00</td>
-											<td>100000</td>
-											<td>Pagado</td>
-										</tr>
-									</tbody>
-								</table>
+							<div class="row infos">
+
+								<div class="col-xs-6">
+									<div class="input-container">
+										<input type="text" placeholder="Nombre Cliente"
+											name="nomCliente" />
+									</div>
+									<div class="input-container">
+										<input type="text" placeholder="C.C o NIT" name="ccNit" />
+									</div>
+								</div>
+
+								<div class="col-xs-6 right">
+									<div class="input-container">
+										<input type="text" placeholder="Direcci&oacute;n"
+											name="direccion" />
+									</div>
+									<div class="input-container">
+										<input type="text"
+											placeholder="N&uacute;mero Telef&oacute;nico" name="telefono" />
+									</div>
+									<div class="input-container">
+										<input type="text" placeholder="Medio de Pago" name="medio" />
+									</div>
+									<br>
+								</div>
+
 							</div>
-						</div>
+
+
+							<div class="items-table">
+
+								<div class="row header">
+									<div class="col-xs-1">&nbsp;</div>
+									<div class="col-xs-5">Producto</div>
+									<div class="col-xs-2">Cantidad</div>
+									<div class="col-xs-2">Costo</div>
+									<div class="col-xs-2 text-right">Total</div>
+								</div>
+
+								<div class="row invoice-item" ng-repeat="item in invoice.items"
+									ng-animate="'slide-down'">
+
+									<div class="col-xs-1 remove-item-container">
+										<a href ng-click="removeItem(item)" class="btn btn-danger">[X]</a>
+									</div>
+
+									<div class="col-xs-5 input-container">
+										<input ng-model="item.description" placeholder="Description" />
+									</div>
+
+									<div class="col-xs-2 input-container">
+										<input ng-model="item.qty" value="1" size="4" ng-required
+											ng-validate="integer" placeholder="Cantidad" />
+									</div>
+
+									<div class="col-xs-2 input-container">
+										<input ng-model="item.cost" value="0.00" ng-required
+											ng-validate="number" size="6" placeholder="Cost" />
+									</div>
+
+									<div class="col-xs-2 text-right input-container">{{item.cost *
+										item.qty}}</div>
+
+								</div>
+
+
+								<div class="row invoice-item">
+									<div class="col-xs-12 add-item-container">
+										<a class="btn btn-primary" href ng-click="addItem()">[+]</a>
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-xs-10 text-right">Sub Total</div>
+									<div class="col-xs-2 text-right">${{invoiceSubTotal()}}</div>
+									<input type="hidden" name="subtotal"
+										value="{{invoiceSubTotal()}}">
+								</div>
+
+								<div class="row">
+									<div class="col-xs-10 text-right">I.V.A.(%)</div>
+									<div class="col-xs-2 text-right">${{calculateTax()}}</div>
+									<input type="hidden" name="iva" value="{{calculateTax()}}">
+								</div>
+
+								<div class="row">
+									<div class="col-xs-10 text-right">Total:</div>
+									<div class="col-xs-2 text-right">${{calculateGrandTotal()}}</div>
+									<input type="hidden" name="total"
+										value="{{calculateGrandTotal()}}">
+								</div>
+
+							</div>
+
+							<div>
+
+								<button name="enviarFactura" type="submit"
+									class="btn btn-lg btn-info btn-block">
+									<i class="fa fa-check-circle"></i>&nbsp; <span
+										id="payment-button-amount">Enviar</span>
+								</button>
+
+							</div>
+						</form>
 
 					</div>
-
 
 				</div>
 			</div>
