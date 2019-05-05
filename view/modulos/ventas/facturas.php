@@ -4,6 +4,7 @@ session_start();
 
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
 require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/FacturaDAO.class.php');
+require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ProductoDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -20,6 +21,8 @@ $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
 $facturaDAO = new FacturaDAO();
+
+$productoDAO = new ProductoDAO();
 
 if (isset($_POST['enviarFactura'])) {
 
@@ -57,7 +60,7 @@ if (isset($_POST['enviarFactura'])) {
 <link rel="stylesheet" type="text/css" href="../../css/style.css">
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
-<script type="text/javascript" src="../../js/mainAngular.js"></script>
+<script type="text/javascript" src="http://localhost/erpbienesyservicios/controller/mainAngular.js"></script>
 
 <!-- Title Page-->
 <title>Dashboard</title>
@@ -257,7 +260,7 @@ if (isset($_POST['enviarFactura'])) {
 
 						</div>
 
-						<form action="#" method="post" >
+						<form action="#" method="post">
 
 							<div class="row infos">
 
@@ -306,8 +309,21 @@ if (isset($_POST['enviarFactura'])) {
 										<a href ng-click="removeItem(item)" class="btn btn-danger">[X]</a>
 									</div>
 
-									<div class="col-xs-5 input-container">
-										<input ng-model="item.description" placeholder="Description" />
+									<div class="col-xs-5 select-container">
+										<select id='ins_1' ng-model="item.description" name="ins_1" style="width: 100%">
+                                                <?php
+
+                                                $productos = $productoDAO->listarProductos();
+                                                $productos2 = array();
+
+                                                for ($i = 0; $i < sizeof($productos); $i ++) {
+                                                    $productos2[]= ["codigo" => $productos[$i]->getCodigo(),"valor" =>$productos[$i]->getValor() ];
+                                                    echo "<option value='" . $productos[$i]->getCodigo() . "'>" . $productos[$i]->getNombre() . "</option>";
+                                                }
+
+                                                ?>
+											</select> 
+											
 									</div>
 
 									<div class="col-xs-2 input-container">
@@ -315,9 +331,8 @@ if (isset($_POST['enviarFactura'])) {
 											ng-validate="integer" placeholder="Cantidad" />
 									</div>
 
-									<div class="col-xs-2 input-container">
-										<input ng-model="item.cost" value="0.00" ng-required
-											ng-validate="number" size="6" placeholder="Cost" />
+									<div class="col-xs-2 input-container">								
+									{{traerValor(item.description, <?php echo htmlspecialchars(json_encode($productos2)); ?>)}}
 									</div>
 
 									<div class="col-xs-2 text-right input-container">{{item.cost *
