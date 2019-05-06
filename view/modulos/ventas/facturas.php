@@ -36,7 +36,8 @@ if (isset($_POST['enviarFactura'])) {
     $iva = $_POST['iva'];
     $total = $_POST['total'];
 
-    $facturaDAO->save($nomCliente, $ccNit, $direccion, $telefono, $medio, $subtotal, $iva, $total);
+//     $facturaDAO->save($nomCliente, $ccNit, $direccion, $telefono, $medio, $subtotal, $iva, $total);
+   
 }
 
 ?>
@@ -372,7 +373,7 @@ if (isset($_POST['enviarFactura'])) {
 							<div>
 
 								<button name="enviarFactura" type="submit"
-									class="btn btn-lg btn-info btn-block">
+									class="btn btn-lg btn-info btn-block" ng-click="entregar()">
 									<i class="fa fa-check-circle"></i>&nbsp; <span
 										id="payment-button-amount">Enviar</span>
 								</button>

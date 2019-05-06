@@ -271,7 +271,7 @@ if (isset($_POST['eliminarProducto'])) {
                                                 <?php
 
                                                 $productos = $productoDAO->listarProductos();
-                                              
+
                                                 for ($i = 0; $i < sizeof($productos); $i ++) {
                                                     echo "<option value='" . $productos[$i]->getCodigo() . "'>" . $productos[$i]->getNombre() . "</option>";
                                                 }

@@ -99,5 +99,14 @@ fecha date,
 FOREIGN KEY (cod_m_pago) REFERENCES M_PAGO(cod_m_pago)
 );
 
+CREATE TABLE ITEM_FACTURA(
+cod_factura int,
+cod_producto int,
+cantidad_item int,
+FOREIGN KEY (cod_factura) REFERENCES FACTURA(cod_factura),
+FOREIGN KEY (cod_producto) REFERENCES PRODUCTO(cod_producto),
+PRIMARY KEY (cod_factura, cod_producto)
+);
+
 
 

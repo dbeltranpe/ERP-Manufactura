@@ -81,8 +81,23 @@ angular.module('invoicing', [])
 		$scope.invoice.items.splice($scope.invoice.items.indexOf(item), 1);
 	};
 
+	$scope.entregar = function(){
+		alert('entro');
+		
+		$http.post('facturas-guardar.php', JSON.stringify($scope.invoice.items))
+		.success(
+				function(data){
+
+					alert(data);
+
+				}
+		);
+
+	};
+
 	// Calculates the sub total of the invoice
 	$scope.invoiceSubTotal = function() {
+//		console.log($scope.invoice.items);
 		var total = 0.00;
 		angular.forEach($scope.invoice.items, function(item, key){
 			total += (item.qty * item.cost);
@@ -114,7 +129,7 @@ angular.module('invoicing', [])
 	$scope.traerValor = function(pCod, pArray){
 		var end = false;
 		var costo = null;
-		
+
 		for (var i = 0; i < pArray.length && end==false; i++) 
 		{
 			if(costo == null && pArray[i]['codigo']==pCod)
@@ -124,7 +139,7 @@ angular.module('invoicing', [])
 			}
 
 		}
-		
+
 		this.item.cost = costo;
 		return costo;
 	};
