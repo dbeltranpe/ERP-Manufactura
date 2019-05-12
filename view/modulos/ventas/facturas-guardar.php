@@ -11,17 +11,19 @@ $direccion = $data[1]['direccion'];
 $telefono = $data[1]['telefono'];
 $medio = $data[1]['medio'];
 
-// $subtotal = $_POST['subtotal'];
-// $iva = $_POST['iva'];
-// $total = $_POST['total'];
+$subtotal = $data[2]['subtotal'];
+$iva = $data[2]['iva'];
+$total = $data[2]['total'];
 
 $facturaDAO = new FacturaDAO();
-$facturaDAO->save($nomCliente, $ccNit, $direccion, $telefono, $medio, 0, 0, 0);
+$facturaDAO->save($nomCliente, $ccNit, $direccion, $telefono, $medio, $subtotal, $iva, $total);
 
-for ($i = 0; $i < sizeof($data); $i++) 
+$codFactura = $facturaDAO->getCodFactura($nomCliente, $ccNit, $direccion, $telefono, $medio, $subtotal, $iva, $total);
+
+for ($i = 0; $i < sizeof($data[0]); $i++) 
 {
     $itemDAO = new ItemFacturaDAO();
-    $itemDAO->save($data[0][$i]['description'], $data[0][$i]['description'], $data[0][$i]['qty']);
+    $itemDAO->save($codFactura, $data[0][$i]['description'], $data[0][$i]['qty']);
     
 } 
 

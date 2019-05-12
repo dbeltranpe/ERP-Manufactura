@@ -20,7 +20,7 @@ class ItemFacturaDAO implements iItemFacturaDAO
         $db = new Database();
         $db->connect();
         
-        $query = "INSERT INTO ITEM_FACTURA VALUES(4," . $cod_producto . "," . $cantidad . ");" ;
+        $query = "INSERT INTO ITEM_FACTURA VALUES(".$cod_factura."," . $cod_producto . "," . $cantidad . ");" ;
         $db->doQuery($query, INSERT_QUERY);
         
         $db->disconnect();

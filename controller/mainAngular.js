@@ -88,17 +88,22 @@ angular.module('invoicing', [])
 	};
 
 	$scope.entregar = function(){
-		alert('entro');
+		
+		fact = {
+			subtotal: $scope.invoiceSubTotal(),
+			iva: $scope.calculateTax(),
+			total: $scope.calculateGrandTotal()
+		};
 
-		$http.post('facturas-guardar.php', JSON.stringify([$scope.invoice.items,$scope.invoice.cliente_info]))
+		$http.post('facturas-guardar.php', JSON.stringify([$scope.invoice.items,$scope.invoice.cliente_info,fact]))
 		.success(
 				function(data){
-
-					console.log(data);
-					alert('hola')
-
+//					console.log(data);
 				}
 		);
+		
+		alert('Se ha registrado la factura');
+		$scope.clearLocalStorage();
 
 	};
 
@@ -125,11 +130,11 @@ angular.module('invoicing', [])
 
 	// Clears the local storage
 	$scope.clearLocalStorage = function() {
-		var confirmClear = confirm('Are you sure you would like to clear the invoice?');
-		if(confirmClear) {
+//		var confirmClear = confirm('Are you sure you would like to clear the invoice?');
+//		if(confirmClear) {
 			LocalStorage.clear();
 			setInvoice(DEFAULT_INVOICE);
-		}
+//		}
 	};
 
 

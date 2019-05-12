@@ -27,7 +27,23 @@ class FacturaDAO implements iFacturaDAO
 
         $db->disconnect();
     }
-
+    
+    public function getCodFactura($pNombre, $pCCNIT, $pDireccion, $pTelefono, $pMedio, $pSubtotal, $pIva, $pTotal)
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT cod_factura FROM FACTURA WHERE nom_cli_factura='". $pNombre ."' AND cc_nit_factura='". $pCCNIT ."' AND dir_factura='". $pDireccion ."' AND tel_factura='". $pTelefono ."' AND cod_m_pago=". $pMedio ." AND subtotal=". $pSubtotal ." AND iva=". $pIva ." AND total=". $pTotal ." ORDER BY cod_factura desc;";
+        $db->doQuery($query, SELECT_QUERY);
+        
+        $trArr = $db->results[0];
+        $codigo = $trArr['cod_factura'];
+        
+        $db->disconnect();
+        
+        return $codigo;
+    }
+    
     public function getFactura($codigo)
     {}
 

@@ -21,26 +21,6 @@ $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 $productoDAO = new ProductoDAO();
 
-// $facturaDAO = new FacturaDAO();
-
-
-
-// if (isset($_POST['enviarFactura'])) {
-
-//     $nomCliente = $_POST['nomCliente'];
-//     $ccNit = $_POST['ccNit'];
-//     $direccion = $_POST['direccion'];
-//     $telefono = $_POST['telefono'];
-//     $medio = $_POST['medio'];
-
-//     $subtotal = $_POST['subtotal'];
-//     $iva = $_POST['iva'];
-//     $total = $_POST['total'];
-
-// //     $facturaDAO->save($nomCliente, $ccNit, $direccion, $telefono, $medio, $subtotal, $iva, $total);
-
-   
-// }
 
 ?>
 
@@ -64,6 +44,8 @@ $productoDAO = new ProductoDAO();
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
 <script type="text/javascript" src="http://localhost/erpbienesyservicios/controller/mainAngular.js"></script>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
 <!-- Title Page-->
 <title>Dashboard</title>
@@ -253,13 +235,13 @@ $productoDAO = new ProductoDAO();
 						</div>
 						<div class="row branding">
 
-							<div class="col-xs-6">
+<!-- 							<div class="col-xs-6"> -->
 
-								<div class="invoice-number-container">
-									<label for="invoice-number">Factura #</label>
-								</div>
+<!-- 								<div class="invoice-number-container"> -->
+<!-- 									<label for="invoice-number">Factura #</label> -->
+<!-- 								</div> -->
 
-							</div>
+<!-- 							</div> -->
 
 						</div>
 
