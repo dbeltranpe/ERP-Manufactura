@@ -1,7 +1,7 @@
 <?php
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/database.class.php');
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/model/ItemFactura.class.php');
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/interfaces/iItemFacturaDAO.interface.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/model/ItemFactura.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/interfaces/iItemFacturaDAO.interface.php');
 
 /**
  * Clase que representa el Data Access Object (DAO) de un item de una factura
@@ -20,7 +20,7 @@ class ItemFacturaDAO implements iItemFacturaDAO
         $db = new Database();
         $db->connect();
         
-        $query = "INSERT INTO ITEM_FACTURA VALUES(1," . $cod_producto . "," . $cantidad . ");" ;
+        $query = "INSERT INTO ITEM_FACTURA VALUES(4," . $cod_producto . "," . $cantidad . ");" ;
         $db->doQuery($query, INSERT_QUERY);
         
         $db->disconnect();

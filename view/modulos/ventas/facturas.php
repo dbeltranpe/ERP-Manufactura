@@ -2,9 +2,9 @@
 session_set_cookie_params(0);
 session_start();
 
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/FacturaDAO.class.php');
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ProductoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+// require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/FacturaDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ProductoDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -19,26 +19,28 @@ if (isset($_POST['logout'])) {
 
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
-
-$facturaDAO = new FacturaDAO();
-
 $productoDAO = new ProductoDAO();
 
-if (isset($_POST['enviarFactura'])) {
+// $facturaDAO = new FacturaDAO();
 
-    $nomCliente = $_POST['nomCliente'];
-    $ccNit = $_POST['ccNit'];
-    $direccion = $_POST['direccion'];
-    $telefono = $_POST['telefono'];
-    $medio = $_POST['medio'];
 
-    $subtotal = $_POST['subtotal'];
-    $iva = $_POST['iva'];
-    $total = $_POST['total'];
 
-//     $facturaDAO->save($nomCliente, $ccNit, $direccion, $telefono, $medio, $subtotal, $iva, $total);
+// if (isset($_POST['enviarFactura'])) {
+
+//     $nomCliente = $_POST['nomCliente'];
+//     $ccNit = $_POST['ccNit'];
+//     $direccion = $_POST['direccion'];
+//     $telefono = $_POST['telefono'];
+//     $medio = $_POST['medio'];
+
+//     $subtotal = $_POST['subtotal'];
+//     $iva = $_POST['iva'];
+//     $total = $_POST['total'];
+
+// //     $facturaDAO->save($nomCliente, $ccNit, $direccion, $telefono, $medio, $subtotal, $iva, $total);
+
    
-}
+// }
 
 ?>
 
@@ -99,7 +101,7 @@ if (isset($_POST['enviarFactura'])) {
 <link href="../../css/theme.css" rel="stylesheet" media="all">
 
 </head>
-<body ng-app="invoicing" ng-controller="InvoiceCtrl">
+<body id="InvoiceCtrl" ng-app="invoicing" ng-controller="InvoiceCtrl">
 	<div class="page-wrapper">
 
 		<!-- MENU SIDEBAR-->
@@ -267,25 +269,25 @@ if (isset($_POST['enviarFactura'])) {
 
 								<div class="col-xs-6">
 									<div class="input-container">
-										<input type="text" placeholder="Nombre Cliente"
+										<input type="text" ng-model="invoice.cliente_info.nomCliente" placeholder="Nombre Cliente"
 											name="nomCliente" />
 									</div>
 									<div class="input-container">
-										<input type="text" placeholder="C.C o NIT" name="ccNit" />
+										<input type="text" ng-model="invoice.cliente_info.ccNit" placeholder="C.C o NIT" name="ccNit" />
 									</div>
 								</div>
 
 								<div class="col-xs-6 right">
 									<div class="input-container">
-										<input type="text" placeholder="Direcci&oacute;n"
+										<input type="text" ng-model="invoice.cliente_info.direccion" placeholder="Direcci&oacute;n"
 											name="direccion" />
 									</div>
 									<div class="input-container">
-										<input type="text"
+										<input type="text" ng-model="invoice.cliente_info.telefono"
 											placeholder="N&uacute;mero Telef&oacute;nico" name="telefono" />
 									</div>
 									<div class="input-container">
-										<input type="text" placeholder="Medio de Pago" name="medio" />
+										<input type="text" ng-model="invoice.cliente_info.medio" placeholder="Medio de Pago" name="medio" />
 									</div>
 									<br>
 								</div>

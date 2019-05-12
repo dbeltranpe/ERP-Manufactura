@@ -1,7 +1,8 @@
 <?php
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/database.class.php');
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/model/Factura.class.php');
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/interfaces/iFacturaDAO.interface.php');
+// Tener cuidado porque si se desdocumenta esto entonces al guardar la factura habra error
+// require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/model/Factura.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/interfaces/iFacturaDAO.interface.php');
 
 /**
  * Clase que representa el Data Access Object (DAO) de una factura

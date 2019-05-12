@@ -7,7 +7,13 @@ angular.module('invoicing', [])
 .constant('DEFAULT_INVOICE', {
 	tax: 13.00,
 	invoice_number: 10,
-
+	cliente_info: {
+		nomCliente: '',
+		ccNit: '',
+		direccion: '',
+		telefono: '',
+		medio: ''
+	},
 	items:[
 
 		]
@@ -83,12 +89,13 @@ angular.module('invoicing', [])
 
 	$scope.entregar = function(){
 		alert('entro');
-		
-		$http.post('facturas-guardar.php', JSON.stringify($scope.invoice.items))
+
+		$http.post('facturas-guardar.php', JSON.stringify([$scope.invoice.items,$scope.invoice.cliente_info]))
 		.success(
 				function(data){
 
-					alert(data);
+					console.log(data);
+					alert('hola')
 
 				}
 		);
