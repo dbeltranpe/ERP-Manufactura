@@ -15,11 +15,11 @@ interface iItemFacturaDAO
     
     public function save($cod_factura, $cod_producto, $cantidad);
     
-    public function getFactura($codigo);
+    public function getItemFactura($codigo);
     
-    public function updateFactura($codigo);
+    public function updateItemFactura($codigo);
     
-    public function deleteFactura($codigo);
+    public function deleteItemFactura($codigo);
     
 }
 

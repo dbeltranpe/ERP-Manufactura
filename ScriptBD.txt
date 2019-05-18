@@ -108,5 +108,15 @@ FOREIGN KEY (cod_producto) REFERENCES PRODUCTO(cod_producto),
 PRIMARY KEY (cod_factura, cod_producto)
 );
 
+CREATE VIEW AS
+SELECT `cod_factura`,`nom_cli_factura`,`cc_nit_factura`,`dir_factura`,`tel_factura`,`nom_m_pago`,`subtotal`,`iva`,`total`,`fecha`
+FROM factura, m_pago
+WHERE factura.cod_m_pago = m_pago.cod_m_pago;
+
+CREATE VIEW v_item_factura AS
+SELECT cod_factura codigo, nom_producto producto, cantidad_item cantidad, vl_unitario_producto costo, (cantidad_item*vl_unitario_producto) total
+FROM item_factura, producto
+WHERE item_factura.cod_producto = producto.cod_producto
+ORDER BY cod_factura asc;
 
 

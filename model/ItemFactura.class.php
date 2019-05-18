@@ -9,14 +9,14 @@
  * Profesor Ricardo Camargo Lemos <br>
  * Proyecto E.R.P Bienes y Servicios de Manufactura</b> </center>
  */
-class Factura
+class ItemFactura
 {
     
     private $codigo_factura;
     private $codigo_producto;
     private $cantidad;
     
-    public function Factura($codigo_factura, $codigo_producto, $cantidad)
+    public function ItemFactura($codigo_factura, $codigo_producto, $cantidad)
     {
         $this->codigo_factura    = $codigo_factura;
         $this->codigo_producto = $codigo_producto;

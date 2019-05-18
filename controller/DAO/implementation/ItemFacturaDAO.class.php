@@ -25,15 +25,38 @@ class ItemFacturaDAO implements iItemFacturaDAO
         
         $db->disconnect();
     }
-
-    public function getFactura($codigo)
+    public function getItemFactura($codigo)
     {}
 
-    public function deleteFactura($codigo)
+    public function updateItemFactura($codigo)
     {}
 
-    public function updateFactura($codigo)
+    public function deleteItemFactura($codigo)
     {}
+    
+    public function listarItemsFactura()
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM V_ITEM_FACTURA;";
+        $db->doQuery($query, SELECT_QUERY);
+        $trArr = $db->results;
+        
+        $items = array();
+        
+        for ($i = 0; $i < sizeof($trArr); $i++)
+        {
+//             echo print_r($trArr[$i]);
+            $items[]= ['codigo'=> $trArr[$i]['codigo'], 'producto'=> $trArr[$i]['producto'], 'cantidad'=> $trArr[$i]['cantidad'],'costo'=> $trArr[$i]['costo'], 'total'=> $trArr[$i]['total'] ];
+        }
+        
+        $db->disconnect();
+        
+        return $items;
+    }
+
+
 
 
 

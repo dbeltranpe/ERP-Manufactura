@@ -2,7 +2,8 @@
 session_set_cookie_params(0);
 session_start();
 
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ItemFacturaDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -35,6 +36,27 @@ $trabajador->nombre;
 
 <!-- Title Page-->
 <title>Dashboard</title>
+
+<!-- Datatable -->
+<link rel="stylesheet" type="text/css"
+	href="https://cdn.datatables.net/1.10.19/css/jquery.dataTables.min.css">
+<style type="text/css" class="init">
+td.details-control {
+	background: url('../../images/details_open.png') no-repeat center center;
+	cursor: pointer;
+}
+
+tr.details td.details-control {
+	background: url('../../images/details_close.png') no-repeat center
+		center;
+}
+</style>
+<!-- <script type="text/javascript" language="javascript" -->
+<!-- 	src="https://code.jquery.com/jquery-3.3.1.js"></script> -->
+<!-- <script type="text/javascript" language="javascript" -->
+<!-- 	src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script> -->
+
+
 
 <!-- Fontfaces CSS-->
 <link href="../../css/font-face.css" rel="stylesheet" media="all">
@@ -81,61 +103,54 @@ $trabajador->nombre;
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-						<?php 
-						
-						if($_SESSION["rol"]==1)
-						{
-						    echo '<li><a href="../../principal/index.php"> <i';
-						    echo ' class="fas fa-tachometer-alt"></i>Dashboard</a></li>';
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==2 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4)
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-home"></i>Inventario</a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../inventario/reporte-inventario.php">Reportes</a></li>';
-						    
-						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
-						    {
-						        echo '<li><a href="../inventario/insumos-inventario.php">Insumos</a></li>';
-						        echo '<li><a href="../inventario/productos-inventario.php">Producto Terminado</a></li>';
-						    }
-						    
-						    echo'</ul></li>';
-			
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 )
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-truck"></i>Producci&oacute;n </a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>';
-						    echo '<li><a href="../produccion/trazabilidad-produccion.php">Ver Trazabilidad</a></li>';
-						    echo '</ul></li>';
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 || $_SESSION["rol"]==5 )
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-credit-card"></i>Ventas</a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../ventas/facturas.php">Facturas</a></li>';
-						    echo '<li><a href="#">Estado de Ventas</a></li>';
-						    echo '</ul></li>';
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==5)
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-dollar"></i>Finanzas</a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../finanzas/cuentas-finanzas.php">Cuentas</a></li>';
-						    echo '<li><a href="../finanzas/analisis-cuentas.php">An&aacute;lisis</a></li>';
-						    echo ' </ul></li>';
-						}	
-						?>
+						<?php
+
+    if ($_SESSION["rol"] == 1) {
+        echo '<li><a href="../../principal/index.php"> <i';
+        echo ' class="fas fa-tachometer-alt"></i>Dashboard</a></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 2 || $_SESSION["rol"] == 3 || $_SESSION["rol"] == 4) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-home"></i>Inventario</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../inventario/reporte-inventario.php">Reportes</a></li>';
+
+        if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 2) {
+            echo '<li><a href="../inventario/insumos-inventario.php">Insumos</a></li>';
+            echo '<li><a href="../inventario/productos-inventario.php">Producto Terminado</a></li>';
+        }
+
+        echo '</ul></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 3 || $_SESSION["rol"] == 4) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-truck"></i>Producci&oacute;n </a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>';
+        echo '<li><a href="../produccion/trazabilidad-produccion.php">Ver Trazabilidad</a></li>';
+        echo '</ul></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 3 || $_SESSION["rol"] == 4 || $_SESSION["rol"] == 5) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-credit-card"></i>Ventas</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../ventas/facturas.php">Facturas</a></li>';
+        echo '<li><a href="#">Estado de Ventas</a></li>';
+        echo '</ul></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 5) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-dollar"></i>Finanzas</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../finanzas/cuentas-finanzas.php">Cuentas</a></li>';
+        echo '<li><a href="../finanzas/analisis-cuentas.php">An&aacute;lisis</a></li>';
+        echo ' </ul></li>';
+    }
+    ?>
 					</ul>
 				</nav>
 			</div>
@@ -230,169 +245,51 @@ $trabajador->nombre;
 			<!-- MAIN CONTENT-->
 			<div class="main-content">
 				<div class="container-fluid">
-					<div class="row">
-						
-						<div class="col" style="width: 100%">
-							<section class="card">
-								<div class="card-header" align="center"><b>Facturas Pagadas</b></div>
-								<div class="card-body" align="center">
-									<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">1500</label>
-										</div>
-								</div>
-							</section>
-						</div>
-						<div class="col" style="width: 100%">
-							<section class="card">
-								<div class="card-header" align="center"><b>Facturas en proceso de pago</b></div>
-								<div class="card-body" align="center">
-									<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">100</label>
-										</div>
-								</div>
-							</section>
-						</div>
-						
-						<div class="col" style="width: 100%">
-							<section class="card">
-								<div class="card-header" align="center"><b>Total Ganancias</b></div>
-								<div class="card-body" align="center">
-									<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">3'000.000</label>
-										</div>
-								</div>
-							</section>
-						</div>
-					</div>
 
-					<div class="row">
-						<div class="col">
-							<div class="table-responsive table--no-card m-b-30">
-								<div style="align-self: center;">
-									<h3 class="text-center title-2"><b>Facturas Pagadas</b></h3>
-								</div>
-								<table
-									class="table table-borderless table-striped table-earning">
-									<thead>
-										<tr>
-											<th>N&uacute;mero de factura</th>
-											<th>Cliente</th>
-											<th>Producto</th>
-											<th>Cantidad</th>
-											<th>Fecha de factura</th>
-											<th>Total</th>
-											<th>Estado</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>2</td>
-											<td>Surtimax</td>
-											<td>Ponque Ramo</td>
-											<td>500</td>
-											<td>2019-03-22 10:00</td>
-											<td>300000</td>
-											<td>Pagado</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>Alqur&iacute;a</td>
-											<td>Esferos</td>
-											<td>100</td>
-											<td>2019-10-22 14:30</td>
-											<td>25000</td>
-											<td>Pagado</td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>Brisa</td>
-											<td>Almohadas</td>
-											<td>60</td>
-											<td>2019-03-22 10:00</td>
-											<td>1000000</td>
-											<td>Pagado</td>
-										</tr>
-										<tr>
-											<td>6</td>
-											<td>Electr&oacute;nica S.A.S</td>
-											<td>Resistencias</td>
-											<td>200000</td>
-											<td>2019-03-22 10:00</td>
-											<td>500000</td>
-											<td>Pagado</td>
-										</tr>
-										<tr>
-											<td>8</td>
-											<td>Luis Salvador</td>
-											<td>Billeteras</td>
-											<td>5</td>
-											<td>2019-03-22 10:00</td>
-											<td>100000</td>
-											<td>Pagado</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
+					<div class="row" style="">
+						<div class="column"
+							style="width: 90%; margin: 0 auto;">
+							<table id="example" class="display"
+								style="width: 100%; margin: 0 auto;">
+								<thead>
+									<tr>
+										<th></th>
+										<th style="background: white;">C&oacute;digo Factura</th>
+										<th style="background: white;">Nombre Cliente</th>
+										<th style="background: white;">CC-NIT</th>
+										<th style="background: white;">Direcci&oacute;n</th>
+										<th style="background: white;">Tel&eacute;fono</th>
+										<th style="background: white;">Medio de Pago</th>
+										<th style="background: white;">Subtotal</th>
+										<th style="background: white;">I.V.A</th>
+										<th style="background: white;">Total</th>
+										<th style="background: white;">Fecha</th>
+									</tr>
+								</thead>
+<!-- 								<tfoot> -->
+<!-- 									<tr> -->
+<!-- 										<th></th> -->
+<!-- 										<th>C&oacute;digo Factura</th> -->
+<!-- 										<th>Nombre Cliente</th> -->
+<!-- 										<th>CC-NIT</th> -->
+<!-- 										<th>Direcci&oacute;n</th> -->
+<!-- 										<th>Tel&eacute;fono</th> -->
+<!-- 										<th>Medio de Pago</th> -->
+<!-- 										<th>Subtotal</th> -->
+<!-- 										<th>I.V.A</th> -->
+<!-- 										<th>Total</th> -->
+<!-- 										<th>Fecha</th> -->
+<!-- 									</tr> -->
+<!-- 								</tfoot> -->
+							</table>
 						</div>
+
+
 
 					</div>
-					
-					<div class="row">
-						<div class="col">
-							<div class="table-responsive table--no-card m-b-30">
-								<div style="align-self: center;">
-									<h3 class="text-center title-2"><b>Facturas En Proceso de pago</b></h3>
-								</div>
-								<table
-									class="table table-borderless table-striped table-earning">
-									<thead>
-										<tr>
-											<th>N&uacute;mero de factura</th>
-											<th>Cliente</th>
-											<th>Producto</th>
-											<th>Cantidad</th>
-											<th>Fecha de factura</th>
-											<th>Total</th>
-											<th>Estado</th>
-										</tr>
-									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td>Roberto</td>
-											<td>Tornillos</td>
-											<td>1000</td>
-											<td>2019-05-05 08:00</td>
-											<td>5000</td>
-											<td>En proceso de pago</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>Ramon</td>
-											<td>Carcasas Celulares</td>
-											<td>2</td>
-											<td>2019-08-10 12:47</td>
-											<td>150000</td>
-											<td>En porceso de pago</td>
-										</tr>
-										<tr>
-											<td>7</td>
-											<td>Movilizador Andino</td>
-											<td>Barras de Acero</td>
-											<td>100</td>
-											<td>2019-03-22 10:00</td>
-											<td>2500000</td>
-											<td>En proceos de pago</td>
-										</tr>
-									</tbody>
-								</table>
-							</div>
-						</div>
-
-					</div>
-
 
 				</div>
+
 			</div>
 			<!-- END MAIN CONTENT-->
 
@@ -405,6 +302,136 @@ $trabajador->nombre;
 
 	<!-- Jquery JS-->
 	<script src="../../vendor/jquery-3.2.1.min.js"></script>
+
+	<script type="text/javascript" language="javascript"
+		src="https://cdn.datatables.net/1.10.19/js/jquery.dataTables.min.js"></script>
+
+
+	<script type="text/javascript" class="init">
+
+	<?php
+	
+	$itemFacturaDAO = new ItemFacturaDAO();
+	$items = $itemFacturaDAO->listarItemsFactura();
+	
+	?>
+	
+function format ( d ) 
+{
+    var obj = <?php echo json_encode($items); ?>;
+    itemsFact = [];
+
+    tabla = "<table> <th>Producto</th> <th>Cantidad</th> <th>Costo</th> <th>Total</th>"; 
+    for (var i = 0; i < obj.length; i++) 
+    {
+         if(obj[i]['codigo']==d['cod_factura'])
+         {
+             tabla += " <tr>";
+             tabla += " <td>" + obj[i]['producto'] + " </td>";
+             tabla += " <td>" + obj[i]['cantidad'] + " </td>";
+             tabla += " <td>" + obj[i]['costo'] + " </td>";
+             tabla += " <td>" + obj[i]['total'] + " </td>";
+
+             tabla += " </tr>";
+             itemsFact.push(obj[i]);
+         }
+	}
+
+	tabla += " </table>";
+	
+	return tabla;
+}
+
+
+$(document).ready(function() {
+	var dt = $('#example').DataTable( {
+		
+
+		"language": {
+			"sProcessing":     "Procesando...",
+		    "sLengthMenu":     "Mostrar _MENU_ registros",
+		    "sZeroRecords":    "No se encontraron resultados",
+		    "sEmptyTable":     "Ningún dato disponible en esta tabla",
+		    "sInfo":           "Mostrando registros del _START_ al _END_ de un total de _TOTAL_ registros",
+		    "sInfoEmpty":      "Mostrando registros del 0 al 0 de un total de 0 registros",
+		    "sInfoFiltered":   "(filtrado de un total de _MAX_ registros)",
+		    "sInfoPostFix":    "",
+		    "sSearch":         "Buscar:",
+		    "sUrl":            "",
+		    "sInfoThousands":  ",",
+		    "sLoadingRecords": "Cargando...",
+		    "oPaginate": {
+		        "sFirst":    "Primero",
+		        "sLast":     "Último",
+		        "sNext":     "Siguiente",
+		        "sPrevious": "Anterior"
+		    },
+		    "oAria": {
+		        "sSortAscending":  ": Activar para ordenar la columna de manera ascendente",
+		        "sSortDescending": ": Activar para ordenar la columna de manera descendente"
+		    }
+			},
+		"processing": true,
+		"serverSide": true,
+		"ajax": "ids-objects.php",
+		"columns": [ 
+			{
+				"class":          "details-control",
+				"orderable":      false,
+				"data":           null,
+				"defaultContent": ""
+			},
+			{ "data": "cod_factura" },
+			{ "data": "nom_cli_factura" },
+			{ "data": "cc_nit_factura" },
+			{ "data": "dir_factura" },
+			{ "data": "tel_factura" },
+			{ "data": "nom_m_pago" },
+			{ "data": "subtotal" },
+			{ "data": "iva" },
+			{ "data": "total" },
+			{ "data": "fecha" }
+		],
+		"order": [[1, 'asc']]
+	} );
+
+	// Array to track the ids of the details displayed rows
+	var detailRows = [];
+
+	$('#example tbody').on( 'click', 'tr td.details-control', function () {
+		var tr = $(this).closest('tr');
+		var row = dt.row( tr );
+		var idx = $.inArray( tr.attr('id'), detailRows );
+
+		if ( row.child.isShown() ) {
+			tr.removeClass( 'details' );
+			row.child.hide();
+
+			// Remove from the 'open' array
+			detailRows.splice( idx, 1 );
+		}
+		else {
+			tr.addClass( 'details' );
+			row.child( format( row.data() ) ).show();
+
+			// Add to the 'open' array
+			if ( idx === -1 ) {
+				detailRows.push( tr.attr('id') );
+			}
+		}
+	} );
+
+	// On each draw, loop over the `detailRows` array and show any child rows
+	dt.on( 'draw', function () {
+		$.each( detailRows, function ( i, id ) {
+			$('#'+id+' td.details-control').trigger( 'click' );
+		} );
+	} );
+} );
+
+	</script>
+
+
 	<!-- Bootstrap JS-->
 	<script src="../../vendor/bootstrap-4.1/popper.min.js"></script>
 	<script src="../../vendor/bootstrap-4.1/bootstrap.min.js"></script>
