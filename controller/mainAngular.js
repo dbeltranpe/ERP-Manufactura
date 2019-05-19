@@ -98,12 +98,15 @@ angular.module('invoicing', [])
 		$http.post('facturas-guardar.php', JSON.stringify([$scope.invoice.items,$scope.invoice.cliente_info,fact]))
 		.success(
 				function(data){
-//					console.log(data);
+//					alert('a');
+					alert(data);
+//					alert('b');
 				}
 		);
 		
-		alert('Se ha registrado la factura');
+//		alert('Se ha registrado la factura');
 		$scope.clearLocalStorage();
+//		alert('Se ha registrado la factura');
 
 	};
 

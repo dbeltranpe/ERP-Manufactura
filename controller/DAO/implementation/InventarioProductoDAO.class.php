@@ -106,6 +106,33 @@ class InventarioProductoDAO implements iInventarioProductoDAO
         
         return $productos;
     }
+    
+    
+    public function listarInventarioPorNombre()
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM v_prod_qty;";
+        $db->doQuery($query, SELECT_QUERY);
+        $trArr = $db->results;
+        
+        $productos = array();
+        
+        for ($i = 0; $i < sizeof($trArr); $i++)
+        {
+            $productos[] = [
+                "cod_producto" => $trArr[$i]['cod_producto'],
+                "nombre" => $trArr[$i]['nom_producto'],
+                "cantidad" => $trArr[$i]['cantidad']
+            ];
+        }
+        
+        $db->disconnect();
+        
+        return $productos;
+        
+    }
 
    
 }

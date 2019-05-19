@@ -266,21 +266,6 @@ tr.details td.details-control {
 										<th style="background: white;">Fecha</th>
 									</tr>
 								</thead>
-<!-- 								<tfoot> -->
-<!-- 									<tr> -->
-<!-- 										<th></th> -->
-<!-- 										<th>C&oacute;digo Factura</th> -->
-<!-- 										<th>Nombre Cliente</th> -->
-<!-- 										<th>CC-NIT</th> -->
-<!-- 										<th>Direcci&oacute;n</th> -->
-<!-- 										<th>Tel&eacute;fono</th> -->
-<!-- 										<th>Medio de Pago</th> -->
-<!-- 										<th>Subtotal</th> -->
-<!-- 										<th>I.V.A</th> -->
-<!-- 										<th>Total</th> -->
-<!-- 										<th>Fecha</th> -->
-<!-- 									</tr> -->
-<!-- 								</tfoot> -->
 							</table>
 						</div>
 

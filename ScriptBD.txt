@@ -119,4 +119,9 @@ FROM item_factura, producto
 WHERE item_factura.cod_producto = producto.cod_producto
 ORDER BY cod_factura asc;
 
+CREATE VIEW v_prod_qty AS
+SELECT producto.cod_producto, nom_producto, cantidad
+FROM producto, inv_producto
+WHERE producto.cod_producto = inv_producto.cod_producto;
+
 

@@ -106,7 +106,6 @@ class InventarioInsumoDAO implements iInventarioInsumoDAO
         
         return $insumos;
     }
-
    
 }
 
