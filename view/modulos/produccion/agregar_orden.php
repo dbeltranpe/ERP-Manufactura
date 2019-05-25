@@ -2,23 +2,92 @@
 session_set_cookie_params(0);
 session_start();
 
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InsumoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/OrdenProduccionDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ItemProductoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ProductoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioProductoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioInsumoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrazabilidadProduccionDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:https://bienesyservicios.webcindario.com/erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:https://bienesyservicios.webcindario.com/erpbienesyservicios/view/principal/login.php");
     exit();
 }
 
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
-$trabajador->nombre;
+$ord_ProduccionDAO = new OrdenProduccionDAO();
+$insumoDAO = new InsumoDAO();
+$itemProdcDAO = new ItemProductoDAO();
+$productoDAO = new ProductoDAO();
+$inv_productoDAO = new InventarioProductoDAO();
+$inv_insumosDAO = new InventarioInsumoDAO();
+$trazabilidad = new TrazabilidadProduccionDAO();
+
+if (isset($_POST['agregarOrden'])) 
+{
+    $nomP = $_POST['nom'];
+    $cantidadP = $_POST['cant1'];
+    $valor_unitario = $_POST['val_u'];
+    $fechaI = $_POST['fi'];
+    $fechaE = $_POST['fe'];
+    $almacen = $_POST['alm'];
+    $estado = 1;
+    
+    $items = $_POST['item_1'];
+    $cantidad_Item = $_POST['cant_item'];
+    
+    $cant_insumos = $inv_insumosDAO->getInventarioInsumo($items);
+    $cant_final = $cant_insumos->getCantidad() - $cantidad_Item;
+    
+    if ($cant_final >= 0)
+    {
+        $exiProducto = $productoDAO->getProducto($nomP);
+        
+        if (sizeof($exiProducto) == 0)
+        {
+            $productoDAO->save($nomP, $valor_unitario, 0.19);
+            
+            $savedProducto = $productoDAO->getProducto($nomP);
+            $inv_productoDAO->save($savedProducto[0]->getCodigo(), $cantidadP);
+        }
+        else
+        {
+            $savedProducto = $productoDAO->getProducto($nomP);
+            $inv_productoDAO->save($savedProducto[0]->getCodigo(), $cantidadP);
+        }
+        
+        $insumo = $insumoDAO->getInsumo($items);
+        $valor_iva_insumos = $insumo->getIva() * $insumo->getValor();
+        $valor_insumos = ($insumo->getValor() * $cantidad_Item) + $valor_iva_insumos;
+        
+        $exiProducto2 = $productoDAO->getProducto($nomP);
+        $valor_iva_productos = $exiProducto2[0]->getIva();
+        $valor_productos = ($exiProducto2[0]->getValor() * $cantidadP) + $valor_iva_productos;
+        
+        $costo_final = $valor_insumos + $valor_productos;
+        
+        $ord_ProduccionDAO->save($nomP, $cantidadP, $fechaI, $fechaE, $costo_final, $almacen, $estado);
+        $inv_insumosDAO->updateInventarioInsumo($items, $cant_final);
+        
+        $codigo = $ord_ProduccionDAO->obtenerCodUltimaFila();
+        $itemProdcDAO->save($codigo, $items, $cantidad_Item);
+        
+        $nomProducc = $ord_ProduccionDAO->getOrdenProduccionByName($nomP);
+        $trazabilidad->save("Agrego Orden", $nomProducc->getCod_orden_produccion());
+        
+    }
+    
+}
 ?>
 
 <!DOCTYPE html>
@@ -229,61 +298,106 @@ $trabajador->nombre;
 
 			<!-- MAIN CONTENT-->
 			<div class="main-content">
-				<div class="container-fluid">
+				<div class="container-fluid" style="width: 95%; align-self: center;">
 
 					<div class="row">
 						<section class="card" style="width: 100%; align-self: center;">
-							<div class="card-body">
+							<div class="card-body" style="width: 100%; align-self: center;">
 								<div class="card-title">
-									<h3 class="text-center title-2">Aspectos Necesarios</h3>
+									<h3 class="text-center title-2">Datos del Producto</h3>
 								</div>
 								<hr>
 								<form action="" method="post" novalidate="novalidate">
-
+									
 									<div class="form-group">
-										<label for="cc-payment" class="control-label mb-1">N&uacute;mero de Orden</label>
-										<input id="cc-pament" name="cc-payment" type="text"
+										<label for="cc-payment" class="control-label mb-1">Nombre del Producto</label>
+										<input id="nom" name="nom" type="text"
 												class="form-control" aria-required="true"
 												aria-invalid="false">
+										
 									</div>
 									
 									<div class="form-group">
 										<label for="cc-payment" class="control-label mb-1">Cantidad</label>
-										<input id="cc-pament" name="cc-payment" type="number"
+										<input id="cant1" name="cant1" type="number"
 												class="form-control" aria-required="true"
 												aria-invalid="false">
 									</div>
 									
 									<div class="form-group">
-										<label for="cc-payment" class="control-label mb-1">Producto a Realizar</label>
-										<input id="cc-pament" name="cc-payment" type="text"
+										<label for="cc-payment" class="control-label mb-1">Valor Unitario</label>
+										<input id="val_u" name="val_u" type="number"
 												class="form-control" aria-required="true"
 												aria-invalid="false">
 									</div>
 									
 									<div class="form-group">
-										<label for="cc-payment" class="control-label mb-1">Fecha de Solicitud</label>
-										<input id="cc-pament" name="cc-payment" type="date"
+									
+									<div style="width:49%; float:left;">
+										<div >
+											<label for="cc-payment" class="control-label mb-1">Materiales a usar</label>
+										</div>
+										
+										<div class="form-group">
+											<select id='item_1' name="item_1" class=" form-control">
+                                       	 	<?php
+    
+                                                $insumos = $insumoDAO->listarInsumos();
+
+                                                for ($i = 0; $i < sizeof($insumos); $i ++)
+                                                {
+                                                    echo "<option value='" .$insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
+                                                }
+
+                                            ?>                                 
+    										</select>
+    									</div>
+									</div>
+									
+									<div style="width:49%; float:right;">
+										<div >
+											<label for="cc-payment" class="control-label mb-1">Cantidad Total</label>
+										</div>
+										
+										<div class="form-group">
+										<input id="cant_item" name="cant_item" type="number"
+												class="form-control" aria-required="true"
+												aria-invalid="false">	
+										</div>	
+									</div>
+																		
+									</div>
+									
+									<div class="form-group">
+										<label for="cc-payment" class="control-label mb-1">Fecha de Inicio</label>
+										<input id="fi" name="fi" type="date"
 												class="form-control" aria-required="true"
 												aria-invalid="false">
 									</div>
 									
 									<div class="form-group">
 										<label for="cc-payment" class="control-label mb-1">Fecha de Entrega</label>
-										<input id="cc-pament" name="cc-payment" type="date"
+										<input id="fe" name="fe" type="date"
 												class="form-control" aria-required="true"
 												aria-invalid="false">
 									</div>
 									
 									<div class="form-group">
 										<label for="cc-payment" class="control-label mb-1">Almac&eacute;n de destino</label>
-										<input id="cc-pament" name="cc-payment" type="text"
+										<select id="alm" name="alm"
 												class="form-control" aria-required="true"
 												aria-invalid="false">
+												
+												<option value="Zapatos la Corona Sede chic&oacute;"> Zapatos la Corona Sede chic&oacute;</option>
+												<option value="Zapatos la Corona Sede Ricaurte"> Zapatos la Corona Sede Ricaurte</option>
+												<option value="Zapatos la Corona Sede Cantalejo"> Zapatos la Corona Sede Cantalejo</option>
+												<option value="Zapatos la Corona Sede Cali"> Zapatos la Corona Sede Cali</option>
+												
+										</select>
 									</div>
 
 									<div>
-										<button id="payment-button" type="submit"
+										<button id="agregarOrden" name="agregarOrden" type="submit"
 											class="btn btn-lg btn-info btn-block">
 											<i class="fa fa-check-circle"></i>&nbsp; <span
 												id="payment-button-amount">Agregar</span>

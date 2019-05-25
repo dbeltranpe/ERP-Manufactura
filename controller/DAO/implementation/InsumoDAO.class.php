@@ -18,7 +18,25 @@ class InsumoDAO implements iInsumoDAO
     {}
 
     public function getInsumo($codigo)
-    {}
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM INSUMO WHERE cod_insumo = ".$codigo."; ";
+        $db->doQuery($query, SELECT_QUERY);
+        $trArr = $db->results[0];
+        
+        $pCodInsumo = $trArr['cod_insumo'];
+        $pNomInsumo = $trArr['nom_insumo'];
+        $pValInsumo = $trArr['valor_insumo'];
+        $pIva_insumo = $trArr['iva_insumo'];
+        
+        $insumo = new Insumo($pCodInsumo, $pNomInsumo, $pValInsumo, $pIva_insumo);
+        
+        $db->disconnect();
+        
+        return $insumo;
+    }
 
     public function save($codigo)
     {}

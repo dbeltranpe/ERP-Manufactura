@@ -2,21 +2,23 @@
 session_set_cookie_params(0);
 session_start();
 
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrazabilidadProduccionDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:https://bienesyservicios.webcindario.com/erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:https://bienesyservicios.webcindario.com/erpbienesyservicios/view/principal/login.php");
     exit();
 }
 
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
+$trazabilidadDAO = new TrazabilidadProduccionDAO();
 
 $trabajador->nombre;
 ?>
@@ -241,43 +243,38 @@ $trabajador->nombre;
 									class="table table-borderless table-striped table-earning">
 									<thead>
 										<tr>
+											<th>C&oacute;digo</th>
 											<th>Acci&oacute;n Realizada</th>
-											<th>N&uacute;mero de la orden</th>
-											<th>Estado</th>
-											<th>Fecha de acci&oacute;n</th>
+											<th>N&uacute;mero de Orden</th>
+											<th>Fecha de Acci&oacute;n</th>
 										</tr>
 									</thead>
 									<tbody>
-										<tr>
-											<td>Agregar Nueva orden</td>
-											<td>9</td>
-											<td>En proceso de producci&oacute;n</td>
-											<td>2019-05-03 13:00</td>
-										</tr>
-										<tr>
-											<td>Agregar Nueva orden</td>
-											<td>10</td>
-											<td>En proceso de producci&oacute;n</td>
-											<td>2019-05-04 18:00</td>
-										</tr>
-										<tr>
-											<td>Elimin&oacute; orden</td>
-											<td>3</td>
-											<td>En proceso de producci&oacute;n</td>
-											<td>2019-05-05 05:00</td>
-										</tr>
-										<tr>
-											<td>Finalizaci&oacute;n de orden</td>
-											<td>6</td>
-											<td>Terminado</td>
-											<td>2019-05-05 12:00</td>
-										</tr>
-										<tr>
-											<td>Agregar Nueva orden</td>
-											<td>11</td>
-											<td>En proceso de producci&oacute;n</td>
-											<td>2019-05-05 15:50</td>
-										</tr>
+										<?php
+										
+										        $trazabilidad = array();
+										        $trazabilidad = $trazabilidadDAO->listarTrazabilidad();
+                                                
+										        if (sizeof($trazabilidad) > 0)
+                                                {
+                                                    for ($i = 0; $i < sizeof($trazabilidad); $i ++)
+                                                    {
+                                                        echo "<tr style='font-size:12px;'>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['cod_trazabilidad'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['accion_realizada'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['numero_orden'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['fecha'] . "</td>";
+                                                        
+                                                        echo "</tr>";
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    echo "<tr>";
+                                                    echo "<td style='font-size:12px;' colspan = '6' align = 'center'> No hay ordenes </td>";
+                                                }
+                                                
+                                        ?>
 									</tbody>
 								</table>
 							</div>

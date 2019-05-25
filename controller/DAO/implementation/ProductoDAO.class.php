@@ -1,11 +1,11 @@
 <?php
 require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/database.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/model/Producto.class.php');
-require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/DAO/interfaces/iProductoDAO.interface.php');
+require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/model/Producto.class.php');
+require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/DAO/interfaces/iProductoDAO.interface.php');
 
 /**
- * Clase que representa el Data Access Object (DAO) del inventario de insumos
- * @author Daniel Beltrán Penagos
+ * Clase que representa el Data Access Object (DAO) de los productos
+ * @author Santiago Correa Vera
  * <br>
  * <center> <b> Universidad El Bosque<br>
  * Ingeniería de Software<br>
@@ -14,16 +14,44 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/DAO/inte
  */
 class ProductoDAO implements iProductoDAO
 {
-    public function updateProducto($codigo)
+    public function updateProducto($nom_producto)
     {}
 
-    public function getProducto($codigo)
-    {}
+    public function getProducto($nom_producto)
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM PRODUCTO WHERE nom_producto = '".$nom_producto."';";
+        $db->doQuery($query, SELECT_QUERY);
+        $trArr = $db->results;
+        
+        $productos = array();
+        
+        $produc = $trArr[0];
+        
+        if ($produc != null)
+        {
+            $productos[]= new Producto($produc['cod_producto'], $produc['nom_producto'], $produc['vl_unitario_producto'], $produc['iva_producto']);
+        }
+        
+        $db->disconnect();
+        
+        return $productos;
+    }
 
-    public function save($codigo)
-    {}
+    public function save($nom_producto, $iva_producto, $val_unitario_porducto)
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "INSERT INTO PRODUCTO VALUES (0, '".$nom_producto."', ".$iva_producto.", ".$val_unitario_porducto.");";
+        $db->doQuery($query, INSERT_QUERY);
+    
+        $db->disconnect();
+    }
 
-    public function deleteProducto($codigo)
+    public function deleteProducto($nom_producto)
     {}
     
     public function listarProductos()

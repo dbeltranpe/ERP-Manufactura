@@ -2,7 +2,7 @@
 
 /**
  * Interface que representa el Data Access Object (DAO) del inventario de insumos
- * @author Daniel Beltrán Penagos
+ * @author Santiago Correa Vera
  *
  * <br><br>
  * <center> <b> Universidad El Bosque<br>
@@ -13,14 +13,13 @@
 interface iProductoDAO
 {
     
-    public function save($codigo);
+    public function save($nom_producto, $iva_producto, $val_unitario_porducto);
     
-    public function getProducto($codigo);
+    public function getProducto($nom_producto);
     
-    public function updateProducto($codigo);
+    public function updateProducto($nom_producto);
     
-    public function deleteProducto($codigo);
-    
+    public function deleteProducto($nom_producto);
     
 }
 

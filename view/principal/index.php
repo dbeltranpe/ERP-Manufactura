@@ -216,12 +216,16 @@ $trabajador->nombre;
 						<div class="row">
 							<div class="col-md-12">
 								<div class="overview-wrap">
-									<h2 class="title-1">overview</h2>
+									<h2 class="title-1">Visi&oacute;n General</h2>
 									
 								</div>
 							</div>
 						</div>
+						
+<!-- KPI Ventas, Compras, Producción, RRHH -->
 						<div class="row m-t-25">
+						
+<!-- Gráfica de Número de Empleados -->
 							<div class="col-sm-6 col-lg-3">
 								<div class="overview-item overview-item--c1">
 									<div class="overview__inner">
@@ -231,7 +235,7 @@ $trabajador->nombre;
 											</div>
 											<div class="text">
 												<h2>10368</h2>
-												<span>members online</span>
+												<span>Empleados</span>
 											</div>
 										</div>
 										<div class="overview-chart">
@@ -240,6 +244,8 @@ $trabajador->nombre;
 									</div>
 								</div>
 							</div>
+							
+<!-- Gráfica de Compras -->
 							<div class="col-sm-6 col-lg-3">
 								<div class="overview-item overview-item--c2">
 									<div class="overview__inner">
@@ -249,7 +255,7 @@ $trabajador->nombre;
 											</div>
 											<div class="text">
 												<h2>388,688</h2>
-												<span>items solid</span>
+												<span>Valor en Compras</span>
 											</div>
 										</div>
 										<div class="overview-chart">
@@ -258,6 +264,8 @@ $trabajador->nombre;
 									</div>
 								</div>
 							</div>
+							
+<!-- Gráfica de Ordenes de Producción  -->
 							<div class="col-sm-6 col-lg-3">
 								<div class="overview-item overview-item--c3">
 									<div class="overview__inner">
@@ -267,7 +275,7 @@ $trabajador->nombre;
 											</div>
 											<div class="text">
 												<h2>1,086</h2>
-												<span>this week</span>
+												<span>Ordenes de Producci&oacute;n</span>
 											</div>
 										</div>
 										<div class="overview-chart">
@@ -276,6 +284,8 @@ $trabajador->nombre;
 									</div>
 								</div>
 							</div>
+							
+<!-- Gráfica de Ventas -->
 							<div class="col-sm-6 col-lg-3">
 								<div class="overview-item overview-item--c4">
 									<div class="overview__inner">
@@ -285,7 +295,7 @@ $trabajador->nombre;
 											</div>
 											<div class="text">
 												<h2>$1,060,386</h2>
-												<span>total earnings</span>
+												<span>Valor en Ventas</span>
 											</div>
 										</div>
 										<div class="overview-chart">
@@ -295,43 +305,55 @@ $trabajador->nombre;
 								</div>
 							</div>
 						</div>
+					
+						
+<!-- KPI Finanzas, Inventario-->						
 						<div class="row">
+						
+<!-- Gráfica de Inventario-->
 							<div class="col-lg-6">
 								<div class="au-card recent-report">
 									<div class="au-card-inner">
-										<h3 class="title-2">recent reports</h3>
+										<h3 class="title-2">Hist&oacute;rico Inventario</h3>
+										
 										<div class="chart-info">
+										
 											<div class="chart-info__left">
 												<div class="chart-note">
-													<span class="dot dot--blue"></span> <span>products</span>
+													<span class="dot dot--blue"></span> <span>Productos</span>
 												</div>
 												<div class="chart-note mr-0">
-													<span class="dot dot--green"></span> <span>services</span>
+													<span class="dot dot--green"></span> <span>Insumos</span>
 												</div>
 											</div>
+											
 											<div class="chart-info__right">
 												<div class="chart-statis">
 													<span class="index incre"> <i
 														class="zmdi zmdi-long-arrow-up"></i>25%
-													</span> <span class="label">products</span>
+													</span> <span class="label">Productos</span>
 												</div>
 												<div class="chart-statis mr-0">
 													<span class="index decre"> <i
 														class="zmdi zmdi-long-arrow-down"></i>10%
-													</span> <span class="label">services</span>
+													</span> <span class="label">Insumos</span>
 												</div>
 											</div>
+											
 										</div>
+										
 										<div class="recent-report__chart">
 											<canvas id="recent-rep-chart"></canvas>
 										</div>
 									</div>
 								</div>
 							</div>
+							
+<!-- Gráfica de Finanzas-->
 							<div class="col-lg-6">
 								<div class="au-card chart-percent-card">
 									<div class="au-card-inner">
-										<h3 class="title-2 tm-b-5">char by %</h3>
+										<h3 class="title-2 tm-b-5">Finanzas (Todav&iacute;a no s&eacute; como ir&iacute;a)</h3>
 										<div class="row no-gutters">
 											<div class="col-xl-6">
 												<div class="chart-note-wrap">
@@ -353,9 +375,11 @@ $trabajador->nombre;
 								</div>
 							</div>
 						</div>
+						
+<!-- Indicadores de Ventas -->
 						<div class="row">
 							<div class="col-lg-9">
-								<h2 class="title-1 m-b-25">Earnings By Items</h2>
+								<h2 class="title-1 m-b-25">Ganancias por Productos</h2>
 								<div class="table-responsive table--no-card m-b-40">
 									<table
 										class="table table-borderless table-striped table-earning">
@@ -438,8 +462,10 @@ $trabajador->nombre;
 									</table>
 								</div>
 							</div>
+							
+<!-- Indicadores de Finanzas -->
 							<div class="col-lg-3">
-								<h2 class="title-1 m-b-25">Top countries</h2>
+								<h2 class="title-1 m-b-25">Otra cosa de finanzas</h2>
 								<div
 									class="au-card au-card--bg-blue au-card-top-countries m-b-40">
 									<div class="au-card-inner">

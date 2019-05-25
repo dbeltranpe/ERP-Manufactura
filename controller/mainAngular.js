@@ -98,7 +98,6 @@ angular.module('invoicing', [])
 		$http.post('facturas-guardar.php', JSON.stringify([$scope.invoice.items,$scope.invoice.cliente_info,fact]))
 		.success(
 				function(data){
-//					alert('a');
 					alert(data);
 //					alert('b');
 				}
@@ -135,6 +134,7 @@ angular.module('invoicing', [])
 	$scope.clearLocalStorage = function() {
 //		var confirmClear = confirm('Are you sure you would like to clear the invoice?');
 //		if(confirmClear) {
+		    LocalStorage.clearinvoice();
 			LocalStorage.clear();
 			setInvoice(DEFAULT_INVOICE);
 //		}

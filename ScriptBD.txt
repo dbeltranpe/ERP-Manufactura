@@ -124,4 +124,47 @@ SELECT producto.cod_producto, nom_producto, cantidad
 FROM producto, inv_producto
 WHERE producto.cod_producto = inv_producto.cod_producto;
 
+CREATE TABLE `ordenes_produccion` (
+  `cod_orden_produccion` int(11) NOT NULL,
+  `nom_producto` varchar(50) DEFAULT NULL,
+  `fecha_inicio` date DEFAULT NULL,
+  `fecha_entrega` date DEFAULT NULL,
+  `costo_fabricacion` int(11) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `almacen` varchar(50) DEFAULT NULL,
+  `estado` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `ordenes_produccion`
+  ADD PRIMARY KEY (`cod_orden_produccion`);
+
+ALTER TABLE `ordenes_produccion`
+  MODIFY `cod_orden_produccion` int(11) NOT NULL AUTO_INCREMENT;
+
+CREATE TABLE `item_producto` (
+  `cod_orden_produccion` int(11) NOT NULL,
+  `cod_insumo` int(11) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `item_producto`
+  ADD PRIMARY KEY (`cod_orden_produccion`),
+  ADD KEY `cod_insumo` (`cod_insumo`);
+
+ALTER TABLE `item_producto`
+  ADD CONSTRAINT `item_producto_ibfk_1` FOREIGN KEY (`cod_insumo`) REFERENCES `inv_insumo` (`cod_insumo`),
+  ADD CONSTRAINT `r_i_op` FOREIGN KEY (`cod_orden_produccion`) REFERENCES `ordenes_produccion` (`cod_orden_produccion`);
+  
+CREATE TABLE `trazabilidad_produccion` (
+  `cod_trazabilidad` int(11) NOT NULL,
+  `accion_realizada` varchar(100) DEFAULT NULL,
+  `numero_orden_produccion` int(11) DEFAULT NULL,
+  `fecha` date DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+ALTER TABLE `trazabilidad_produccion`
+  ADD PRIMARY KEY (`cod_trazabilidad`);
+
+ALTER TABLE `trazabilidad_produccion`
+  MODIFY `cod_trazabilidad` int(11) NOT NULL AUTO_INCREMENT;
 

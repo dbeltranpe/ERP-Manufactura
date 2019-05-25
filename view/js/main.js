@@ -11,11 +11,11 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July'],
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
           type: 'line',
           datasets: [{
-            data: [78, 81, 80, 45, 34, 12, 40],
-            label: 'Dataset',
+            data: [58, 31, 30, 45, 34, 0],
+            label: 'Número de Empleados',
             backgroundColor: 'rgba(255,255,255,.1)',
             borderColor: 'rgba(255,255,255,.55)',
           },]
@@ -77,11 +77,11 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
           type: 'line',
           datasets: [{
-            data: [1, 18, 9, 17, 34, 22],
-            label: 'Dataset',
+            data: [1, 18, 9, 17, 34],
+            label: 'Valor en Compras',
             backgroundColor: 'transparent',
             borderColor: 'rgba(255,255,255,.55)',
           },]
@@ -140,7 +140,6 @@
       });
     }
 
-
     //WidgetChart 3
     var ctx = document.getElementById("widgetChart3");
     if (ctx) {
@@ -148,11 +147,11 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June'],
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
           type: 'line',
           datasets: [{
-            data: [65, 59, 84, 84, 51, 55],
-            label: 'Dataset',
+            data: [65, 59, 84, 84, 51],
+            label: 'Número de Ordenes',
             backgroundColor: 'transparent',
             borderColor: 'rgba(255,255,255,.55)',
           },]
@@ -218,11 +217,11 @@
       var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
           datasets: [
             {
-              label: "My First dataset",
-              data: [78, 81, 80, 65, 58, 75, 60, 75, 65, 60, 60, 75],
+              label: "Valor en Ventas",
+              data: [78, 81, 80, 65, 58],
               borderColor: "transparent",
               borderWidth: "0",
               backgroundColor: "rgba(255,255,255,.3)"
@@ -248,13 +247,13 @@
       });
     }
 
-    // Recent Report
+    // Inventario
     const brandProduct = 'rgba(0,181,233,0.8)'
     const brandService = 'rgba(0,173,95,0.8)'
 
     var elements = 10
-    var data1 = [52, 60, 55, 50, 65, 80, 57, 70, 105, 115]
-    var data2 = [102, 70, 80, 100, 56, 53, 80, 75, 65, 90]
+    var data1 = [52, 60, 55, 50, 65]
+    var data2 = [102, 70, 80, 100, 56]
 
     var ctx = document.getElementById("recent-rep-chart");
     if (ctx) {
@@ -262,10 +261,10 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', ''],
+          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
           datasets: [
             {
-              label: 'My First dataset',
+              label: 'No. Inventario en Bodega Insumos',
               backgroundColor: brandService,
               borderColor: 'transparent',
               pointHoverBackgroundColor: '#fff',
@@ -274,7 +273,7 @@
 
             },
             {
-              label: 'My Second dataset',
+              label: 'No. Inventario en Bodega Productos',
               backgroundColor: brandProduct,
               borderColor: 'transparent',
               pointHoverBackgroundColor: '#fff',

@@ -2,23 +2,59 @@
 session_set_cookie_params(0);
 session_start();
 
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/OrdenProduccionDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioProductoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ProductoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ItemProductoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioInsumoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrazabilidadProduccionDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout'])) {
     session_unset();
     session_destroy();
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    header("Location:https://bienesyservicios.webcindario.com/erpbienesyservicios/view/principal/login.php");
     exit();
 }
 
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
-$trabajador->nombre;
+$ordenesProduccionDAO = new OrdenProduccionDAO();
+$inv_produccionDAO = new InventarioProductoDAO();
+$productosDAO = new ProductoDAO();
+$item_productoDAO = new ItemProductoDAO();
+$inv_insumosDAO = new InventarioInsumoDAO();
+$trazabilidad = new TrazabilidadProduccionDAO();
+
+if (isset($_POST['eliminarOrden']))
+{
+    $cod = $_POST['num_el'];
+    
+    $ordenProducc = $ordenesProduccionDAO->getOrdenProduccion($cod);
+    $produc = $productosDAO->getProducto($ordenProducc->getNom_producto());
+    $produccInv = $inv_produccionDAO->getInventarioProducto($produc[0]->getCodigo());
+    
+    $restaInvProducc = $produccInv->getCantidad() - $ordenProducc->getCantidad();
+    $inv_produccionDAO->updateInventarioProducto($produc[0]->getCodigo(), $restaInvProducc);
+    
+    
+    $items = $item_productoDAO->getItemProduccion($cod);
+    $cantItem = $items->getCantidad();
+    $insumoInv = $inv_insumosDAO->getInventarioInsumo($items->getCod_insumo());
+    
+    $sumaInsumo = $insumoInv->getCantidad() + $cantItem;
+    $inv_insumosDAO->updateInventarioInsumo($items->getCod_insumo(), $sumaInsumo);
+    
+    $item_productoDAO->deleteItemProduccion($cod);
+    $ordenesProduccionDAO->deleteOrdenProduccion($cod);
+    
+    $trazabilidad->save("Elimino Orden", $cod);
+}
 ?>
 
 <!DOCTYPE html>
@@ -231,41 +267,36 @@ $trabajador->nombre;
 			<div class="main-content">
 				<div class="container-fluid">
 
-					<div class="row">
+					<div class="row" >
 
-						<div class="col">
+						<div class="col-sm-2" >
 							<section class="card">
-								<div class="card-header">Agregar Nueva Orden de Producci&oacute;n</div>
+								<div class="card-header"><p style="font-size:12px;">Agregar Nueva Orden de Producci&oacute;n </p></div>
 								<div class="card-body">
 									<div>
 										<button id="payment-button" type="submit"
-											class="btn btn-lg btn-info btn-block" onclick="location='../produccion/agregar_orden.php'">
+											class="btn btn-sm btn-info btn-block" onclick="location='../produccion/agregar_orden.php'">
 											<i class="fa fa-check-circle"></i>&nbsp; <span
 												id="payment-button-amount">Agregar</span>
 										</button>
 									</div>
 								</div>
 							</section>
-						
 							<section class="card">
-								<div class="card-header">Eliminar Lista de Producci&oacute;n</div>
+								<div class="card-header"><p style="font-size:12px;">Eliminar Lista de Producci&oacute;n</p></div>
 								<div class="card-body">
-									<div class="card-title">
-										<h3 class="text-center title-2">C&oacute;digo de la lista de producci&oacute;n</h3>
-									</div>
-									<hr>
 									<form action="" method="post" novalidate="novalidate">
 
 										<div class="form-group">
 											<label for="cc-payment" class="control-label mb-1">N&uacute;mero</label>
-											<input id="cc-pament" name="cc-payment" type="text"
+											<input id="num_el" name="num_el" type="number"
 												class="form-control" aria-required="true"
 												aria-invalid="false">
 										</div>
 
 										<div>
-											<button id="payment-button" type="submit"
-												class="btn btn-danger btn-lg btn-block">
+											<button id="eliminarOrden" name="eliminarOrden" type="submit"
+												class="btn btn-danger btn-sm btn-block">
 												<i class="fa fa-times-circle"></i>&nbsp; <span
 													id="payment-button-amount">Eliminar</span>
 											</button>
@@ -274,97 +305,58 @@ $trabajador->nombre;
 								</div>
 							</section>
 						</div>
-
-					</div>
-
-					<div class="row">
-						<div class="col">
+						
+						<div class="col-sm-10">
 							<div class="table-responsive table--no-card m-b-30">
 								<table
 									class="table table-borderless table-striped table-earning">
 									<thead>
 										<tr>
-											<th>N&uacute;mero de orden</th>
-											<th>Cantidad</th>
-											<th>Producto a realizar</th>
-											<th>Fecha de solicitud</th>
-											<th>Fecha de entrega</th>
-											<th>Almacen de destino</th>
+											<th style="font-size:12px;">N&uacute;mero de orden</th>
+											<th style="font-size:12px;">Nombre del Producto</th>
+											<th style="font-size:12px;">Cantidad</th>
+											<th style="font-size:12px;">Fecha de inicio</th>
+											<th style="font-size:12px;">Fecha de entrega</th>
+											<th style="font-size:12px;">Almacen de destino</th>
 										</tr>
 									</thead>
-									<tbody>
-										<tr>
-											<td>1</td>
-											<td>20</td>
-											<td>Tornillos</td>
-											<td>2019-05-03 13:00</td>
-											<td>2019-05-05 08:00</td>
-											<td>Bogot&aacute;</td>
-										</tr>
-										<tr>
-											<td>2</td>
-											<td>1000</td>
-											<td>Ponque Ramo</td>
-											<td>2019-03-01 05:57</td>
-											<td>2019-03-22 10:00</td>
-											<td>Bucaramanga</td>
-										</tr>
-										<tr>
-											<td>3</td>
-											<td>450</td>
-											<td>Esferos</td>
-											<td>2019-06-20 20:20</td>
-											<td>2019-10-22 14:30</td>
-											<td>Barranquilla</td>
-										</tr>
-										<tr>
-											<td>4</td>
-											<td>60</td>
-											<td>Carcasas Celulares</td>
-											<td>2019-08-05 07:15</td>
-											<td>2019-08-10 12:47</td>
-											<td>Valledupar</td>
-										</tr>
-										<tr>
-											<td>5</td>
-											<td>150</td>
-											<td>Almohadas</td>
-											<td>2019-03-20 05:57</td>
-											<td>2019-03-22 10:00</td>
-											<td>Santa Marta</td>
-										</tr>
-										<tr>
-											<td>6</td>
-											<td>500</td>
-											<td>Resistencias</td>
-											<td>2019-03-20 05:57</td>
-											<td>2019-03-22 10:00</td>
-											<td>Tulu&aacute;</td>
-										</tr>
-										<tr>
-											<td>7</td>
-											<td>2000</td>
-											<td>Barras de Acero</td>
-											<td>2019-03-20 05:57</td>
-											<td>2019-03-22 10:00</td>
-											<td>Rioacha</td>
-										</tr>
-										<tr>
-											<td>8</td>
-											<td>1150</td>
-											<td>Billeteras</td>
-											<td>2019-03-20 05:57</td>
-											<td>2019-03-22 10:00</td>
-											<td>Monter&iacute;a</td>
-										</tr>
+									<tbody class="buscar">
+									
+										<?php
+										
+										        $ordenes = array();
+                                                $ordenes = $ordenesProduccionDAO->listarOrdenesProduccion();
+                                                
+                                                if (sizeof($ordenes) > 0)
+                                                {
+                                                    for ($i = 0; $i < sizeof($ordenes); $i ++)
+                                                    {
+                                                        echo "<tr style='font-size:12px;'>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['cod_orden'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['cantidad'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['producto_ar'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['fecha_entrega'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['fecha_solicitud'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['almacen_destino'] . "</td>";
+                                                        
+                                                        echo "</tr>";
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    echo "<tr>";
+                                                    echo "<td style='font-size:12px;' colspan = '6' align = 'center'> No hay ordenes </td>";
+                                                }
+                                                
+                                        ?>
+                                        
 									</tbody>
 								</table>
 							</div>
 						</div>
 
 					</div>
-
-
+					
 				</div>
 			</div>
 			<!-- END MAIN CONTENT-->

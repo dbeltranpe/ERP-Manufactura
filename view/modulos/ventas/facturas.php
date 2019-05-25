@@ -257,6 +257,13 @@ $productoDAO = new ProductoDAO();
 									<div class="input-container">
 										<input type="text" ng-model="invoice.cliente_info.ccNit" placeholder="C.C o NIT" name="ccNit" />
 									</div>
+									<div class="input-container">
+									<select id='fin_1' name="fin_1" style="width: 100%">
+									<option value="1">Saldada</option>
+									<option value="2">Pendiente de Pago</option>
+									</select> 
+									
+									</div>
 								</div>
 
 								<div class="col-xs-6 right">
