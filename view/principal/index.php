@@ -7,6 +7,9 @@ require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/i
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ItemFacturaDAO.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/CompraDAO.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/OrdenProduccionDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/HistoricoDAO.class.php');
+
+$meses = array("","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -23,6 +26,44 @@ $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
 $trabajador->nombre;
+
+$historicoDAO = new HistoricoDAO();
+$historia = $historicoDAO->listarHistoria();
+
+$hs_fechas = array();
+$hs_ventas = array();
+$hs_compras = array();
+$hs_insumos = array();
+$hs_productos = array();
+$hs_rrhh = array();
+$hs_ordenes = array();
+
+
+
+for ($i = 0; $i < sizeof($historia); $i ++)
+{
+    $fecha = date_create($historia[$i]['fecha']);
+    $numero = (int) date_format($fecha, 'm');
+    $mes = $meses[$numero];
+
+    $hs_fechas []= $mes;
+    $hs_ventas []= $historia[$i]['vl_ventas'];
+    $hs_compras []= $historia[$i]['vl_compras'];
+    $hs_insumos []= $historia[$i]['nro_insumos'];
+    $hs_productos []= $historia[$i]['nro_productos'];
+    $hs_rrhh []= $historia[$i]['nro_empleados'];
+    $hs_ordenes []= $historia[$i]['nro_ordenes'];
+   
+}
+
+
+echo '<script>var hs_fechas = ' . json_encode($hs_fechas) . ';</script>';
+echo '<script>var hs_ventas = ' . json_encode($hs_ventas) . ';</script>';
+echo '<script>var hs_compras = ' . json_encode($hs_compras) . ';</script>';
+echo '<script>var hs_insumos = ' . json_encode($hs_insumos) . ';</script>';
+echo '<script>var hs_productos = ' . json_encode($hs_productos) . ';</script>';
+echo '<script>var hs_rrhh = ' . json_encode($hs_rrhh) . ';</script>';
+echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 
 ?>
 
@@ -368,12 +409,18 @@ $trabajador->nombre;
 											<div class="chart-info__right">
 												<div class="chart-statis">
 													<span class="index incre"> <i
-														class="zmdi zmdi-long-arrow-up"></i>25%
+														class="zmdi zmdi-long-arrow-up"></i>
+														<?php 
+														$hs_productos[sizeof($hs_productos)-1] * 100 / $hs_productos[sizeof($hs_productos)-2]
+														?>%
 													</span> <span class="label">Productos</span>
 												</div>
 												<div class="chart-statis mr-0">
 													<span class="index decre"> <i
-														class="zmdi zmdi-long-arrow-down"></i>10%
+														class="zmdi zmdi-long-arrow-down"></i>
+														<?php 
+														$hs_insumos[sizeof($hs_insumos)-1] * 100 / $hs_insumos[sizeof($hs_insumos)-2]
+														?>%
 													</span> <span class="label">Insumos</span>
 												</div>
 											</div>
@@ -388,6 +435,7 @@ $trabajador->nombre;
 							</div>
 
 							<!-- Gráfica de Finanzas-->
+							
 							<div class="col-lg-6">
 								<div class="au-card chart-percent-card">
 									<div class="au-card-inner">

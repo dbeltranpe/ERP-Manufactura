@@ -11,10 +11,12 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+//          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+          labels: hs_fechas,
           type: 'line',
           datasets: [{
-            data: [58, 31, 30, 45, 34, 0],
+//            data: [58, 31, 30, 45, 34, 0],
+        	data: hs_rrhh,
             label: 'Número de Empleados',
             backgroundColor: 'rgba(255,255,255,.1)',
             borderColor: 'rgba(255,255,255,.55)',
@@ -77,10 +79,12 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+//          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+          labels: hs_fechas,
           type: 'line',
           datasets: [{
-            data: [1, 18, 9, 17, 34],
+//            data: [1, 18, 9, 17, 34],
+        	  data: hs_compras,
             label: 'Valor en Compras',
             backgroundColor: 'transparent',
             borderColor: 'rgba(255,255,255,.55)',
@@ -147,10 +151,12 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+//          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+          labels: hs_fechas,
           type: 'line',
           datasets: [{
-            data: [65, 59, 84, 84, 51],
+//            data: [65, 59, 84, 84, 51],
+        	data: hs_ordenes,
             label: 'Número de Ordenes',
             backgroundColor: 'transparent',
             borderColor: 'rgba(255,255,255,.55)',
@@ -208,20 +214,22 @@
         }
       });
     }
-
+//    alert(hs_ventas)
 
     //WidgetChart 4
     var ctx = document.getElementById("widgetChart4");
     if (ctx) {
       ctx.height = 115;
       var myChart = new Chart(ctx, {
-        type: 'bar',
+        type: 'line',
         data: {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+//          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+         labels: hs_fechas,
           datasets: [
             {
               label: "Valor en Ventas",
-              data: [78, 81, 80, 65, 58],
+//              data: [78, 81, 80, 65, 58],
+              data: hs_ventas,
               borderColor: "transparent",
               borderWidth: "0",
               backgroundColor: "rgba(255,255,255,.3)"
@@ -251,9 +259,12 @@
     const brandProduct = 'rgba(0,181,233,0.8)'
     const brandService = 'rgba(0,173,95,0.8)'
 
+
     var elements = 10
-    var data1 = [52, 60, 55, 50, 65]
-    var data2 = [102, 70, 80, 100, 56]
+//    var data1 = [52, 60, 55, 50, 65]
+//    var data2 = [102, 70, 80, 100, 56]
+    var data1 = hs_insumos
+    var data2 = hs_productos
 
     var ctx = document.getElementById("recent-rep-chart");
     if (ctx) {
@@ -261,7 +272,8 @@
       var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
+          labels: hs_fechas,
+//          labels: ['Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo'],
           datasets: [
             {
               label: 'No. Inventario en Bodega Insumos',
@@ -304,8 +316,8 @@
               ticks: {
                 beginAtZero: true,
                 maxTicksLimit: 5,
-                stepSize: 50,
-                max: 150,
+                stepSize: 500,
+                max: 3000,
                 fontFamily: "Poppins",
                 fontSize: 12
               },
