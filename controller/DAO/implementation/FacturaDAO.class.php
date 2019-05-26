@@ -52,6 +52,21 @@ class FacturaDAO implements iFacturaDAO
 
     public function updateFactura($codigo)
     {}
+    
+    public function totalVentas()
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT sum(FACTURA.total) total FROM FACTURA;";
+        $db->doQuery($query, SELECT_QUERY);
+        $proCom = $db->results;
+        
+        
+        $db->disconnect();
+        
+        return $proCom[0]['total'];
+    }
 }
 
 ?>

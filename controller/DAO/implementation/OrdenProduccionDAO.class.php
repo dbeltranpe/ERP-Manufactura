@@ -208,6 +208,21 @@ class OrdenProduccionDAO implements iOrdenProduccionDAO
         return $codigo;
     }
     
+    public function totalOrdenes(){
+        
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT COUNT(ordenes_produccion.cod_orden_produccion) total FROM ordenes_produccion;";
+        $db->doQuery($query, SELECT_QUERY);
+        $proCom = $db->results;
+        
+        $db->disconnect();
+        
+        return $proCom[0]['total'];
+        
+    }
+    
 }
 
 ?>

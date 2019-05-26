@@ -104,5 +104,21 @@ class CompraDAO implements iCompraDAO
         
         return $compras;
     }
+    
+    public function totalCompras()
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT sum(COMPRA.total_compra) total FROM COMPRA;";
+        $db->doQuery($query, SELECT_QUERY);
+        $proCom = $db->results;
+        
+
+        $db->disconnect();
+        
+        return $proCom[0]['total'];
+        
+    }
 }
 ?>

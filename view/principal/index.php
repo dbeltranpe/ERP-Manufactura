@@ -2,7 +2,11 @@
 session_set_cookie_params(0);
 session_start();
 
-require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/FacturaDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ItemFacturaDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/CompraDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/OrdenProduccionDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -126,17 +130,19 @@ $trabajador->nombre;
 								class="fas fa-shopping-cart"></i>Compras
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="../modulos/compras/nueva-compra.php">Registrar Compra</a></li>
+								<li><a href="../modulos/compras/nueva-compra.php">Registrar
+										Compra</a></li>
 								<li><a href="../modulos/compras/proveedores.php">Proveedores</a></li>
-								<li><a href="../modulos/compras/informacion-compras.php">Estado de
-										Compras</a></li>
+								<li><a href="../modulos/compras/informacion-compras.php">Estado
+										de Compras</a></li>
 							</ul></li>
 
 						<li class="has-sub"><a class="js-arrow" href="#"> <i
 								class="fas  fa-group"></i>R.R.H.H.
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="../modulos/empleados/nuevo-empleado.php">Registrar Empleado</a></li>
+								<li><a href="../modulos/empleados/nuevo-empleado.php">Registrar
+										Empleado</a></li>
 								<li><a href="../modulos/empleados/informacion-empleados.php">Informaci&oacute;n
 										Empleados</a></li>
 							</ul></li>
@@ -255,7 +261,9 @@ $trabajador->nombre;
 												<i class="zmdi zmdi-account-o"></i>
 											</div>
 											<div class="text">
-												<h2>10368</h2>
+												<h2><?php 
+												echo $trabajadorDAO->totalTrabajadores();
+												?></h2>
 												<span>Empleados</span>
 											</div>
 										</div>
@@ -275,7 +283,10 @@ $trabajador->nombre;
 												<i class="zmdi zmdi-shopping-cart"></i>
 											</div>
 											<div class="text">
-												<h2>388,688</h2>
+												<h2>$<?php 
+												$compraDAO = new CompraDAO();
+												echo number_format($compraDAO->totalCompras());
+												?></h2>
 												<span>Valor en Compras</span>
 											</div>
 										</div>
@@ -295,7 +306,10 @@ $trabajador->nombre;
 												<i class="zmdi zmdi-calendar-note"></i>
 											</div>
 											<div class="text">
-												<h2>1,086</h2>
+												<h2><?php 
+												$ordenDAO = new OrdenProduccionDAO();
+												echo $ordenDAO->totalOrdenes();
+												?></h2>
 												<span>Ordenes de Producci&oacute;n</span>
 											</div>
 										</div>
@@ -315,7 +329,10 @@ $trabajador->nombre;
 												<i class="zmdi zmdi-money"></i>
 											</div>
 											<div class="text">
-												<h2>$1,060,386</h2>
+												<h2>$<?php 
+												$facturaDAO = new FacturaDAO();
+												echo number_format($facturaDAO->totalVentas());
+												?></h2>
 												<span>Valor en Ventas</span>
 											</div>
 										</div>
@@ -407,79 +424,32 @@ $trabajador->nombre;
 										class="table table-borderless table-striped table-earning">
 										<thead>
 											<tr>
-												<th>date</th>
-												<th>order ID</th>
-												<th>name</th>
-												<th class="text-right">price</th>
-												<th class="text-right">quantity</th>
-												<th class="text-right">total</th>
+												<th>Nombre del Producto</th>
+												<th class="text-right">Precio</th>
+												<th class="text-right">Cantidad</th>
+												<th class="text-right">Total</th>
 											</tr>
 										</thead>
 										<tbody>
-											<tr>
-												<td>2018-09-29 05:57</td>
-												<td>100398</td>
-												<td>iPhone X 64Gb Grey</td>
-												<td class="text-right">$999.00</td>
-												<td class="text-right">1</td>
-												<td class="text-right">$999.00</td>
-											</tr>
-											<tr>
-												<td>2018-09-28 01:22</td>
-												<td>100397</td>
-												<td>Samsung S8 Black</td>
-												<td class="text-right">$756.00</td>
-												<td class="text-right">1</td>
-												<td class="text-right">$756.00</td>
-											</tr>
-											<tr>
-												<td>2018-09-27 02:12</td>
-												<td>100396</td>
-												<td>Game Console Controller</td>
-												<td class="text-right">$22.00</td>
-												<td class="text-right">2</td>
-												<td class="text-right">$44.00</td>
-											</tr>
-											<tr>
-												<td>2018-09-26 23:06</td>
-												<td>100395</td>
-												<td>iPhone X 256Gb Black</td>
-												<td class="text-right">$1199.00</td>
-												<td class="text-right">1</td>
-												<td class="text-right">$1199.00</td>
-											</tr>
-											<tr>
-												<td>2018-09-25 19:03</td>
-												<td>100393</td>
-												<td>USB 3.0 Cable</td>
-												<td class="text-right">$10.00</td>
-												<td class="text-right">3</td>
-												<td class="text-right">$30.00</td>
-											</tr>
-											<tr>
-												<td>2018-09-29 05:57</td>
-												<td>100392</td>
-												<td>Smartwatch 4.0 LTE Wifi</td>
-												<td class="text-right">$199.00</td>
-												<td class="text-right">6</td>
-												<td class="text-right">$1494.00</td>
-											</tr>
-											<tr>
-												<td>2018-09-24 19:10</td>
-												<td>100391</td>
-												<td>Camera C430W 4k</td>
-												<td class="text-right">$699.00</td>
-												<td class="text-right">1</td>
-												<td class="text-right">$699.00</td>
-											</tr>
-											<tr>
-												<td>2018-09-22 00:43</td>
-												<td>100393</td>
-												<td>USB 3.0 Cable</td>
-												<td class="text-right">$10.00</td>
-												<td class="text-right">3</td>
-												<td class="text-right">$30.00</td>
-											</tr>
+										
+                        					 <?php
+                        					 
+                        					 $itemFacturaDAO = new ItemFacturaDAO();
+                        
+                        					 $items = $itemFacturaDAO->listarGananciaXProductos();
+                        
+                                            for ($i = 0; $i < sizeof($items); $i ++) 
+                                            {
+                                                echo "<tr>";
+                                                echo "<td class='text-left'> " . $items[$i]['nombre'] . "</td>";
+                                                echo "<td align='center'> $" . $items[$i]['precio'] . "</td>";
+                                                echo "<td align='center'> " . $items[$i]['cantidad'] . "</td>";
+                                                echo "<td class='text-right'> $" . $items[$i]['total'] . "</td>";
+                                                echo "</tr>";
+                                            }
+                                            
+                                            ?>
+											
 										</tbody>
 									</table>
 								</div>

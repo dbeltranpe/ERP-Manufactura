@@ -39,7 +39,7 @@ class ItemFacturaDAO implements iItemFacturaDAO
         $db = new Database();
         $db->connect();
         
-        $query = "SELECT * FROM V_ITEM_FACTURA;";
+        $query = "SELECT * FROM v_item_factura;";
         $db->doQuery($query, SELECT_QUERY);
         $trArr = $db->results;
         
@@ -54,6 +54,28 @@ class ItemFacturaDAO implements iItemFacturaDAO
         $db->disconnect();
         
         return $items;
+    }
+    
+    public function listarGananciaXProductos()
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM v_gananciasxproducto;";
+        $db->doQuery($query, SELECT_QUERY);
+        $trArr = $db->results;
+        
+        $items = array();
+        
+        for ($i = 0; $i < sizeof($trArr); $i++)
+        {
+            $items[]= ['nombre'=> $trArr[$i]['nombre'], 'precio'=> $trArr[$i]['precio'], 'cantidad'=> $trArr[$i]['cantidad'], 'total'=> $trArr[$i]['total'] ];
+        }
+        
+        $db->disconnect();
+        
+        return $items;
+        
     }
 
 

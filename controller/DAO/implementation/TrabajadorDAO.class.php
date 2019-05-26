@@ -91,5 +91,20 @@ class TrabajadorDAO implements iTrabajadorDAO
         
         return $trabajadores;
     }
+    
+    public function totalTrabajadores(){
+        
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT COUNT(trabajador.codigo_trabajador) total FROM TRABAJADOR;";
+        $db->doQuery($query, SELECT_QUERY);
+        $proCom = $db->results;
+        
+        $db->disconnect();
+        
+        return $proCom[0]['total'];
+        
+    }
 }
 ?>

@@ -262,6 +262,11 @@ INSERT INTO `finanzas` (`cod_proceso`, `nombre_proceso`, `total_proceso`) VALUES
 
 insert into rol VALUES(6,'COMPRAS'),(7,'RRHH');
 	
-	
+CREATE VIEW v_gananciasxproducto AS
+SELECT producto.nom_producto nombre, producto.vl_unitario_producto precio, COUNT(item_factura.cod_producto) cantidad, (producto.vl_unitario_producto*COUNT(item_factura.cod_producto)) total
+FROM item_factura, producto
+WHERE item_factura.cod_producto = producto.cod_producto
+GROUP BY nombre
+ORDER BY total DESC;
 
 

@@ -266,22 +266,24 @@ $invProdDAO = new InventarioProductoDAO();
 									</thead>
 									<tbody>
 									
-									   <?php
+									<?php
+									
+									
 
-            $insumos = $invInsDAO->listarInventarioInsumos();
+                                    $insumos = $invInsDAO->listarInventarioInsumos();
+                        
+                                    for ($i = 0; $i < sizeof($insumos); $i ++) {
+                                        echo "<tr>";
+                                        echo "<td> " . $insumos[$i]['fecha'] . "</td>";
+                                        echo "<td> " . $insumos[$i]['cantidad'] . "</td>";
+                                        echo "<td> " . $insumos[$i]['nom_insumo'] . "</td>";
+                                        echo "<td class='text-right'> " . $insumos[$i]['valor_insumo'] . "</td>";
+                                        echo "<td class='text-right'> " . $insumos[$i]['iva_insumo'] . "</td>";
+                                        echo "<td class='text-right'> " . $insumos[$i]['total'] . "</td>";
+                                        echo "</tr>";
+                                    }
 
-            for ($i = 0; $i < sizeof($insumos); $i ++) {
-                echo "<tr>";
-                echo "<td> " . $insumos[$i]['fecha'] . "</td>";
-                echo "<td> " . $insumos[$i]['cantidad'] . "</td>";
-                echo "<td> " . $insumos[$i]['nom_insumo'] . "</td>";
-                echo "<td class='text-right'> " . $insumos[$i]['valor_insumo'] . "</td>";
-                echo "<td class='text-right'> " . $insumos[$i]['iva_insumo'] . "</td>";
-                echo "<td class='text-right'> " . $insumos[$i]['total'] . "</td>";
-                echo "</tr>";
-            }
-
-            ?>
+                                   ?>
 									
 									</tbody>
 								</table>
