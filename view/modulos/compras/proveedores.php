@@ -2,9 +2,8 @@
 session_set_cookie_params(0);
 session_start();
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ProductoDAO.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioProductoDAO.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ProveedorDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -20,23 +19,7 @@ if (isset($_POST['logout'])) {
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
-$productoDAO = new ProductoDAO();
-$invProdDAO = new InventarioProductoDAO();
-
-if (isset($_POST['agregarProducto'])) {
-    $codIns= $_POST['ins_1'];
-    $cantidadIns= $_POST['cant_1'];
-    
-    $invProdDAO->save($codIns, $cantidadIns);
-}
-
-if (isset($_POST['eliminarProducto'])) {
-    $codIns= $_POST['ins_2'];
-    
-    $invProdDAO->deleteInventarioProducto($codIns);
-}
-
-
+$proveedorDAO = new ProveedorDAO();
 
 ?>
 
@@ -190,23 +173,17 @@ if (isset($_POST['eliminarProducto'])) {
 							<div class="header-button">
 
 
-								<!-- Informaci�n Cuenta -->
+								<!-- Información Cuenta -->
 
 								<div class="account-wrap">
 									<div class="account-item clearfix js-item-menu">
 										<div class="image">
-										   <?php
-
-            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
-
-            ?>
+										   <?php file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen); ?>
 											<img src="../../images/icon/avatar.jpg" />
 										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
-											<?php
-        echo utf8_encode($trabajador->nombre);
-        ?>
+											<?php echo utf8_encode($trabajador->nombre); ?>
 											</a>
 										</div>
 										<div class="account-dropdown js-dropdown">
@@ -218,15 +195,11 @@ if (isset($_POST['eliminarProducto'])) {
 												<div class="content">
 													<h5 class="name">
 														<a href="#" id="nombre_cuenta_2">
-														<?php
-            echo utf8_encode($_SESSION["username"]);
-            ?>
+														<?php echo utf8_encode($_SESSION["username"]); ?>
 														</a>
 													</h5>
 													<span class="email" id="correo_cuenta">
-													<?php
-            echo utf8_encode($trabajador->correo);
-            ?>
+													<?php echo utf8_encode($trabajador->correo); ?>
 													</span>
 												</div>
 											</div>
@@ -259,156 +232,126 @@ if (isset($_POST['eliminarProducto'])) {
 			<!-- HEADER DESKTOP-->
 
 			<!-- MAIN CONTENT-->
-			<div class="main-content">
-				<div class="container-fluid">
 
-
-					<div class="row">
-
-						<div class="col">
-							<section class="card">
-								<div class="card-header">Agregar o Quitar Productos al Inventario</div>
-								<div class="card-body">
-									<div class="card-title">
-										<h3 class="text-center title-2">Informaci&oacute;n para el
-											Inventario</h3>
-									</div>
-									<hr>
-									<form action="#" method="post" novalidate="novalidate">
-
-										<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">Producto</label>
-
-											<select id='ins_1' name="ins_1" class=" form-control">
-                                                <?php
-
-                                                $productos = $productoDAO->listarProductos();
-
-                                                for ($i = 0; $i < sizeof($productos); $i ++) {
-                                                    echo "<option value='" . $productos[$i]->getCodigo() . "'>" . $productos[$i]->getNombre() . "</option>";
-                                                }
-
-                                                ?>
-											</select>
-
-										</div>
-
-										<div class="form-group">
-											<label for="cant_1" class="control-label mb-1">Cantidad</label>
-											<input id="cant_1" name="cant_1" type="number"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
-										</div>
-
-
-										<div>
-											<button id="agregarProducto" name="agregarProducto" type="submit"
-												class="btn btn-lg btn-info btn-block">
-												<i class="fa fa-check-circle"></i>&nbsp; <span
-													id="payment-button-amount">Enviar</span>
-											</button>
-										</div>
-									</form>
-								</div>
-							</section>
-						</div>
-
-						<div class="col">
-							<section class="card">
-								<div class="card-header">Eliminar Productos del Inventario</div>
-								<div class="card-body">
-									<div class="card-title">
-										<h3 class="text-center title-2">Informaci&oacute;n para el
-											Inventario</h3>
-									</div>
-									<hr>
-									<form action="#" method="post" novalidate="novalidate">
-
-										<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">Producto</label>
-
-											<select id='ins_2' name="ins_2" class=" form-control">
-                                                <?php
-
-                                                $productos = $productoDAO->listarProductos();
-
-                                                for ($i = 0; $i < sizeof($productos); $i ++) {
-                                                    echo "<option value='" . $productos[$i]->getCodigo() . "'>" . $productos[$i]->getNombre() . "</option>";
-                                                }
-
-                                                ?>
-											</select>
-
-										</div>
-
-										<div>
-											<button id="eliminarProducto" name="eliminarProducto" type="submit"
-												class="btn btn-danger btn-lg btn-block">
-												<i class="fa fa-times-circle"></i>&nbsp; <span
-													id="payment-button-amount">Eliminar</span>
-											</button>
-										</div>
-									</form>
-								</div>
-							</section>
-						</div>
-
+					<div class="row" style="width: 100%;height: 100%; margin-top:80px;width: 100%;margin-left: 5px;">
+						<div class="col" style="margin-top: 100px;width: 100%;">
+					        <div class="" style="width: 100%;">
+					          <div class="text-center btn-info" style="color: white;font-size: 20px;height: 40px;border-top-left-radius: 5px; border-top-right-radius: 5px; margin-top: -80px; padding: 5px;">
+					            <p>Proveedores registrados</p>
+					          </div>
+					          <input class="form-control" id="myInput" type="text" placeholder="Buscar" style="margin-bottom: 1px">
+					        </div>
+					        <div style="width: 100%;height: 380px; overflow: auto;">
+					          <table class="table table-bordered table-striped" style="width: 100%;">
+					            <tbody id="myTable">
+					              <?php
+					                $proveedores = $proveedorDAO->listarProveedores();
+					                for ($i = 0; $i < sizeof($proveedores); $i ++) 
+									{
+					              ?>
+					              <tr>
+					                <td>
+					                  <div class="" style="margin-left: 7px;font-size: 20px;margin-right: 10px;width: 98.5%;">
+					                    <div class="">
+					                      <div class="row btn-info">
+					                        <div class="col-6 text-center">
+					                          <p class="card-title text-left" style="color: white;font-size: 18px; margin-top: 8px;">
+					                            <i class="fas fa-info-circle" style="margin-right: 5px;"></i> Información
+					                          </p>
+					                        </div>
+					                      </div>
+					                      <br>
+					                    </div>
+					                    <div class="row">
+					                      <div class="col-2 text-right">
+					                        <div>
+					                          <img src="<?php echo($proveedores[$i]['img_proveedor']); ?>" style="margin-left: 30px; margin-bottom: 40px; width: 80%;">
+					                        </div>
+					                      </div>
+					                      <div class="col-5 text-left" style="margin-left: 30px; margin-top: -20px;">
+					                        <div class="row" style="margin-top: 15px;">
+					                          <div class="col-5" style="margin-left: 5px; font-size: 18px;">
+					                            <b>Nombre: </b>
+					                          </div>
+					                          <div class="col-6" style="font-size: 18px;">
+					                            <?php echo($proveedores[$i]['nom_proveedor']); ?>
+					                          </div>
+					                        </div>
+					                        <div class="row" style="margin-top: 12px;">
+					                          <div class="col-5" style="margin-left: 5px; font-size: 18px;">
+					                            <b>Correo: </b>
+					                          </div>
+					                          <div class="col-6" style="font-size: 18px;">
+					                            <?php echo($proveedores[$i]['correo_proveedor']); ?>
+					                          </div>
+					                        </div>
+					                        <div class="row" style="margin-top: 12px;">
+					                          <div class="col-5" style="margin-left: 5px; font-size: 18px;">
+					                            <b>Teléfono: </b>
+					                          </div>
+					                          <div class="col-6" style="font-size: 18px;">
+					                            <?php echo($proveedores[$i]['tel_proveedor']); ?>
+					                          </div>
+					                        </div>
+					                      </div>
+					                      <div class="col-4 text-left" style="margin-left: 20px;">
+					                          <input class="btn btn-primary" type="button" data-toggle="modal" data-target="<?php echo('#editar'.$empleados[$i]['codigo_trabajador']); ?>" name="btn2" style="background: #2874A6;margin-top: 8px;width: 80%;" value="Editar">
+					                          <form method="POST" action="">
+					                            <input type="text" hidden name="codigo" value="<?php echo($empleados["codigo_trabajador"]); ?>">
+					                            <input class="btn btn-danger" type="button" style="margin-top: 8px;width: 80%;" value="Eliminar">
+					                          </form>
+					                      </div>
+					                    </div>
+					                  </div>
+					                </td>
+					              </tr>
+					           <?php }
+					            ?>
+					            </tbody>
+					          </table>
+					        </div>
+					      </div>
 					</div>
-
-					<div class="row">
-						<div class="col">
-							<div class="table-responsive table--no-card m-b-30">
-								<table
-									class="table table-borderless table-striped table-earning">
-								
-									<thead>
-										<tr>
-											<th>Fecha</th>
-											<th>Cantidad</th>
-											<th>Producto</th>
-											<th class="text-right">Valor Unitario</th>
-											<th class="text-right">I.V.A.</th>
-											<th class="text-right">Total</th>
-										</tr>
-									</thead>
-									<tbody>
-									
-									   <?php
-
-                                                $productos = $invProdDAO->listarInventarioProductos();
-
-                                                for ($i = 0; $i < sizeof($productos); $i ++) 
-                                                {
-                                                    echo "<tr>";
-                                                    echo "<td> " . $productos[$i]['fecha'] . "</td>";
-                                                    echo "<td> " . $productos[$i]['cantidad'] . "</td>";
-                                                    echo "<td> " . $productos[$i]['nom_producto'] . "</td>";
-                                                    echo "<td class='text-right'> " . $productos[$i]['valor_producto'] . "</td>";
-                                                    echo "<td class='text-right'> " . $productos[$i]['iva_producto'] . "</td>";
-                                                    echo "<td class='text-right'> " . $productos[$i]['total'] . "</td>";
-                                                    echo "</tr>";
-                                                }
-
-                                        ?>
-									
-									</tbody>
-								</table>
-							</div>
-						</div>
-
-					</div>
-
-
 				</div>
 			</div>
 			<!-- END MAIN CONTENT-->
-
-
 		</div>
-
 		<!-- END PAGE CONTAINER-->
 	</div>
-
+	<!-- CONTAINER MODALS-->
+	<?php
+        $trabajadores = $trabajadorDAO->listarTrabajadores();
+		for ($i = 0; $i < sizeof($trabajadores); $i ++) { ?>
+            <div class="modal fade" id="<?php echo('editar'.$trabajadores[$i]['codigo_trabajador']); ?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" style="margin-top: 80px;">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Editar Información Del Empleado</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <form method="POST" action="../../Execute/Update/UpdateProduct.php?url=<?php echo($url); ?>">
+                          <input type="hidden" name="txtCode" value="<?php echo($productos['fecha']); ?>">
+                            <p><?php echo($trabajadores[$i]['nombre_trabajador']); ?></p>
+                            <div class="row">
+                                <div class="col-1"></div>
+                                <div class="col-10">
+                                    <input type="submit" class="btn btn-primary" value="Actualizar Datos" style="width: 100%; margin-top: 20px; color: #FFF;">
+                                </div>
+                            <div class="col-1"></div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+                    </div>
+                </div>
+            </div>
+      </div>
+    <?php } ?>
+    <!-- END MODALS CONTAINER-->
 
 	<!-- Jquery JS-->
 	<script src="../../vendor/jquery-3.2.1.min.js"></script>
@@ -434,8 +377,16 @@ if (isset($_POST['eliminarProducto'])) {
 
 	<!-- Main JS-->
 	<script src="../../js/main.js"></script>
-
 </body>
-
+<script type="text/javascript">
+$(document).ready(function(){
+  $("#myInput").on("keyup", function() {
+    var value = $(this).val().toLowerCase();
+    $("#myTable tr").filter(function() {
+      $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+    });
+  });
+});
+</script>
 </html>
 <!-- end document-->

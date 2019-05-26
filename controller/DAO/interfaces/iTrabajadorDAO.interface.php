@@ -42,7 +42,7 @@ interface iTrabajadorDAO
      * @param number cod_trabajador trabajador referencia a actualizar
      */
     public function deleteTrabajador($cod_trabajador);
-    
+    public function listarTrabajadores();
     
 }
 

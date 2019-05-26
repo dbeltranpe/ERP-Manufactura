@@ -2,9 +2,8 @@
 session_set_cookie_params(0);
 session_start();
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ProductoDAO.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioProductoDAO.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/CompraDAO.class.php');
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -20,24 +19,7 @@ if (isset($_POST['logout'])) {
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
-$productoDAO = new ProductoDAO();
-$invProdDAO = new InventarioProductoDAO();
-
-if (isset($_POST['agregarProducto'])) {
-    $codIns= $_POST['ins_1'];
-    $cantidadIns= $_POST['cant_1'];
-    
-    $invProdDAO->save($codIns, $cantidadIns);
-}
-
-if (isset($_POST['eliminarProducto'])) {
-    $codIns= $_POST['ins_2'];
-    
-    $invProdDAO->deleteInventarioProducto($codIns);
-}
-
-
-
+$compraDAO = new CompraDAO();
 ?>
 
 <!DOCTYPE html>
@@ -53,7 +35,7 @@ if (isset($_POST['eliminarProducto'])) {
 <meta name="keywords" content="au theme template">
 
 <!-- Title Page-->
-<title>Dashboard</title>
+<title>Estado Compras</title>
 
 <!-- Fontfaces CSS-->
 <link href="../../css/font-face.css" rel="stylesheet" media="all">
@@ -91,7 +73,7 @@ if (isset($_POST['eliminarProducto'])) {
 <body class="animsition">
 	<div class="page-wrapper">
 
-<!-- MENU SIDEBAR-->
+		<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
 				<a href="#"> <img src="../../images/icon/logo.png" alt="Cool Admin" />
@@ -100,7 +82,7 @@ if (isset($_POST['eliminarProducto'])) {
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-						<?php
+<?php
 
     if ($_SESSION["rol"] == 1) {
         echo '<li><a href="../../principal/index.php"> <i';
@@ -190,23 +172,17 @@ if (isset($_POST['eliminarProducto'])) {
 							<div class="header-button">
 
 
-								<!-- Información Cuenta -->
+								<!-- InformaciÃ³n Cuenta -->
 
 								<div class="account-wrap">
 									<div class="account-item clearfix js-item-menu">
 										<div class="image">
-										   <?php
-
-            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
-
-            ?>
+										   <?php  file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen); ?>
 											<img src="../../images/icon/avatar.jpg" />
 										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
-											<?php
-        echo utf8_encode($trabajador->nombre);
-        ?>
+											<?php echo utf8_encode($trabajador->nombre); ?>
 											</a>
 										</div>
 										<div class="account-dropdown js-dropdown">
@@ -218,15 +194,11 @@ if (isset($_POST['eliminarProducto'])) {
 												<div class="content">
 													<h5 class="name">
 														<a href="#" id="nombre_cuenta_2">
-														<?php
-            echo utf8_encode($_SESSION["username"]);
-            ?>
+														<?php echo utf8_encode($_SESSION["username"]); ?>
 														</a>
 													</h5>
 													<span class="email" id="correo_cuenta">
-													<?php
-            echo utf8_encode($trabajador->correo);
-            ?>
+													<?php echo utf8_encode($trabajador->correo); ?>
 													</span>
 												</div>
 											</div>
@@ -261,155 +233,56 @@ if (isset($_POST['eliminarProducto'])) {
 			<!-- MAIN CONTENT-->
 			<div class="main-content">
 				<div class="container-fluid">
-
-
-					<div class="row">
-
-						<div class="col">
-							<section class="card">
-								<div class="card-header">Agregar o Quitar Productos al Inventario</div>
-								<div class="card-body">
-									<div class="card-title">
-										<h3 class="text-center title-2">Informaci&oacute;n para el
-											Inventario</h3>
-									</div>
-									<hr>
-									<form action="#" method="post" novalidate="novalidate">
-
-										<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">Producto</label>
-
-											<select id='ins_1' name="ins_1" class=" form-control">
-                                                <?php
-
-                                                $productos = $productoDAO->listarProductos();
-
-                                                for ($i = 0; $i < sizeof($productos); $i ++) {
-                                                    echo "<option value='" . $productos[$i]->getCodigo() . "'>" . $productos[$i]->getNombre() . "</option>";
-                                                }
-
-                                                ?>
-											</select>
-
-										</div>
-
-										<div class="form-group">
-											<label for="cant_1" class="control-label mb-1">Cantidad</label>
-											<input id="cant_1" name="cant_1" type="number"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
-										</div>
-
-
-										<div>
-											<button id="agregarProducto" name="agregarProducto" type="submit"
-												class="btn btn-lg btn-info btn-block">
-												<i class="fa fa-check-circle"></i>&nbsp; <span
-													id="payment-button-amount">Enviar</span>
-											</button>
-										</div>
-									</form>
-								</div>
-							</section>
-						</div>
-
-						<div class="col">
-							<section class="card">
-								<div class="card-header">Eliminar Productos del Inventario</div>
-								<div class="card-body">
-									<div class="card-title">
-										<h3 class="text-center title-2">Informaci&oacute;n para el
-											Inventario</h3>
-									</div>
-									<hr>
-									<form action="#" method="post" novalidate="novalidate">
-
-										<div class="form-group">
-											<label for="cc-payment" class="control-label mb-1">Producto</label>
-
-											<select id='ins_2' name="ins_2" class=" form-control">
-                                                <?php
-
-                                                $productos = $productoDAO->listarProductos();
-
-                                                for ($i = 0; $i < sizeof($productos); $i ++) {
-                                                    echo "<option value='" . $productos[$i]->getCodigo() . "'>" . $productos[$i]->getNombre() . "</option>";
-                                                }
-
-                                                ?>
-											</select>
-
-										</div>
-
-										<div>
-											<button id="eliminarProducto" name="eliminarProducto" type="submit"
-												class="btn btn-danger btn-lg btn-block">
-												<i class="fa fa-times-circle"></i>&nbsp; <span
-													id="payment-button-amount">Eliminar</span>
-											</button>
-										</div>
-									</form>
-								</div>
-							</section>
-						</div>
-
-					</div>
-
 					<div class="row">
 						<div class="col">
 							<div class="table-responsive table--no-card m-b-30">
+								<div style="align-self: center;">
+									<h3 class="text-center title-2">
+										<b>Compras realizadas</b>
+									</h3>
+								</div>
 								<table
-									class="table table-borderless table-striped table-earning">
-								
+									class="table table-borderless table-striped table-earning"
+									style="margin-top: 20px;">
 									<thead>
 										<tr>
+											<th>C&oacute;digo compra</th>
+											<th>Forma de pago</th>
+											<th>Usuario</th>
+											<th>Proveedor</th>
+											<th>Cantidad total</th>
+											<th>Valor total</th>
+											<th>Tiempo de pago</th>
 											<th>Fecha</th>
-											<th>Cantidad</th>
-											<th>Producto</th>
-											<th class="text-right">Valor Unitario</th>
-											<th class="text-right">I.V.A.</th>
-											<th class="text-right">Total</th>
 										</tr>
 									</thead>
 									<tbody>
-									
-									   <?php
-
-                                                $productos = $invProdDAO->listarInventarioProductos();
-
-                                                for ($i = 0; $i < sizeof($productos); $i ++) 
-                                                {
-                                                    echo "<tr>";
-                                                    echo "<td> " . $productos[$i]['fecha'] . "</td>";
-                                                    echo "<td> " . $productos[$i]['cantidad'] . "</td>";
-                                                    echo "<td> " . $productos[$i]['nom_producto'] . "</td>";
-                                                    echo "<td class='text-right'> " . $productos[$i]['valor_producto'] . "</td>";
-                                                    echo "<td class='text-right'> " . $productos[$i]['iva_producto'] . "</td>";
-                                                    echo "<td class='text-right'> " . $productos[$i]['total'] . "</td>";
-                                                    echo "</tr>";
-                                                }
-
-                                        ?>
-									
+										<?php
+        $compras = $compraDAO->listarCompras();
+        for ($i = 0; $i < sizeof($compras); $i ++) {
+            ?>
+											<tr>
+											<td><?php echo($compras[$i]['cod_compra']); ?></td>
+											<td><?php echo($compras[$i]['f_pago']); ?></td>
+											<td><?php echo($compras[$i]['usuario_compra']); ?></td>
+											<td><?php echo($compras[$i]['proveedor_compra']); ?></td>
+											<td><?php echo($compras[$i]['cantidades_compra']); ?></td>
+											<td><?php echo('$ '.$compras[$i]['total_compra']); ?></td>
+											<td><?php echo($compras[$i]['tiempo_compra']); ?></td>
+											<td><?php echo($compras[$i]['fecha_compra']); ?></td>
+										</tr>
+										<?php } ?>
 									</tbody>
 								</table>
 							</div>
 						</div>
-
 					</div>
-
-
 				</div>
 			</div>
 			<!-- END MAIN CONTENT-->
-
-
 		</div>
-
 		<!-- END PAGE CONTAINER-->
 	</div>
-
-
 	<!-- Jquery JS-->
 	<script src="../../vendor/jquery-3.2.1.min.js"></script>
 	<!-- Bootstrap JS-->

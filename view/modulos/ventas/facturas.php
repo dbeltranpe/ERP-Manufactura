@@ -21,7 +21,6 @@ $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 $productoDAO = new ProductoDAO();
 
-
 ?>
 
 <!DOCTYPE html>
@@ -43,7 +42,8 @@ $productoDAO = new ProductoDAO();
 <link rel="stylesheet" type="text/css" href="../../css/style.css">
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
-<script type="text/javascript" src="http://localhost/erpbienesyservicios/controller/mainAngular.js"></script>
+<script type="text/javascript"
+	src="http://localhost/erpbienesyservicios/controller/mainAngular.js"></script>
 
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
 
@@ -129,8 +129,8 @@ $productoDAO = new ProductoDAO();
         echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
         echo ' class="fas fa-credit-card"></i>Ventas</a>';
         echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-        echo '<li><a href="#">Facturas</a></li>';
-        echo '<li><a href="../ventas/estado-ventas.php">Estado de Ventas</a></li>';
+        echo '<li><a href="../ventas/facturas.php">Registrar Factura</a></li>';
+        echo '<li><a href="../ventas/estado-ventas.php">Visualizaci&oacute;n Facturas</a></li>';
         echo '</ul></li>';
     }
 
@@ -138,11 +138,31 @@ $productoDAO = new ProductoDAO();
         echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
         echo ' class="fas fa-dollar"></i>Finanzas</a>';
         echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-        echo '<li><a href="../finanzas/cuentas-finanzas.php">Cuentas</a></li>';
-        echo '<li><a href="../finanzas/analisis-cuentas.php">An&aacute;lisis</a></li>';
+        echo '<li><a href="../finanzas/cuentas-finanzas.php">General</a></li>';
+        echo '<li><a href="../finanzas/analisis-cuentas.php">Movimientos</a></li>';
+        echo ' </ul></li>';
+    }
+    
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 6) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-shopping-cart"></i>Compras</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../compras/nueva-compra.php">Registrar Compra</a></li>';
+        echo '<li><a href="../compras/proveedores.php">Proveedores</a></li>';
+        echo '<li><a href="../compras/informacion-compras.php">Estado de Compras</a></li>';
+        echo ' </ul></li>';
+    }
+    
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 7) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas  fa-group"></i>R.R.H.H.</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../empleados/nuevo-empleado.php">Registrar Empleado</a></li>';
+        echo '<li><a href="../empleados/informacion-empleados.php">Informaci&oacute;n Empleados</a></li>';
         echo ' </ul></li>';
     }
     ?>
+                   
 					</ul>
 				</nav>
 			</div>
@@ -235,13 +255,13 @@ $productoDAO = new ProductoDAO();
 						</div>
 						<div class="row branding">
 
-<!-- 							<div class="col-xs-6"> -->
+							<!-- 							<div class="col-xs-6"> -->
 
-<!-- 								<div class="invoice-number-container"> -->
-<!-- 									<label for="invoice-number">Factura #</label> -->
-<!-- 								</div> -->
+							<!-- 								<div class="invoice-number-container"> -->
+							<!-- 									<label for="invoice-number">Factura #</label> -->
+							<!-- 								</div> -->
 
-<!-- 							</div> -->
+							<!-- 							</div> -->
 
 						</div>
 
@@ -251,32 +271,34 @@ $productoDAO = new ProductoDAO();
 
 								<div class="col-xs-6">
 									<div class="input-container">
-										<input type="text" ng-model="invoice.cliente_info.nomCliente" placeholder="Nombre Cliente"
-											name="nomCliente" />
+										<input type="text" ng-model="invoice.cliente_info.nomCliente"
+											placeholder="Nombre Cliente" name="nomCliente" />
 									</div>
 									<div class="input-container">
-										<input type="text" ng-model="invoice.cliente_info.ccNit" placeholder="C.C o NIT" name="ccNit" />
+										<input type="text" ng-model="invoice.cliente_info.ccNit"
+											placeholder="C.C o NIT" name="ccNit" />
 									</div>
 									<div class="input-container">
-									<select id='fin_1' name="fin_1" style="width: 100%">
-									<option value="1">Saldada</option>
-									<option value="2">Pendiente de Pago</option>
-									</select> 
-									
+										<select id='fin_1' name="fin_1" style="width: 100%">
+											<option value="1">Saldada</option>
+											<option value="2">Pendiente de Pago</option>
+										</select>
+
 									</div>
 								</div>
 
 								<div class="col-xs-6 right">
 									<div class="input-container">
-										<input type="text" ng-model="invoice.cliente_info.direccion" placeholder="Direcci&oacute;n"
-											name="direccion" />
+										<input type="text" ng-model="invoice.cliente_info.direccion"
+											placeholder="Direcci&oacute;n" name="direccion" />
 									</div>
 									<div class="input-container">
 										<input type="text" ng-model="invoice.cliente_info.telefono"
 											placeholder="N&uacute;mero Telef&oacute;nico" name="telefono" />
 									</div>
 									<div class="input-container">
-										<input type="text" ng-model="invoice.cliente_info.medio" placeholder="Medio de Pago" name="medio" />
+										<input type="text" ng-model="invoice.cliente_info.medio"
+											placeholder="Medio de Pago" name="medio" />
 									</div>
 									<br>
 								</div>
@@ -302,20 +324,24 @@ $productoDAO = new ProductoDAO();
 									</div>
 
 									<div class="col-xs-5 select-container">
-										<select id='ins_1' ng-model="item.description" name="ins_1" style="width: 100%">
+										<select id='ins_1' ng-model="item.description" name="ins_1"
+											style="width: 100%">
                                                 <?php
 
                                                 $productos = $productoDAO->listarProductos();
                                                 $productos2 = array();
 
                                                 for ($i = 0; $i < sizeof($productos); $i ++) {
-                                                    $productos2[]= ["codigo" => $productos[$i]->getCodigo(),"valor" =>$productos[$i]->getValor() ];
+                                                    $productos2[] = [
+                                                        "codigo" => $productos[$i]->getCodigo(),
+                                                        "valor" => $productos[$i]->getValor()
+                                                    ];
                                                     echo "<option value='" . $productos[$i]->getCodigo() . "'>" . $productos[$i]->getNombre() . "</option>";
                                                 }
 
                                                 ?>
-											</select> 
-											
+											</select>
+
 									</div>
 
 									<div class="col-xs-2 input-container">

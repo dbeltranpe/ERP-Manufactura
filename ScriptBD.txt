@@ -168,3 +168,100 @@ ALTER TABLE `trazabilidad_produccion`
 ALTER TABLE `trazabilidad_produccion`
   MODIFY `cod_trazabilidad` int(11) NOT NULL AUTO_INCREMENT;
 
+
+CREATE TABLE IF NOT EXISTS `proveedor` (
+  `cod_proveedor` int(11) NOT NULL,
+  `nom_proveedor` varchar(50) DEFAULT NULL,
+  `tel_proveedor` varchar(50) DEFAULT NULL,
+  `correo_proveedor` varchar(50) DEFAULT NULL,
+  `img_proveedor` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`cod_proveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `proveedor` (`cod_proveedor`, `nom_proveedor`, `tel_proveedor`, `correo_proveedor`, `img_proveedor`) VALUES
+	(1, 'Bicueros Colombia', '3105508980', 'bicucol@gmail.com', '../../images/pro1.png'),
+	(2, 'Lafayette', '3148854809', 'lafayetteCo@gmail.com', '../../images/pro3.jpg'),
+	(3, 'Casa Jorge', '3204823491', 'casa.jorge@outlook.com', '../../images/pro4.png'),
+	(4, 'PadiPlast', '31592944402', 'padiplast@hotmail.com', '../../images/pro2.jpg'),
+	(5, 'Primatela', '3162844922', 'primatela@hotmail.com', '../../images/pro5.jpg');
+
+CREATE TABLE IF NOT EXISTS `compra` 
+(
+  `cod_compra` int(11) NOT NULL,
+  `f_pago` int(11) DEFAULT NULL,
+  `usuario_compra` varchar(50) DEFAULT NULL,
+  `proveedor_compra` int(11) DEFAULT NULL,
+  `cantidades_compra` int(11) DEFAULT NULL,
+  `total_compra` int(11) DEFAULT NULL,
+  `tiempo_compra` varchar(50) DEFAULT NULL,
+  `fecha_compra` date DEFAULT NULL,
+  PRIMARY KEY (`cod_compra`),
+  KEY `f_pago` (`f_pago`),
+  KEY `proveedor_compra` (`proveedor_compra`),
+  CONSTRAINT `compra_ibfk_1` FOREIGN KEY (`f_pago`) REFERENCES `m_pago` (`cod_m_pago`),
+  CONSTRAINT `compra_ibfk_2` FOREIGN KEY (`proveedor_compra`) REFERENCES `proveedor` (`cod_proveedor`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `compra` (`cod_compra`, `f_pago`, `usuario_compra`, `proveedor_compra`, `cantidades_compra`, `total_compra`, `tiempo_compra`, `fecha_compra`) VALUES
+	(1, 3, 'Admin', 1, 880, 101100, 'Plazos', '2019-05-25');
+	
+CREATE TABLE IF NOT EXISTS `compra_insumo` (
+  `cod_com_insumo` int(11) NOT NULL,
+  `cod_compra` int(11) DEFAULT NULL,
+  `nom_insumo` varchar(50) DEFAULT NULL,
+  `cantidad_compra` int(11) DEFAULT NULL,
+  `precio_insumo` int(11) DEFAULT NULL,
+  `precio_total` int(11) DEFAULT NULL,
+  `fecha_compra` date DEFAULT NULL,
+  PRIMARY KEY (`cod_com_insumo`),
+  KEY `cod_compra` (`cod_compra`),
+  CONSTRAINT `compra_insumo_ibfk_1` FOREIGN KEY (`cod_compra`) REFERENCES `compra` (`cod_compra`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `compra_insumo` (`cod_com_insumo`, `cod_compra`, `nom_insumo`, `cantidad_compra`, `precio_insumo`, `precio_total`, `fecha_compra`) VALUES
+	(1, 1, 'Poliester', 300, 120, 36000, '2019-05-25'),
+	(2, 1, 'Cuero', 250, 135, 33750, '2019-05-25'),
+	(3, 1, 'Lana', 330, 95, 31350, '2019-05-25');
+	
+CREATE TABLE IF NOT EXISTS `cuentas_cobrar` (
+  `cod_cxc` int(11) NOT NULL,
+  `cod_factura` int(11) DEFAULT NULL,
+  `val_factura` int(11) DEFAULT NULL,
+  `f_pago` varchar(20) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `estado` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`cod_cxc`),
+  KEY `fk_cod_factura` (`cod_factura`),
+  CONSTRAINT `fk_cod_factura` FOREIGN KEY (`cod_factura`) REFERENCES `factura` (`cod_factura`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+CREATE TABLE IF NOT EXISTS `cuentas_pagar` (
+  `cod_cxp` int(11) NOT NULL,
+  `cod_compra` int(11) DEFAULT NULL,
+  `val_compra` int(11) DEFAULT NULL,
+  `f_pago` varchar(20) DEFAULT NULL,
+  `fecha` date DEFAULT NULL,
+  `estado` varchar(40) DEFAULT NULL,
+  PRIMARY KEY (`cod_cxp`),
+  KEY `fk_cod_compra` (`cod_compra`),
+  CONSTRAINT `fk_cod_compra` FOREIGN KEY (`cod_compra`) REFERENCES `compra` (`cod_compra`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `cuentas_pagar` (`cod_cxp`, `cod_compra`, `val_compra`, `f_pago`, `fecha`, `estado`) VALUES
+	(1, 1, 101100, '3', '2019-05-25', 'Pendiente');
+	
+CREATE TABLE IF NOT EXISTS `finanzas` (
+  `cod_proceso` int(11) NOT NULL,
+  `nombre_proceso` varchar(30) DEFAULT NULL,
+  `total_proceso` int(11) DEFAULT NULL,
+  PRIMARY KEY (`cod_proceso`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+INSERT INTO `finanzas` (`cod_proceso`, `nombre_proceso`, `total_proceso`) VALUES
+	(1, 'Cuentas por cobrar', 101100);
+
+insert into rol VALUES(6,'COMPRAS'),(7,'RRHH');
+	
+	
+
+

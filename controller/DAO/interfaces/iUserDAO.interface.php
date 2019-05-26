@@ -17,7 +17,7 @@ interface iUserDAO
      * <b> post:</b> Se guardó el usuario en la base de datos<br>
      * @param usuario Usuario a guardar
      */
-    public function save($usuario);
+    public function save($nomU, $passU, $telU, $corU, $codRol, $sueldoU, $imgU);
     
     /**
      * Obtiene un usuario en referencia al id por parámetro
@@ -52,5 +52,4 @@ interface iUserDAO
     public function getUsuarioPorNombre($userName);
     
 }
-
 ?>

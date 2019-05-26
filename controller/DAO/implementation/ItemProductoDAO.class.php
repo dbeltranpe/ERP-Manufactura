@@ -1,7 +1,7 @@
 <?php 
 require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/database.class.php');
-require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/model/ItemProducto.class.php');
-require($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/DAO/interfaces/iItemProductoDAO.interface.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/model/ItemProducto.class.php');
+require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/DAO/interfaces/iItemProductoDAO.interface.php');
 
 /**
  * Clase que representa el Data Access Object (DAO) del inventario de insumos

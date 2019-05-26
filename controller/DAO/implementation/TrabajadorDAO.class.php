@@ -4,6 +4,7 @@ require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/model/Trabajador.cl
 require_once($_SERVER['DOCUMENT_ROOT'].'/erpbienesyservicios/controller/DAO/interfaces/iTrabajadorDAO.interface.php');
 
 /**
+* 25xN9KMCwh/SU *
  * Clase que representa el Data Access Object (DAO) de los trabajadores
  * @author Daniel Beltrán Penagos
  * <br>
@@ -54,13 +55,41 @@ class TrabajadorDAO implements iTrabajadorDAO
         $db->doQuery($query, SELECT_QUERY);
         
         $db->disconnect();
-        
     }
 
+    public function listarTrabajadores()
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM TRABAJADOR";
+        $db->doQuery($query, SELECT_QUERY);
+        $trArr = $db->results;
 
+        $codigo = $trArr[0]['cod_usuario'];
 
-    
-   
+        $queryX = "SELECT * FROM USUARIO";
+        $db->doQuery($queryX, SELECT_QUERY);
+        $usArr = $db->results;
+        
+        $trabajadores = array();
+        
+        for ($i = 0; $i < sizeof($trArr); $i++)
+        {
+            $trabajadores[] = [
+                "codigo_trabajador" => $trArr[$i]['codigo_trabajador'],
+                "cod_usuario" => $trArr[$i]['cod_usuario'],
+                "nombre_trabajador" => $trArr[$i]['nombre_trabajador'],
+                "username_usuario" => $usArr[$i]['username_usuario'],
+                "correo_trabajador" => $trArr[$i]['correo_trabajador'],
+                "tel_trabajador" => $trArr[$i]['tel_trabajador'],
+                "img_trabajador" => $trArr[$i]['img_trabajador']
+            ];
+        }
+        
+        $db->disconnect();
+        
+        return $trabajadores;
+    }
 }
-
 ?>

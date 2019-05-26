@@ -8,13 +8,11 @@ if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
 }
 
-if (isset($_POST['logout']))
-{
-session_unset();
-session_destroy();
-header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
-exit();
-    
+if (isset($_POST['logout'])) {
+    session_unset();
+    session_destroy();
+    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+    exit();
 }
 
 $trabajadorDAO = new TrabajadorDAO();
@@ -74,7 +72,7 @@ $trabajador->nombre;
 
 <body class="animsition">
 	<div class="page-wrapper">
-	<!-- MENU SIDEBAR-->
+		<!-- MENU SIDEBAR-->
 		<aside class="menu-sidebar d-none d-lg-block">
 			<div class="logo">
 				<a href="#"> <img src="../images/icon/logo.png" alt="Cool Admin" />
@@ -93,31 +91,54 @@ $trabajador->nombre;
 								<li><a href="../modulos/inventario/reporte-inventario.php">Reportes</a>
 								</li>
 								<li><a href="../modulos/inventario/insumos-inventario.php">Insumos</a></li>
-								<li><a href="../modulos/inventario/productos-inventario.php">Producto Terminado</a></li>
+								<li><a href="../modulos/inventario/productos-inventario.php">Producto
+										Terminado</a></li>
 							</ul></li>
 
 						<li class="has-sub"><a class="js-arrow" href="#"> <i
 								class="fas fa-truck"></i>Producci&oacute;n
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="../modulos/produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>
-								<li><a href="../modulos/produccion/trazabilidad-produccion.php">Ver trazabilidad</a></li>
+								<li><a href="../modulos/produccion/ordenes-produccion.php">Ordenes
+										de Producci&oacute;n</a></li>
+								<li><a href="../modulos/produccion/trazabilidad-produccion.php">Ver
+										trazabilidad</a></li>
 							</ul></li>
 
 						<li class="has-sub"><a class="js-arrow" href="#"> <i
 								class="fas fa-credit-card"></i>Ventas
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="../modulos/ventas/facturas.php">Facturas</a></li>
-								<li><a href="../modulos/ventas/estado-ventas.php">Estado de Ventas</a></li>
+								<li><a href="../modulos/ventas/facturas.php">Registrar Factura</a></li>
+								<li><a href="../modulos/ventas/estado-ventas.php">Visualizaci%oacute;n
+										Facturas</a></li>
 							</ul></li>
 
 						<li class="has-sub"><a class="js-arrow" href="#"> <i
 								class="fas fa-dollar"></i>Finanzas
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="../modulos/finanzas/cuentas-finanzas.php">Cuentas</a></li>
-								<li><a href="../modulos/finanzas/analisis-cuentas.php">An&aacute;lisis Cuentas</a></li>
+								<li><a href="../modulos/finanzas/cuentas-finanzas.php">General</a></li>
+								<li><a href="../modulos/finanzas/analisis-cuentas.php">Movimientos</a></li>
+							</ul></li>
+
+						<li class="has-sub"><a class="js-arrow" href="#"> <i
+								class="fas fa-shopping-cart"></i>Compras
+						</a>
+							<ul class="list-unstyled navbar__sub-list js-sub-list">
+								<li><a href="../modulos/compras/nueva-compra.php">Registrar Compra</a></li>
+								<li><a href="../modulos/compras/proveedores.php">Proveedores</a></li>
+								<li><a href="../modulos/compras/informacion-compras.php">Estado de
+										Compras</a></li>
+							</ul></li>
+
+						<li class="has-sub"><a class="js-arrow" href="#"> <i
+								class="fas  fa-group"></i>R.R.H.H.
+						</a>
+							<ul class="list-unstyled navbar__sub-list js-sub-list">
+								<li><a href="../modulos/empleados/nuevo-empleado.php">Registrar Empleado</a></li>
+								<li><a href="../modulos/empleados/informacion-empleados.php">Informaci&oacute;n
+										Empleados</a></li>
 							</ul></li>
 					</ul>
 				</nav>
@@ -140,45 +161,45 @@ $trabajador->nombre;
 								</button>
 							</form>
 							<div class="header-button">
-								
+
 
 								<!-- Información Cuenta -->
-								
+
 								<div class="account-wrap">
 									<div class="account-item clearfix js-item-menu">
 										<div class="image">
 										   <?php
-										   
-										   file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
-										   
-										   ?>
+
+            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
+
+            ?>
 											<img src="../images/icon/avatar.jpg" />
 										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
-											<?php 
-											echo utf8_encode($trabajador->nombre);
-											?>
+											<?php
+        echo utf8_encode($trabajador->nombre);
+        ?>
 											</a>
 										</div>
 										<div class="account-dropdown js-dropdown">
 											<div class="info clearfix">
 												<div class="image">
-													<a href="#"> <img src="../images/icon/avatar.jpg"/>
+													<a href="#"> <img src="../images/icon/avatar.jpg" />
 													</a>
 												</div>
 												<div class="content">
 													<h5 class="name">
 														<a href="#" id="nombre_cuenta_2">
-														<?php 
-														echo utf8_encode($_SESSION["username"]);
-											             ?>
+														<?php
+            echo utf8_encode($_SESSION["username"]);
+            ?>
 														</a>
 													</h5>
 													<span class="email" id="correo_cuenta">
-													<?php 
-											         echo utf8_encode($trabajador->correo);
-											        ?>
+													<?php
+            echo utf8_encode($trabajador->correo);
+            ?>
 													</span>
 												</div>
 											</div>
@@ -191,13 +212,13 @@ $trabajador->nombre;
 													<a href="#"> <i class="zmdi zmdi-settings"></i>Configuraciones
 													</a>
 												</div>
-											
+
 											</div>
 											<div class="account-dropdown__footer">
-											<form action="" method="post">
-											    <button class="au-btn au-btn--block au-btn--red m-b-20"
-									              type="submit" name="logout">Cerrar Sesi&oacute;n</button>
-									              </form>
+												<form action="" method="post">
+													<button class="au-btn au-btn--block au-btn--red m-b-20"
+														type="submit" name="logout">Cerrar Sesi&oacute;n</button>
+												</form>
 											</div>
 										</div>
 									</div>
@@ -217,15 +238,15 @@ $trabajador->nombre;
 							<div class="col-md-12">
 								<div class="overview-wrap">
 									<h2 class="title-1">Visi&oacute;n General</h2>
-									
+
 								</div>
 							</div>
 						</div>
-						
-<!-- KPI Ventas, Compras, Producción, RRHH -->
+
+						<!-- KPI Ventas, Compras, Producción, RRHH -->
 						<div class="row m-t-25">
-						
-<!-- Gráfica de Número de Empleados -->
+
+							<!-- Gráfica de Número de Empleados -->
 							<div class="col-sm-6 col-lg-3">
 								<div class="overview-item overview-item--c1">
 									<div class="overview__inner">
@@ -244,8 +265,8 @@ $trabajador->nombre;
 									</div>
 								</div>
 							</div>
-							
-<!-- Gráfica de Compras -->
+
+							<!-- Gráfica de Compras -->
 							<div class="col-sm-6 col-lg-3">
 								<div class="overview-item overview-item--c2">
 									<div class="overview__inner">
@@ -264,8 +285,8 @@ $trabajador->nombre;
 									</div>
 								</div>
 							</div>
-							
-<!-- Gráfica de Ordenes de Producción  -->
+
+							<!-- Gráfica de Ordenes de Producción  -->
 							<div class="col-sm-6 col-lg-3">
 								<div class="overview-item overview-item--c3">
 									<div class="overview__inner">
@@ -284,8 +305,8 @@ $trabajador->nombre;
 									</div>
 								</div>
 							</div>
-							
-<!-- Gráfica de Ventas -->
+
+							<!-- Gráfica de Ventas -->
 							<div class="col-sm-6 col-lg-3">
 								<div class="overview-item overview-item--c4">
 									<div class="overview__inner">
@@ -305,19 +326,19 @@ $trabajador->nombre;
 								</div>
 							</div>
 						</div>
-					
-						
-<!-- KPI Finanzas, Inventario-->						
+
+
+						<!-- KPI Finanzas, Inventario-->
 						<div class="row">
-						
-<!-- Gráfica de Inventario-->
+
+							<!-- Gráfica de Inventario-->
 							<div class="col-lg-6">
 								<div class="au-card recent-report">
 									<div class="au-card-inner">
 										<h3 class="title-2">Hist&oacute;rico Inventario</h3>
-										
+
 										<div class="chart-info">
-										
+
 											<div class="chart-info__left">
 												<div class="chart-note">
 													<span class="dot dot--blue"></span> <span>Productos</span>
@@ -326,7 +347,7 @@ $trabajador->nombre;
 													<span class="dot dot--green"></span> <span>Insumos</span>
 												</div>
 											</div>
-											
+
 											<div class="chart-info__right">
 												<div class="chart-statis">
 													<span class="index incre"> <i
@@ -339,21 +360,22 @@ $trabajador->nombre;
 													</span> <span class="label">Insumos</span>
 												</div>
 											</div>
-											
+
 										</div>
-										
+
 										<div class="recent-report__chart">
 											<canvas id="recent-rep-chart"></canvas>
 										</div>
 									</div>
 								</div>
 							</div>
-							
-<!-- Gráfica de Finanzas-->
+
+							<!-- Gráfica de Finanzas-->
 							<div class="col-lg-6">
 								<div class="au-card chart-percent-card">
 									<div class="au-card-inner">
-										<h3 class="title-2 tm-b-5">Finanzas (Todav&iacute;a no s&eacute; como ir&iacute;a)</h3>
+										<h3 class="title-2 tm-b-5">Finanzas (Todav&iacute;a no
+											s&eacute; como ir&iacute;a)</h3>
 										<div class="row no-gutters">
 											<div class="col-xl-6">
 												<div class="chart-note-wrap">
@@ -375,8 +397,8 @@ $trabajador->nombre;
 								</div>
 							</div>
 						</div>
-						
-<!-- Indicadores de Ventas -->
+
+						<!-- Indicadores de Ventas -->
 						<div class="row">
 							<div class="col-lg-9">
 								<h2 class="title-1 m-b-25">Ganancias por Productos</h2>
@@ -462,8 +484,8 @@ $trabajador->nombre;
 									</table>
 								</div>
 							</div>
-							
-<!-- Indicadores de Finanzas -->
+
+							<!-- Indicadores de Finanzas -->
 							<div class="col-lg-3">
 								<h2 class="title-1 m-b-25">Otra cosa de finanzas</h2>
 								<div
@@ -511,7 +533,7 @@ $trabajador->nombre;
 								</div>
 							</div>
 						</div>
-						
+
 						<div class="row">
 							<div class="col-md-12">
 								<div class="copyright">
