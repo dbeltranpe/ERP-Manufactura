@@ -406,25 +406,6 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 												</div>
 											</div>
 
-											<div class="chart-info__right">
-												<div class="chart-statis">
-													<span class="index incre"> <i
-														class="zmdi zmdi-long-arrow-up"></i>
-														<?php 
-														$hs_productos[sizeof($hs_productos)-1] * 100 / $hs_productos[sizeof($hs_productos)-2]
-														?>%
-													</span> <span class="label">Productos</span>
-												</div>
-												<div class="chart-statis mr-0">
-													<span class="index decre"> <i
-														class="zmdi zmdi-long-arrow-down"></i>
-														<?php 
-														$hs_insumos[sizeof($hs_insumos)-1] * 100 / $hs_insumos[sizeof($hs_insumos)-2]
-														?>%
-													</span> <span class="label">Insumos</span>
-												</div>
-											</div>
-
 										</div>
 
 										<div class="recent-report__chart">
