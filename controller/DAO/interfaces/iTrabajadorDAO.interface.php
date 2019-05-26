@@ -41,7 +41,10 @@ interface iTrabajadorDAO
      * <b> post:</b> Se eliminó el trabajador de la base de datos<br>
      * @param number cod_trabajador trabajador referencia a actualizar
      */
-    public function deleteTrabajador($cod_trabajador);
+    public function updateTrabajadorDos($pCod_trabajador, $pCod_usuario, $pNombre, $pCorreo, $pTelefono, $pSueldo);
+    
+    public function deleteTrabajador($cCod_trabajador, $cCod_usuario);
+
     public function listarTrabajadores();
     
 }

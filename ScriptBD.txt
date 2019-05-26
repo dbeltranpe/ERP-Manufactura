@@ -280,3 +280,24 @@ vl_ventas double
 );
 
 INSERT INTO `historico` (`fecha`, `nro_insumos`, `nro_productos`, `nro_empleados`,`nro_ordenes`, `vl_compras`, `vl_ventas`) VALUES ('2019-01-01', '1500', '1430', '25','170','5000000', '12000000'), ('2019-02-01', '782', '1600', '27','175', '4500000', '13500000'), ('2019-03-01', '1300', '1500', '27','180', '6000000', '15000000'), ('2019-04-01', '1220', '1570', '30','175', '7000000', '17000000'),('2019-05-01', '1300', '1500', '32','180', '6500000', '12000000');
+
+CREATE TABLE item_producto(
+cod_orden_produccion INTEGER,
+cod_insumo INTEGER,
+cantidad INTEGER,
+    
+CONSTRAINT pk_item_producto PRIMARY KEY(cod_orden_produccion, cod_insumo),
+CONSTRAINT r_i_i FOREIGN KEY(cod_insumo) REFERENCES INSUMO(cod_insumo)
+);
+
+CREATE TABLE trazabilidad_produccion(
+cod_trazabilidad INTEGER AUTO_INCREMENT,
+accion_realizada VARCHAR(100),
+numero_orden_produccion INTEGER,
+nom_producto VARCHAR(100),
+cantidad_producto INTEGER,
+costo INTEGER,
+fecha DATE,
+    
+CONSTRAINT pk_trazabilidad_produccion PRIMARY KEY(cod_trazabilidad)
+);

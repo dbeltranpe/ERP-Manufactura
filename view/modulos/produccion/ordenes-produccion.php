@@ -34,26 +34,11 @@ $trazabilidad = new TrazabilidadProduccionDAO();
 if (isset($_POST['eliminarOrden']))
 {
     $cod = $_POST['num_el'];
+     
+    $ordenesProduccionDAO->updateStateProduccion($cod, 2);
+    $ord = $ordenesProduccionDAO->getOrdenProduccion($cod);
     
-    $ordenProducc = $ordenesProduccionDAO->getOrdenProduccion($cod);
-    $produc = $productosDAO->getProducto($ordenProducc->getNom_producto());
-    $produccInv = $inv_produccionDAO->getInventarioProducto($produc[0]->getCodigo());
-    
-    $restaInvProducc = $produccInv->getCantidad() - $ordenProducc->getCantidad();
-    $inv_produccionDAO->updateInventarioProducto($produc[0]->getCodigo(), $restaInvProducc);
-    
-    
-    $items = $item_productoDAO->getItemProduccion($cod);
-    $cantItem = $items->getCantidad();
-    $insumoInv = $inv_insumosDAO->getInventarioInsumo($items->getCod_insumo());
-    
-    $sumaInsumo = $insumoInv->getCantidad() + $cantItem;
-    $inv_insumosDAO->updateInventarioInsumo($items->getCod_insumo(), $sumaInsumo);
-    
-    $item_productoDAO->deleteItemProduccion($cod);
-    $ordenesProduccionDAO->deleteOrdenProduccion($cod);
-    
-    $trazabilidad->save("Elimino Orden", $cod);
+    $trazabilidad->save("Elimino Orden", $ord->getCod_orden_produccion(), $ord->getNom_producto(), $ord->getCantidad(), $ord->getCosto_fabricacion());
 }
 ?>
 
@@ -103,6 +88,10 @@ if (isset($_POST['eliminarOrden']))
 
 <!-- Main CSS-->
 <link href="../../css/theme.css" rel="stylesheet" media="all">
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
 
 </head>
 <body class="animsition">
@@ -323,7 +312,7 @@ if (isset($_POST['eliminarOrden']))
 								<table
 									class="table table-borderless table-striped table-earning">
 									<thead>
-										<tr>
+										<tr> 
 											<th style="font-size:12px;">N&uacute;mero de orden</th>
 											<th style="font-size:12px;">Nombre del Producto</th>
 											<th style="font-size:12px;">Cantidad</th>
@@ -343,15 +332,32 @@ if (isset($_POST['eliminarOrden']))
                                                 {
                                                     for ($i = 0; $i < sizeof($ordenes); $i ++)
                                                     {
-                                                        echo "<tr style='font-size:12px;'>";
-                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['cod_orden'] . "</td>";
-                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['cantidad'] . "</td>";
-                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['producto_ar'] . "</td>";
-                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['fecha_entrega'] . "</td>";
-                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['fecha_solicitud'] . "</td>";
-                                                        echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['almacen_destino'] . "</td>";
+                                                        $estado = $ordenes[$i]['estado'];
+                                                        $cod_poduc = $ordenes[$i]['cod_orden'];
                                                         
-                                                        echo "</tr>";
+                                                        if($estado == 1)
+                                                        {
+                                                            echo "<tr class = 'success'>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['cod_orden'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['cantidad'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['producto_ar'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['fecha_entrega'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['fecha_solicitud'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['almacen_destino'] . "</td>";
+                                                            echo "</tr>";
+                                                        }
+                                                        else 
+                                                        {
+                                                        
+                                                            echo "<tr class = 'danger'>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['cod_orden'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['cantidad'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['producto_ar'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['fecha_entrega'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['fecha_solicitud'] . "</td>";
+                                                            echo "<td style='font-size:12px;' align = 'center'> " . $ordenes[$i]['almacen_destino'] . "</td>";
+                                                            echo "</tr>";
+                                                        }
                                                     }
                                                 }
                                                 else 

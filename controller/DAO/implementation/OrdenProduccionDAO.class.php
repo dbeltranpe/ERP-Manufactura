@@ -208,7 +208,18 @@ class OrdenProduccionDAO implements iOrdenProduccionDAO
         return $codigo;
     }
     
-    public function totalOrdenes(){
+    public function updateStateProduccion($codigo, $estado)
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "UPDATE ORDENES_PRODUCCION SET estado=".$estado." WHERE cod_orden_produccion='".$codigo."';";
+        $db->doQuery($query, UPDATE_QUERY);
+        
+        $db->disconnect();
+    }
+
+        public function totalOrdenes(){
         
         $db = new Database();
         $db->connect();

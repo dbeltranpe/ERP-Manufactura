@@ -44,7 +44,7 @@ if (isset($_POST['nuevaCompra'])) {
     $totCantidad = $_POST["totcan"];
     $totSuma = $_POST["totsum"];
 
-    $compraDAO->save("Admin", $a, $b, $c, $d, $provData, $pagoData, $timeData, $totCantidad, $totSuma);
+    $compraDAO->save($trabajador->getNombre(), $a, $b, $c, $d, $provData, $pagoData, $timeData, $totCantidad, $totSuma);
 }
 ?>
 <!DOCTYPE html>
@@ -235,61 +235,73 @@ if (isset($_POST['nuevaCompra'])) {
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-						<?php 
-						
-						if($_SESSION["rol"]==1)
-						{
-						    echo '<li><a href="../../principal/index.php"> <i';
-						    echo ' class="fas fa-tachometer-alt"></i>Dashboard</a></li>';
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==2 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4)
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-home"></i>Inventario</a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../inventario/reporte-inventario.php">Reportes</a></li>';
-						    
-						    if($_SESSION["rol"]==1 || $_SESSION["rol"]==2)
-						    {
-						        echo '<li><a href="../inventario/insumos-inventario.php">Insumos</a></li>';
-						        echo '<li><a href="../inventario/productos-inventario.php">Producto Terminado</a></li>';
-						    }
-						    
-						    echo'</ul></li>';
-			
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 )
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-truck"></i>Producci&oacute;n </a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>';
-						    echo '<li><a href="../produccion/trazabilidad-produccion.php">Ver Trazabilidad</a></li>';
-						    echo '</ul></li>';
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==3 || $_SESSION["rol"]==4 || $_SESSION["rol"]==5 )
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-credit-card"></i>Ventas</a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="../ventas/facturas.php">Facturas</a></li>';
-						    echo '<li><a href="../ventas/estado-ventas.php">Estado de Ventas</a></li>';
-						    echo '</ul></li>';
-						}
-						
-						if($_SESSION["rol"]==1 || $_SESSION["rol"]==5)
-						{
-						    echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
-						    echo ' class="fas fa-dollar"></i>Finanzas</a>';
-						    echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-						    echo '<li><a href="#">Cuentas</a></li>';
-						    echo '<li><a href="../finanzas/analisis-cuentas.php">An&aacute;lisis</a></li>';
-						    echo ' </ul></li>';
-						}	
-						?>
+					<?php
+
+    if ($_SESSION["rol"] == 1) {
+        echo '<li><a href="../../principal/index.php"> <i';
+        echo ' class="fas fa-tachometer-alt"></i>Dashboard</a></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 2 || $_SESSION["rol"] == 3 || $_SESSION["rol"] == 4) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-home"></i>Inventario</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../inventario/reporte-inventario.php">Reportes</a></li>';
+
+        if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 2) {
+            echo '<li><a href="../inventario/insumos-inventario.php">Insumos</a></li>';
+            echo '<li><a href="../inventario/productos-inventario.php">Producto Terminado</a></li>';
+        }
+
+        echo '</ul></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 3 || $_SESSION["rol"] == 4) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-truck"></i>Producci&oacute;n </a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../produccion/ordenes-produccion.php">Ordenes de Producci&oacute;n</a></li>';
+        echo '<li><a href="../produccion/trazabilidad-produccion.php">Ver Trazabilidad</a></li>';
+        echo '</ul></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 3 || $_SESSION["rol"] == 4 || $_SESSION["rol"] == 5) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-credit-card"></i>Ventas</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../ventas/facturas.php">Registrar Factura</a></li>';
+        echo '<li><a href="../ventas/estado-ventas.php">Visualizaci&oacute;n Facturas</a></li>';
+        echo '</ul></li>';
+    }
+
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 5) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-dollar"></i>Finanzas</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../finanzas/cuentas-finanzas.php">General</a></li>';
+        echo '<li><a href="../finanzas/analisis-cuentas.php">Movimientos</a></li>';
+        echo ' </ul></li>';
+    }
+    
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 6) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas fa-shopping-cart"></i>Compras</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../compras/nueva-compra.php">Registrar Compra</a></li>';
+        echo '<li><a href="../compras/proveedores.php">Proveedores</a></li>';
+        echo '<li><a href="../compras/informacion-compras.php">Estado de Compras</a></li>';
+        echo ' </ul></li>';
+    }
+    
+    if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 7) {
+        echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
+        echo ' class="fas  fa-group"></i>R.R.H.H.</a>';
+        echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
+        echo '<li><a href="../empleados/nuevo-empleado.php">Registrar Empleado</a></li>';
+        echo '<li><a href="../empleados/informacion-empleados.php">Informaci&oacute;n Empleados</a></li>';
+        echo ' </ul></li>';
+    }
+    ?>
 					</ul>
 				</nav>
 			</div>

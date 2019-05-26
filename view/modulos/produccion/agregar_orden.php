@@ -33,8 +33,7 @@ $inv_productoDAO = new InventarioProductoDAO();
 $inv_insumosDAO = new InventarioInsumoDAO();
 $trazabilidad = new TrazabilidadProduccionDAO();
 
-if (isset($_POST['agregarOrden'])) 
-{
+if (isset($_POST['agregarOrden'])) {
     $nomP = $_POST['nom'];
     $cantidadP = $_POST['cant1'];
     $valor_unitario = $_POST['val_u'];
@@ -42,51 +41,99 @@ if (isset($_POST['agregarOrden']))
     $fechaE = $_POST['fe'];
     $almacen = $_POST['alm'];
     $estado = 1;
+
+    $item1 = $_POST['item_1'];
+    $cantidad_Item1 = $_POST['cant_item1'];
+    $item2 = $_POST['item_2'];
+    $cantidad_Item2 = $_POST['cant_item2'];
+    $item3 = $_POST['item_3'];
+    $cantidad_Item3 = $_POST['cant_item3'];
+    $item4 = $_POST['item_4'];
+    $cantidad_Item4 = $_POST['cant_item4'];
+    $item5 = $_POST['item_5'];
+    $cantidad_Item5 = $_POST['cant_item5'];
+    $item6 = $_POST['item_6'];
+    $cantidad_Item6 = $_POST['cant_item6'];
+
+    $continuar = true;
+    $items = array(
+        $item1,
+        $cantidad_Item1,
+        $item2,
+        $cantidad_Item2,
+        $item3,
+        $cantidad_Item3,
+        $item4,
+        $cantidad_Item4,
+        $item5,
+        $cantidad_Item5,
+        $item6,
+        $cantidad_Item6
+    );
     
-    $items = $_POST['item_1'];
-    $cantidad_Item = $_POST['cant_item'];
-    
-    $cant_insumos = $inv_insumosDAO->getInventarioInsumo($items);
-    $cant_final = $cant_insumos->getCantidad() - $cantidad_Item;
-    
-    if ($cant_final >= 0)
+    $cont = 0;
+    for ($i = 0; $i < 6; $i = $i + 2) 
+    {
+        if($items[$i] != 0)
+        {
+            $cant_insumos = $inv_insumosDAO->getInventarioInsumo($items[$i]);
+            $cant_final = $cant_insumos->getCantidad() - $items[$i+1];
+            
+            $cont = $cont + 2;
+            if ($cant_final < 0) 
+            {
+                $continuar = false;
+            }
+        }
+    }
+
+    if ($continuar == true) 
     {
         $exiProducto = $productoDAO->getProducto($nomP);
-        
-        if (sizeof($exiProducto) == 0)
+
+        if (sizeof($exiProducto) == 0) 
         {
-            $productoDAO->save($nomP, $valor_unitario, 0.19);
+            $productoDAO->save($nomP, 0.19, $valor_unitario);
+
+            $savedProducto = $productoDAO->getProducto($nomP);
+            $inv_productoDAO->save($savedProducto[0]->getCodigo(), $cantidadP);
+        } 
+        else 
+        {
+            $savedProducto = $productoDAO->getProducto($nomP);
+            $inv_productoDAO->save($savedProducto[0]->getCodigo(), $cantidadP);
+        }
+        
+        $valor_insumos = 0;
+        for ($i = 0; $i < $cont; $i = $i + 2) 
+        {
+            $insumo = $insumoDAO->getInsumo($items[$i]);
+            $valor_iva_insumos = $insumo->getIva() * $insumo->getValor();
+            $valor_insumos = $valor_insumos + ($insumo->getValor() * $items[$i+1]) + $valor_iva_insumos;
             
-            $savedProducto = $productoDAO->getProducto($nomP);
-            $inv_productoDAO->save($savedProducto[0]->getCodigo(), $cantidadP);
+            $cant_final = $cant_insumos->getCantidad() - $items[$i+1];
+            $inv_insumosDAO->updateInventarioInsumo($items[$i], $cant_final);
         }
-        else
-        {
-            $savedProducto = $productoDAO->getProducto($nomP);
-            $inv_productoDAO->save($savedProducto[0]->getCodigo(), $cantidadP);
-        }
-        
-        $insumo = $insumoDAO->getInsumo($items);
-        $valor_iva_insumos = $insumo->getIva() * $insumo->getValor();
-        $valor_insumos = ($insumo->getValor() * $cantidad_Item) + $valor_iva_insumos;
         
         $exiProducto2 = $productoDAO->getProducto($nomP);
         $valor_iva_productos = $exiProducto2[0]->getIva();
         $valor_productos = ($exiProducto2[0]->getValor() * $cantidadP) + $valor_iva_productos;
         
         $costo_final = $valor_insumos + $valor_productos;
-        
+
         $ord_ProduccionDAO->save($nomP, $cantidadP, $fechaI, $fechaE, $costo_final, $almacen, $estado);
-        $inv_insumosDAO->updateInventarioInsumo($items, $cant_final);
-        
+
         $codigo = $ord_ProduccionDAO->obtenerCodUltimaFila();
-        $itemProdcDAO->save($codigo, $items, $cantidad_Item);
+        
+        for ($i = 0; $i < $cont; $i = $i +2) 
+        {
+            $itemProdcDAO->save($codigo, $items[$i], $items[$i+1]);
+        }
         
         $nomProducc = $ord_ProduccionDAO->getOrdenProduccionByName($nomP);
-        $trazabilidad->save("Agrego Orden", $nomProducc->getCod_orden_produccion());
-        
-    }
-    
+        $trazabilidad->save("Agrego Orden", $nomProducc->getCod_orden_produccion(), $nomProducc->getNom_producto(), $nomProducc->getCantidad(), $nomProducc->getCosto_fabricacion());
+     
+    } 
 }
 ?>
 
@@ -150,7 +197,7 @@ if (isset($_POST['agregarOrden']))
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-						<?php
+					<?php
 
     if ($_SESSION["rol"] == 1) {
         echo '<li><a href="../../principal/index.php"> <i';
@@ -269,14 +316,14 @@ if (isset($_POST['agregarOrden']))
 													<h5 class="name">
 														<a href="#" id="nombre_cuenta_2">
 														<?php
-                                                            echo utf8_encode($_SESSION["username"]);
-                                                        ?>
+            echo utf8_encode($_SESSION["username"]);
+            ?>
 														</a>
 													</h5>
 													<span class="email" id="correo_cuenta">
 													<?php
-                                                         echo utf8_encode($trabajador->correo);
-                                                    ?>
+            echo utf8_encode($trabajador->correo);
+            ?>
 													</span>
 												</div>
 											</div>
@@ -320,91 +367,196 @@ if (isset($_POST['agregarOrden']))
 								</div>
 								<hr>
 								<form action="" method="post" novalidate="novalidate">
-									
+
 									<div class="form-group">
-										<label for="cc-payment" class="control-label mb-1">Nombre del Producto</label>
-										<input id="nom" name="nom" type="text"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
-										
+										<label for="cc-payment" class="control-label mb-1">Nombre del
+											Producto</label> <input id="nom" name="nom" type="text"
+											class="form-control" aria-required="true"
+											aria-invalid="false">
+
 									</div>
-									
+
 									<div class="form-group">
 										<label for="cc-payment" class="control-label mb-1">Cantidad</label>
 										<input id="cant1" name="cant1" type="number"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
+											class="form-control" aria-required="true"
+											aria-invalid="false">
 									</div>
-									
+
 									<div class="form-group">
-										<label for="cc-payment" class="control-label mb-1">Valor Unitario</label>
-										<input id="val_u" name="val_u" type="number"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
+										<label for="cc-payment" class="control-label mb-1">Valor
+											Unitario</label> <input id="val_u" name="val_u" type="number"
+											class="form-control" aria-required="true"
+											aria-invalid="false">
 									</div>
-									
+
 									<div class="form-group">
-									
-									<div style="width:49%; float:left;">
-										<div >
-											<label for="cc-payment" class="control-label mb-1">Materiales a usar</label>
-										</div>
-										
-										<div class="form-group">
-											<select id='item_1' name="item_1" class=" form-control">
+
+										<div style="width: 49%; float: left;">
+											<div>
+												<label for="cc-payment" class="control-label mb-1">Materiales
+													a usar</label>
+											</div>
+
+											<div class="form-group">
+												<select id='item_1' name="item_1" class=" form-control">
+													<option value="0">- - -</option>
                                        	 	<?php
-    
-                                                $insumos = $insumoDAO->listarInsumos();
 
-                                                for ($i = 0; $i < sizeof($insumos); $i ++)
-                                                {
-                                                    echo "<option value='" .$insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
-                                                }
+                                        $insumos = $insumoDAO->listarInsumos();
 
-                                            ?>                                 
+                                        for ($i = 0; $i < sizeof($insumos); $i ++) {
+                                            echo "<option value='" . $insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
+                                        }
+
+                                        ?>                                 
     										</select>
-    									</div>
-									</div>
-									
-									<div style="width:49%; float:right;">
-										<div >
-											<label for="cc-payment" class="control-label mb-1">Cantidad Total</label>
+											</div>
+											<div class="form-group">
+												<select id='item_2' name="item_2" class=" form-control">
+													<option value="0">- - -</option>
+                                       	 	<?php
+
+                                        $insumos = $insumoDAO->listarInsumos();
+
+                                        for ($i = 0; $i < sizeof($insumos); $i ++) {
+                                            echo "<option value='" . $insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
+                                        }
+
+                                        ?>                                 
+    										</select>
+											</div>
+											<div class="form-group">
+												<select id='item_3' name="item_3" class=" form-control">
+													<option value="0">- - -</option>
+                                       	 	<?php
+
+                                        $insumos = $insumoDAO->listarInsumos();
+
+                                        for ($i = 0; $i < sizeof($insumos); $i ++) {
+                                            echo "<option value='" . $insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
+                                        }
+
+                                        ?>                                 
+    										</select>
+											</div>
+											<div class="form-group">
+												<select id='item_4' name="item_4" class=" form-control">
+													<option value="0">- - -</option>
+                                       	 	<?php
+
+                                        $insumos = $insumoDAO->listarInsumos();
+
+                                        for ($i = 0; $i < sizeof($insumos); $i ++) {
+                                            echo "<option value='" . $insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
+                                        }
+
+                                        ?>                                 
+    										</select>
+											</div>
+											<div class="form-group">
+												<select id='item_5' name="item_5" class=" form-control">
+													<option value="0">- - -</option>
+                                       	 	<?php
+
+                                        $insumos = $insumoDAO->listarInsumos();
+
+                                        for ($i = 0; $i < sizeof($insumos); $i ++) {
+                                            echo "<option value='" . $insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
+                                        }
+
+                                        ?>                                 
+    										</select>
+											</div>
+											<div class="form-group">
+												<select id='item_6' name="item_6" class=" form-control">
+													<option value="0">- - -</option>
+                                       	 	<?php
+
+                                        $insumos = $insumoDAO->listarInsumos();
+
+                                        for ($i = 0; $i < sizeof($insumos); $i ++) {
+                                            echo "<option value='" . $insumos[$i]->getCodigo() . "'>" . $insumos[$i]->getNombre() . "</option>";
+                                        }
+
+                                        ?>                                 
+    										</select>
+											</div>
 										</div>
-										
-										<div class="form-group">
-										<input id="cant_item" name="cant_item" type="number"
-												class="form-control" aria-required="true"
-												aria-invalid="false">	
-										</div>	
+
+										<div style="width: 49%; float: right;">
+											<div>
+												<label for="cc-payment" class="control-label mb-1">Cantidad
+													Total</label>
+											</div>
+
+											<div class="form-group">
+												<input id="cant_item1" name="cant_item1" type="number"
+													class="form-control" aria-required="true"
+													aria-invalid="false">
+											</div>
+
+											<div class="form-group">
+												<input id="cant_item2" name="cant_item2" type="number"
+													class="form-control" aria-required="true"
+													aria-invalid="false">
+											</div>
+
+											<div class="form-group">
+												<input id="cant_item3" name="cant_item3" type="number"
+													class="form-control" aria-required="true"
+													aria-invalid="false">
+											</div>
+
+											<div class="form-group">
+												<input id="cant_item4" name="cant_item4" type="number"
+													class="form-control" aria-required="true"
+													aria-invalid="false">
+											</div>
+
+											<div class="form-group">
+												<input id="cant_item5" name="cant_item5" type="number"
+													class="form-control" aria-required="true"
+													aria-invalid="false">
+											</div>
+											<div class="form-group">
+												<input id="cant_item6" name="cant_item6" type="number"
+													class="form-control" aria-required="true"
+													aria-invalid="false">
+											</div>
+										</div>
+
 									</div>
-																		
-									</div>
-									
+
 									<div class="form-group">
-										<label for="cc-payment" class="control-label mb-1">Fecha de Inicio</label>
-										<input id="fi" name="fi" type="date"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
+										<label for="cc-payment" class="control-label mb-1">Fecha de
+											Inicio</label> <input id="fi" name="fi" type="date"
+											class="form-control" aria-required="true"
+											aria-invalid="false">
 									</div>
-									
+
 									<div class="form-group">
-										<label for="cc-payment" class="control-label mb-1">Fecha de Entrega</label>
-										<input id="fe" name="fe" type="date"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
+										<label for="cc-payment" class="control-label mb-1">Fecha de
+											Entrega</label> <input id="fe" name="fe" type="date"
+											class="form-control" aria-required="true"
+											aria-invalid="false">
 									</div>
-									
+
 									<div class="form-group">
-										<label for="cc-payment" class="control-label mb-1">Almac&eacute;n de destino</label>
-										<select id="alm" name="alm"
-												class="form-control" aria-required="true"
-												aria-invalid="false">
-												
-												<option value="Zapatos la Corona Sede chic&oacute;"> Zapatos la Corona Sede chic&oacute;</option>
-												<option value="Zapatos la Corona Sede Ricaurte"> Zapatos la Corona Sede Ricaurte</option>
-												<option value="Zapatos la Corona Sede Cantalejo"> Zapatos la Corona Sede Cantalejo</option>
-												<option value="Zapatos la Corona Sede Cali"> Zapatos la Corona Sede Cali</option>
-												
+										<label for="cc-payment" class="control-label mb-1">Almac&eacute;n
+											de destino</label> <select id="alm" name="alm"
+											class="form-control" aria-required="true"
+											aria-invalid="false">
+
+											<option value="Zapatos la Corona Sede chic&oacute;">Zapatos
+												la Corona Sede chic&oacute;</option>
+											<option value="Zapatos la Corona Sede Ricaurte">Zapatos la
+												Corona Sede Ricaurte</option>
+											<option value="Zapatos la Corona Sede Cantalejo">Zapatos la
+												Corona Sede Cantalejo</option>
+											<option value="Zapatos la Corona Sede Cali">Zapatos la Corona
+												Sede Cali</option>
+
 										</select>
 									</div>
 
@@ -419,9 +571,9 @@ if (isset($_POST['agregarOrden']))
 							</div>
 						</section>
 					</div>
+				</div>
 			</div>
-		</div>
-		<!-- END MAIN CONTENT-->
+			<!-- END MAIN CONTENT-->
 
 
 		</div>

@@ -70,6 +70,10 @@ $trabajador->nombre;
 <!-- Main CSS-->
 <link href="../../css/theme.css" rel="stylesheet" media="all">
 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.0/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js"></script>
+
 </head>
 <body class="animsition">
 	<div class="page-wrapper">
@@ -247,9 +251,10 @@ $trabajador->nombre;
 				
 				<div class="card-header" align="center"><b>Trazabilidad de la Producci&oacute;n</b></div>
 
-
-					<div class="row">
-						<div class="col">
+					<br>
+					<div class="row">						
+						<div class="col-6">
+							<div class="card-header" align="center">Ordenes activas</div>
 							<div class="table-responsive table--no-card m-b-30">
 								<table
 									class="table table-borderless table-striped table-earning">
@@ -258,6 +263,9 @@ $trabajador->nombre;
 											<th>C&oacute;digo</th>
 											<th>Acci&oacute;n Realizada</th>
 											<th>N&uacute;mero de Orden</th>
+											<th>Nombre Producto</th>
+											<th>Cantidad</th>
+											<th>Costo</th>
 											<th>Fecha de Acci&oacute;n</th>
 										</tr>
 									</thead>
@@ -265,16 +273,19 @@ $trabajador->nombre;
 										<?php
 										
 										        $trazabilidad = array();
-										        $trazabilidad = $trazabilidadDAO->listarTrazabilidad();
+										        $trazabilidad = $trazabilidadDAO->listarTrazabilidadActiva();
                                                 
 										        if (sizeof($trazabilidad) > 0)
                                                 {
                                                     for ($i = 0; $i < sizeof($trazabilidad); $i ++)
                                                     {
-                                                        echo "<tr style='font-size:12px;'>";
+                                                        echo "<tr class = 'success' style='font-size:12px;'>";
                                                         echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['cod_trazabilidad'] . "</td>";
                                                         echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['accion_realizada'] . "</td>";
                                                         echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['numero_orden'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['nom_produc'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['cantidad_produc'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . number_format($trazabilidad[$i]['costo'],2). "</td>";
                                                         echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['fecha'] . "</td>";
                                                         
                                                         echo "</tr>";
@@ -283,7 +294,57 @@ $trabajador->nombre;
                                                 else 
                                                 {
                                                     echo "<tr>";
-                                                    echo "<td style='font-size:12px;' colspan = '6' align = 'center'> No hay ordenes </td>";
+                                                    echo "<td style='font-size:12px;' colspan = '7' align = 'center'> No hay ordenes </td>";
+                                                }
+                                                
+                                        ?>
+									</tbody>
+								</table>
+							</div>
+						</div>
+						
+						<div class="col-6">
+						<div class="card-header" align="center">Ordenes Eliminadas</div>
+							<div class="table-responsive table--no-card m-b-30">
+								<table
+									class="table table-borderless table-striped table-earning">
+									<thead>
+										<tr>
+											<th>C&oacute;digo</th>
+											<th>Acci&oacute;n Realizada</th>
+											<th>N&uacute;mero de Orden</th>
+											<th>Nombre Producto</th>
+											<th>Cantidad</th>
+											<th>Costo</th>
+											<th>Fecha de Acci&oacute;n</th>
+										</tr>
+									</thead>
+									<tbody>
+										<?php
+										
+										        $trazabilidad = array();
+										        $trazabilidad = $trazabilidadDAO->listarTrazabilidadEliminada();
+                                                
+										        if (sizeof($trazabilidad) > 0)
+                                                {
+                                                    for ($i = 0; $i < sizeof($trazabilidad); $i ++)
+                                                    {
+                                                        echo "<tr class = 'danger' style='font-size:12px;'>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['cod_trazabilidad'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['accion_realizada'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['numero_orden'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['nom_produc'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['cantidad_produc'] . "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . number_format($trazabilidad[$i]['costo'],2). "</td>";
+                                                        echo "<td style='font-size:12px;' align = 'center'> " . $trazabilidad[$i]['fecha'] . "</td>";
+                                                        
+                                                        echo "</tr>";
+                                                    }
+                                                }
+                                                else 
+                                                {
+                                                    echo "<tr>";
+                                                    echo "<td style='font-size:12px;' colspan = '7' align = 'center'> No hay ordenes </td>";
                                                 }
                                                 
                                         ?>

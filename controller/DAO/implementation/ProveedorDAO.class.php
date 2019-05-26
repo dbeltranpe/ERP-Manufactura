@@ -19,7 +19,7 @@ class ProveedorDAO implements iProveedorDAO
         $db = new Database();
         $db->connect();
         
-        $query = "SELECT * FROM PROVEEDOR;";
+        $query = "SELECT * FROM PROVEEDOR ORDER BY cod_proveedor DESC;";
         $db->doQuery($query, SELECT_QUERY);
         $proArr = $db->results;
         
@@ -39,6 +39,31 @@ class ProveedorDAO implements iProveedorDAO
         $db->disconnect();
         
         return $proveedores;
+    }
+
+    public function updateProveedor($cCodProveedor, $pNombre, $pCorreo, $pTelefono) {
+        $db = new Database();
+        $db->connect();
+
+        $query = "UPDATE PROVEEDOR SET nom_proveedor='" . $pNombre . "', correo_proveedor='" . $pCorreo . "', tel_proveedor='$pTelefono' WHERE cod_proveedor = " . $cCodProveedor . "; ";
+        $db->doQuery($query, UPDATE_QUERY);
+
+        $db->disconnect();
+    }
+
+    public function saveProveedor($pNombre, $pCorreo, $pTelefono, $pImg) {
+        $db = new Database();
+        $db->connect();
+
+        $count = "SELECT * FROM PROVEEDOR ORDER BY cod_proveedor DESC";
+        $db->doQuery($count, SELECT_QUERY);
+        $num = $db->results[0];
+        $codigo = $num['cod_proveedor'];
+
+        $query = "INSERT INTO PROVEEDOR VALUES($codigo+1, '$pNombre', '$pTelefono', '$pCorreo', '$pImg');";
+        $db->doQuery($query, INSERT_QUERY);
+
+        $db->disconnect();
     }
 }
 ?>

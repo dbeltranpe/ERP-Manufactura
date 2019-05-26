@@ -15,13 +15,69 @@ class TrazabilidadProduccion
     private $codigo;
     private $accion;
     private $num_orden;
+    private $nom_producto;
+    private $cantidad_producto;
+    private $costo;
     private $fecha;
-
-    public function TrazabilidadProduccion($pCodigo, $pAccion, $pNum_Orden, $pFecha) 
+    
+    
+    public function TrazabilidadProduccion($pCodigo, $pAccion, $pNum_Orden, $pNom_producto, $pCant_producto, $pCosto,$pFecha)
     {
         $this->codigo = $pCodigo;
         $this->accion = $pAccion;
         $this->num_orden = $pNum_Orden;
+        $this->nom_producto = $pNom_producto;
+        $this->cantidad_producto = $pCant_producto;
+        $this->costo = $pCosto;
+        $this->fecha = $pFecha;
+    }
+    
+    /**
+     * @return mixed
+     */
+    public function getNom_producto()
+    {
+        return $this->nom_producto;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCantidad_producto()
+    {
+        return $this->cantidad_producto;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function getCosto()
+    {
+        return $this->costo;
+    }
+
+    /**
+     * @param mixed $nom_producto
+     */
+    public function setNom_producto($nom_producto)
+    {
+        $this->nom_producto = $nom_producto;
+    }
+
+    /**
+     * @param mixed $cantidad_producto
+     */
+    public function setCantidad_producto($cantidad_producto)
+    {
+        $this->cantidad_producto = $cantidad_producto;
+    }
+
+    /**
+     * @param mixed $costo
+     */
+    public function setCosto($costo)
+    {
+        $this->costo = $costo;
     }
 
     /**
@@ -87,5 +143,6 @@ class TrazabilidadProduccion
     {
         $this->fecha = $fecha;
     }
+    
 }
 ?>

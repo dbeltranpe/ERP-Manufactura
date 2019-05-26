@@ -13,7 +13,7 @@
 interface iTrazabilidadProduccionDAO
 {
     
-    public function save($accion_realizada, $numero_orden);
+    public function save($accion_realizada, $numero_orden, $nom_producto, $cantidad, $costo);
     
     public function getTrazabilidad($codigo);
     

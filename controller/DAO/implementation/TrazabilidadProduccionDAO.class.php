@@ -30,12 +30,12 @@ class TrazabilidadProduccionDAO implements iTrazabilidadProduccionDAO
         
     }
 
-    public function save($accion_realizada, $numero_orden)
+    public function save($accion_realizada, $numero_orden, $nom_producto, $cantidad, $costo)
     {
         $db = new Database();
         $db->connect();
         
-        $query = "INSERT INTO TRAZABILIDAD_PRODUCCION VALUES(0,'" .$accion_realizada."', '".$numero_orden."', SYSDATE());";
+        $query = "INSERT INTO TRAZABILIDAD_PRODUCCION VALUES(0,'" .$accion_realizada."', '".$numero_orden."', '".$nom_producto."', '".$cantidad."', '".$costo."', SYSDATE());";
         $db->doQuery($query, INSERT_QUERY);
         
         
@@ -59,6 +59,67 @@ class TrazabilidadProduccionDAO implements iTrazabilidadProduccionDAO
                 "cod_trazabilidad" => $trArr[$i]['cod_trazabilidad'],
                 "accion_realizada" => $trArr[$i]['accion_realizada'],
                 "numero_orden" => $trArr[$i]['numero_orden_produccion'],
+                "nom_produc" => $trArr[$i]['nom_producto'],
+                "cantidad_produc" => $trArr[$i]['cantidad_producto'],
+                "costo" => $trArr[$i]['costo'],
+                "fecha" => $trArr[$i]['fecha']
+            ];
+        }
+        
+        $db->disconnect();
+        
+        return $traza;
+    }
+    
+    public function listarTrazabilidadActiva()
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM TRAZABILIDAD_PRODUCCION WHERE accion_realizada = 'Agrego Orden'";
+        $db->doQuery($query, SELECT_QUERY);
+        $trArr = $db->results;
+        
+        $traza = array();
+        
+        for ($i = 0; $i < sizeof($trArr); $i++)
+        {
+            $traza[] = [
+                "cod_trazabilidad" => $trArr[$i]['cod_trazabilidad'],
+                "accion_realizada" => $trArr[$i]['accion_realizada'],
+                "numero_orden" => $trArr[$i]['numero_orden_produccion'],
+                "nom_produc" => $trArr[$i]['nom_producto'],
+                "cantidad_produc" => $trArr[$i]['cantidad_producto'],
+                "costo" => $trArr[$i]['costo'],
+                "fecha" => $trArr[$i]['fecha']
+            ];
+        }
+        
+        $db->disconnect();
+        
+        return $traza;
+    }
+    
+    public function listarTrazabilidadEliminada()
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM TRAZABILIDAD_PRODUCCION WHERE accion_realizada = 'Elimino Orden'";
+        $db->doQuery($query, SELECT_QUERY);
+        $trArr = $db->results;
+        
+        $traza = array();
+        
+        for ($i = 0; $i < sizeof($trArr); $i++)
+        {
+            $traza[] = [
+                "cod_trazabilidad" => $trArr[$i]['cod_trazabilidad'],
+                "accion_realizada" => $trArr[$i]['accion_realizada'],
+                "numero_orden" => $trArr[$i]['numero_orden_produccion'],
+                "nom_produc" => $trArr[$i]['nom_producto'],
+                "cantidad_produc" => $trArr[$i]['cantidad_producto'],
+                "costo" => $trArr[$i]['costo'],
                 "fecha" => $trArr[$i]['fecha']
             ];
         }
