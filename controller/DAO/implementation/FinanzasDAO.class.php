@@ -79,5 +79,66 @@ class FinanzasDAO implements iFinanzasDAO
 
         return $datos;
     }
+    public function activos(){
+        
+        $db = new Database();
+        $db->connect();
+        
+        $valA = "SELECT total_proceso FROM FINANZAS WHERE cod_proceso = 2";
+        $db->doQuery($valA, SELECT_QUERY);
+        $valsA = $db->results[0]['total_proceso'];
+        
+        $valB = "SELECT total_proceso FROM FINANZAS WHERE cod_proceso = 5";
+        $db->doQuery($valB, SELECT_QUERY);
+        $valsB = $db->results[0]['total_proceso'];
+        
+        $activos = array($valsA, $valsB);
+        
+        $db->disconnect();
+        
+        return $activos;
+    }
+    public function pasivos(){
+        
+        $db = new Database();
+        $db->connect();
+        
+        $valA = "SELECT total_proceso FROM FINANZAS WHERE cod_proceso = 1";
+        $db->doQuery($valA, SELECT_QUERY);
+        $valsA = $db->results[0]['total_proceso'];
+        
+        $valB = "SELECT total_proceso FROM FINANZAS WHERE cod_proceso = 6";
+        $db->doQuery($valB, SELECT_QUERY);
+        $valsB = $db->results[0]['total_proceso'];
+        
+        $valC = "SELECT total_proceso FROM FINANZAS WHERE cod_proceso = 7";
+        $db->doQuery($valC, SELECT_QUERY);
+        $valsC = $db->results[0]['total_proceso'];
+        
+        $pasivos = array($valsA, $valsB, $valsC);
+        
+        $db->disconnect();
+        
+        return $pasivos;
+    }
+    public function patrimonio(){
+        
+        $db = new Database();
+        $db->connect();
+        
+        $valA = "SELECT total_proceso FROM FINANZAS WHERE cod_proceso = 3";
+        $db->doQuery($valA, SELECT_QUERY);
+        $valsA = $db->results[0]['total_proceso'];
+        
+        $valB = "SELECT total_proceso FROM FINANZAS WHERE cod_proceso = 4";
+        $db->doQuery($valB, SELECT_QUERY);
+        $valsB = $db->results[0]['total_proceso'];
+        
+        $patrimonio = array($valsA, $valsB);
+        
+        $db->disconnect();
+        
+        return $patrimonio;
+    }
 }
 ?>

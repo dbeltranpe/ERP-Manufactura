@@ -323,39 +323,40 @@ if (isset($_POST['nuevaCompra'])) {
 <!-- 								</button> -->
 							</form>
 							<div class="header-button">
-								<!-- Información Cuenta -->
+		<!-- Información Cuenta -->
+
 								<div class="account-wrap">
 									<div class="account-item clearfix js-item-menu">
 										<div class="image">
-										   	<img src="../../images/icon/avatar.jpg" />
+										   
+											<img src="<?php  echo($trabajador->getImagen()); ?>" />
 										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
-											Daniel Penagos</a>
+											<?php echo utf8_encode($trabajador->nombre); ?>
+											</a>
 										</div>
 										<div class="account-dropdown js-dropdown">
 											<div class="info clearfix">
 												<div class="image">
-													<a href="#"> <img src="../../images/icon/avatar.jpg" />
+													<a href="#"> <img src="<?php  echo($trabajador->getImagen()); ?>" />
 													</a>
 												</div>
 												<div class="content">
 													<h5 class="name">
 														<a href="#" id="nombre_cuenta_2">
-														admin</a>
+														<?php echo utf8_encode($_SESSION["username"]); ?>
+														</a>
 													</h5>
 													<span class="email" id="correo_cuenta">
-													beltranpenagos@gmail.com</span>
+													<?php echo utf8_encode($trabajador->correo); ?>
+													</span>
 												</div>
 											</div>
 											<div class="account-dropdown__body">
 												<div class="account-dropdown__item">
 													<a href="../../principal/cuenta.php"> <i
 														class="zmdi zmdi-account"></i>Cuenta
-													</a>
-												</div>
-												<div class="account-dropdown__item">
-													<a href="#"> <i class="zmdi zmdi-settings"></i>Configuraciones
 													</a>
 												</div>
 

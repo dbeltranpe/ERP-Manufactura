@@ -46,7 +46,17 @@ if (isset($_POST['submit']))
             
             else if($usuario->rol==5)
             {
-                header("Location:http://localhost/erpbienesyservicios/view/modulos/finanzas/cuentas-finanzas.php");
+                header("Location:http://localhost/erpbienesyservicios/view/modulos/finanzas/general-finanzas.php");
+            }
+            
+            else if($usuario->rol==6)
+            {
+                header("Location:http://localhost/erpbienesyservicios/view/modulos/compras/nueva-compra.php");
+            }
+            
+            else if($usuario->rol==7)
+            {
+                header("Location:http://localhost/erpbienesyservicios/view/modulos/empleados/nuevo-empleado.php");
             }
     } 
     

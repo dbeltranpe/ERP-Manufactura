@@ -156,5 +156,31 @@ class CompraDAO implements iCompraDAO
         return $proCom[0]['total'];
         
     }
+    
+    public function totalComprasXProveedor()
+    {
+        $db = new Database();
+        $db->connect();
+        
+        $query = "SELECT * FROM v_compraxproovedor;";
+        $db->doQuery($query, SELECT_QUERY);
+        $trArr = $db->results;
+        
+        $items = array();
+        
+        for ($i = 0; $i < sizeof($trArr); $i++)
+        {
+            $items[]= [
+                'proveedor'=> $trArr[$i]['proveedor'], 
+                'total'=> $trArr[$i]['total']
+                
+            ];
+        }
+        
+        $db->disconnect();
+        
+        return $items;
+        
+    }
 }
 ?>

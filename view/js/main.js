@@ -343,23 +343,23 @@
     }
 
     // Percent Chart
-    var ctx = document.getElementById("percent-chart");
+    var ctx = document.getElementById("percent-char");
     if (ctx) {
-      ctx.height = 280;
+      ctx.height = 220;
       var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
           datasets: [
             {
               label: "My First dataset",
-              data: [60, 40],
+              data: activos,
               backgroundColor: [
-                '#00b5e9',
-                '#fa4251'
+                '#1D8348',
+                '#2ECC71'
               ],
               hoverBackgroundColor: [
-                '#00b5e9',
-                '#fa4251'
+                '#1D8348',
+                '#2ECC71'
               ],
               borderWidth: [
                 0, 0
@@ -371,8 +371,8 @@
             }
           ],
           labels: [
-            'Products',
-            'Services'
+            'Cuentas por cobrar',
+            'Total compras'
           ]
         },
         options: {
@@ -391,7 +391,116 @@
             xPadding: 15,
             yPadding: 10,
             caretPadding: 0,
-            bodyFontSize: 16
+            bodyFontSize: 14
+          }
+        }
+      });
+    }
+    var ctx = document.getElementById("percent-char_2");
+    if (ctx) {
+      ctx.height = 220;
+      var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          datasets: [
+            {
+              label: "My First dataset",
+              data: pasivos,
+              backgroundColor: [
+                '#7FB3D5',
+                '#21618C',
+                '#2E86C1'
+              ],
+              hoverBackgroundColor: [
+                '#7FB3D5',
+                '#21618C',
+                '#2E86C1'
+              ],
+              borderWidth: [
+                0, 0
+              ],
+              hoverBorderColor: [
+                'transparent',
+                'transparent'
+              ]
+            }
+          ],
+          labels: [
+            'Cuentas por pagar',
+            'Total compras',
+            'Nómina empleados'
+          ]
+        },
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          cutoutPercentage: 55,
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          },
+          legend: {
+            display: false
+          },
+          tooltips: {
+            titleFontFamily: "Poppins",
+            xPadding: 15,
+            yPadding: 10,
+            caretPadding: 0,
+            bodyFontSize: 14
+          }
+        }
+      });
+    }
+    var ctx = document.getElementById("percent-char_3");
+    if (ctx) {
+      ctx.height = 220;
+      var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+          datasets: [
+            {
+              label: "My First dataset",
+              data: patrimonio,
+              backgroundColor: [
+                '#B03A2E',
+                '#EC7063'
+              ],
+              hoverBackgroundColor: [
+                '#B03A2E',
+                '#EC7063'
+              ],
+              borderWidth: [
+                0, 0
+              ],
+              hoverBorderColor: [
+                'transparent',
+                'transparent'
+              ]
+            }
+          ],
+          labels: [
+            'Inventario insumos',
+            'Inventario producto'
+          ]
+        },
+        options: {
+          maintainAspectRatio: false,
+          responsive: true,
+          cutoutPercentage: 55,
+          animation: {
+            animateScale: true,
+            animateRotate: true
+          },
+          legend: {
+            display: false
+          },
+          tooltips: {
+            titleFontFamily: "Poppins",
+            xPadding: 15,
+            yPadding: 10,
+            caretPadding: 0,
+            bodyFontSize: 14
           }
         }
       });

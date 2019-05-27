@@ -2,14 +2,29 @@
 session_set_cookie_params(0);
 session_start();
 
-require_once($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/FacturaDAO.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ItemFacturaDAO.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/CompraDAO.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/OrdenProduccionDAO.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/HistoricoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/FinanzasDAO.class.php');
 
-$meses = array("","Enero","Febrero","Marzo","Abril","Mayo","Junio","Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre");
+$meses = array(
+    "",
+    "Enero",
+    "Febrero",
+    "Marzo",
+    "Abril",
+    "Mayo",
+    "Junio",
+    "Julio",
+    "Agosto",
+    "Septiembre",
+    "Octubre",
+    "Noviembre",
+    "Diciembre"
+);
 
 if ($_SESSION["loggedIn"] != true) {
     header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
@@ -27,6 +42,8 @@ $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
 
 $trabajador->nombre;
 
+$finanzas = new FinanzasDAO();
+
 $historicoDAO = new HistoricoDAO();
 $historia = $historicoDAO->listarHistoria();
 
@@ -38,24 +55,19 @@ $hs_productos = array();
 $hs_rrhh = array();
 $hs_ordenes = array();
 
-
-
-for ($i = 0; $i < sizeof($historia); $i ++)
-{
+for ($i = 0; $i < sizeof($historia); $i ++) {
     $fecha = date_create($historia[$i]['fecha']);
     $numero = (int) date_format($fecha, 'm');
     $mes = $meses[$numero];
 
-    $hs_fechas []= $mes;
-    $hs_ventas []= $historia[$i]['vl_ventas'];
-    $hs_compras []= $historia[$i]['vl_compras'];
-    $hs_insumos []= $historia[$i]['nro_insumos'];
-    $hs_productos []= $historia[$i]['nro_productos'];
-    $hs_rrhh []= $historia[$i]['nro_empleados'];
-    $hs_ordenes []= $historia[$i]['nro_ordenes'];
-   
+    $hs_fechas[] = $mes;
+    $hs_ventas[] = $historia[$i]['vl_ventas'];
+    $hs_compras[] = $historia[$i]['vl_compras'];
+    $hs_insumos[] = $historia[$i]['nro_insumos'];
+    $hs_productos[] = $historia[$i]['nro_productos'];
+    $hs_rrhh[] = $historia[$i]['nro_empleados'];
+    $hs_ordenes[] = $historia[$i]['nro_ordenes'];
 }
-
 
 echo '<script>var hs_fechas = ' . json_encode($hs_fechas) . ';</script>';
 echo '<script>var hs_ventas = ' . json_encode($hs_ventas) . ';</script>';
@@ -63,9 +75,8 @@ echo '<script>var hs_compras = ' . json_encode($hs_compras) . ';</script>';
 echo '<script>var hs_insumos = ' . json_encode($hs_insumos) . ';</script>';
 echo '<script>var hs_productos = ' . json_encode($hs_productos) . ';</script>';
 echo '<script>var hs_rrhh = ' . json_encode($hs_rrhh) . ';</script>';
-echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
+echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'?>
 
-?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -201,11 +212,11 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 					<div class="container-fluid">
 						<div class="header-wrap">
 							<form class="form-header" action="" method="POST">
-<!-- 								<input class="au-input au-input--xl" type="text" name="search" -->
-<!-- 									placeholder="Search for datas &amp; reports..." /> -->
-<!-- 								<button class="au-btn--submit" type="submit"> -->
-<!-- 									<i class="zmdi zmdi-search"></i> -->
-<!-- 								</button> -->
+								<!-- 								<input class="au-input au-input--xl" type="text" name="search" -->
+								<!-- 									placeholder="Search for datas &amp; reports..." /> -->
+								<!-- 								<button class="au-btn--submit" type="submit"> -->
+								<!-- 									<i class="zmdi zmdi-search"></i> -->
+								<!-- 								</button> -->
 							</form>
 							<div class="header-button">
 
@@ -214,14 +225,7 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 
 								<div class="account-wrap">
 									<div class="account-item clearfix js-item-menu">
-										<div class="image">
-										   <?php
 
-            file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
-
-            ?>
-											<img src="../images/icon/avatar.jpg" />
-										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
 											<?php
@@ -231,10 +235,7 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 										</div>
 										<div class="account-dropdown js-dropdown">
 											<div class="info clearfix">
-												<div class="image">
-													<a href="#"> <img src="../images/icon/avatar.jpg" />
-													</a>
-												</div>
+
 												<div class="content">
 													<h5 class="name">
 														<a href="#" id="nombre_cuenta_2">
@@ -255,10 +256,10 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 													<a href="cuenta.php"> <i class="zmdi zmdi-account"></i>Cuenta
 													</a>
 												</div>
-												<div class="account-dropdown__item">
-													<a href="#"> <i class="zmdi zmdi-settings"></i>Configuraciones
-													</a>
-												</div>
+												<!-- 												<div class="account-dropdown__item"> -->
+												<!-- 													<a href="#"> <i class="zmdi zmdi-settings"></i>Configuraciones -->
+												<!-- 													</a> -->
+												<!-- 												</div> -->
 
 											</div>
 											<div class="account-dropdown__footer">
@@ -302,9 +303,9 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 												<i class="zmdi zmdi-account-o"></i>
 											</div>
 											<div class="text">
-												<h2><?php 
-												echo $trabajadorDAO->totalTrabajadores();
-												?></h2>
+												<h2><?php
+            echo $trabajadorDAO->totalTrabajadores();
+            ?></h2>
 												<span>Empleados</span>
 											</div>
 										</div>
@@ -324,10 +325,10 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 												<i class="zmdi zmdi-shopping-cart"></i>
 											</div>
 											<div class="text">
-												<h2>$<?php 
-												$compraDAO = new CompraDAO();
-												echo number_format($compraDAO->totalCompras());
-												?></h2>
+												<h2>$<?php
+            $compraDAO = new CompraDAO();
+            echo number_format($compraDAO->totalCompras());
+            ?></h2>
 												<span>Valor en Compras</span>
 											</div>
 										</div>
@@ -347,10 +348,10 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 												<i class="zmdi zmdi-calendar-note"></i>
 											</div>
 											<div class="text">
-												<h2><?php 
-												$ordenDAO = new OrdenProduccionDAO();
-												echo $ordenDAO->totalOrdenes();
-												?></h2>
+												<h2><?php
+            $ordenDAO = new OrdenProduccionDAO();
+            echo $ordenDAO->totalOrdenes();
+            ?></h2>
 												<span>Ordenes de Producci&oacute;n</span>
 											</div>
 										</div>
@@ -370,10 +371,10 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 												<i class="zmdi zmdi-money"></i>
 											</div>
 											<div class="text">
-												<h2>$<?php 
-												$facturaDAO = new FacturaDAO();
-												echo number_format($facturaDAO->totalVentas());
-												?></h2>
+												<h2>$<?php
+            $facturaDAO = new FacturaDAO();
+            echo number_format($facturaDAO->totalVentas());
+            ?></h2>
 												<span>Valor en Ventas</span>
 											</div>
 										</div>
@@ -390,7 +391,7 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 						<div class="row">
 
 							<!-- Gráfica de Inventario-->
-							<div class="col-lg-6">
+							<div class="col-lg-5" style="height: 100%">
 								<div class="au-card recent-report">
 									<div class="au-card-inner">
 										<h3 class="title-2">Hist&oacute;rico Inventario</h3>
@@ -416,29 +417,47 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 							</div>
 
 							<!-- Gráfica de Finanzas-->
-							
-							<div class="col-lg-6">
+
+							<div class="col-lg-7" style="height: 100%">
 								<div class="au-card chart-percent-card">
 									<div class="au-card-inner">
-										<h3 class="title-2 tm-b-5">Finanzas (Todav&iacute;a no
-											s&eacute; como ir&iacute;a)</h3>
-										<div class="row no-gutters">
-											<div class="col-xl-6">
-												<div class="chart-note-wrap">
-													<div class="chart-note mr-0 d-block">
-														<span class="dot dot--blue"></span> <span>products</span>
-													</div>
-													<div class="chart-note mr-0 d-block">
-														<span class="dot dot--red"></span> <span>services</span>
-													</div>
-												</div>
-											</div>
-											<div class="col-xl-6">
-												<div class="percent-chart">
-													<canvas id="percent-chart"></canvas>
-												</div>
-											</div>
+										<h3 class="title-1 m-b-25">Ganancias por Productos</h3>
+										<div class="table-responsive table--no-card m-b-40">
+											<table
+												class="table table-borderless table-striped table-earning">
+												<thead>
+													<tr>
+														<th>Nombre del Producto</th>
+														<th class="text-right">Precio</th>
+														<th class="text-right">Cantidad</th>
+														<th class="text-right">Total</th>
+													</tr>
+												</thead>
+												<tbody>
+										
+                        					 <?php
+
+                            $itemFacturaDAO = new ItemFacturaDAO();
+
+                            $items = $itemFacturaDAO->listarGananciaXProductos();
+
+                            for ($i = 0; $i < sizeof($items); $i ++) {
+                                echo "<tr>";
+                                echo "<td class='text-left'> " . $items[$i]['nombre'] . "</td>";
+                                echo "<td align='text-left'> $" . $items[$i]['precio'] . "</td>";
+                                echo "<td align='text-left'> " . $items[$i]['cantidad'] . "</td>";
+                                echo "<td class='text-right'> $" . $items[$i]['total'] . "</td>";
+                                echo "</tr>";
+                            }
+
+                            ?>
+											
+										</tbody>
+											</table>
 										</div>
+
+
+
 									</div>
 								</div>
 							</div>
@@ -446,106 +465,202 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 
 						<!-- Indicadores de Ventas -->
 						<div class="row">
-							<div class="col-lg-9">
-								<h2 class="title-1 m-b-25">Ganancias por Productos</h2>
-								<div class="table-responsive table--no-card m-b-40">
-									<table
-										class="table table-borderless table-striped table-earning">
-										<thead>
-											<tr>
-												<th>Nombre del Producto</th>
-												<th class="text-right">Precio</th>
-												<th class="text-right">Cantidad</th>
-												<th class="text-right">Total</th>
-											</tr>
-										</thead>
-										<tbody>
-										
-                        					 <?php
-                        					 
-                        					 $itemFacturaDAO = new ItemFacturaDAO();
-                        
-                        					 $items = $itemFacturaDAO->listarGananciaXProductos();
-                        
-                                            for ($i = 0; $i < sizeof($items); $i ++) 
-                                            {
-                                                echo "<tr>";
-                                                echo "<td class='text-left'> " . $items[$i]['nombre'] . "</td>";
-                                                echo "<td align='center'> $" . $items[$i]['precio'] . "</td>";
-                                                echo "<td align='center'> " . $items[$i]['cantidad'] . "</td>";
-                                                echo "<td class='text-right'> $" . $items[$i]['total'] . "</td>";
-                                                echo "</tr>";
-                                            }
-                                            
-                                            ?>
-											
-										</tbody>
-									</table>
+							<div class="col-3">
+								<div class="au-card chart-percent-card" id="cd1"
+									style="height: 170px;">
+									<div class="au-card-inner">
+										<h3 class="title-2 tm-b-5">Total Activos</h3>
+										<div class="row">
+											<div class="col-10"></div>
+											<div class="col-2">
+												<i class="fas fa-plus" onclick="abrir(1);"
+													style="position: absolute; font-size: 20px; margin-top: -100%; cursor: pointer;"></i>
+											</div>
+										</div>
+										<div class="row no-gutters">
+											<div class="col-12">
+												<div class="chart-note-wrap">
+													<div class="chart-note mr-0 d-block">
+														<span class="dot dot--1"></span> <span>Cuentas por cobrar</span>
+													</div>
+													<div class="chart-note mr-0 d-block">
+														<span class="dot dot--2"></span> <span>Total compras</span>
+													</div>
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="percent-chart">
+													<canvas id="percent-char"></canvas>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-10"></div>
+											<div class="col-2">
+												<i class="fas fa-minus" onclick="cerrar(1);"
+													style="position: absolute; font-size: 20px; margin-top: -60%; cursor: pointer;"></i>
+											</div>
+										</div>
+									</div>
 								</div>
 							</div>
-
-							<!-- Indicadores de Finanzas -->
+							<div class="col-3">
+								<div class="au-card chart-percent-card" id="cd2"
+									style="height: 200px;">
+									<div class="au-card-inner">
+										<h3 class="title-2 tm-b-5">Total Pasivos</h3>
+										<div class="row">
+											<div class="col-10"></div>
+											<div class="col-2">
+												<i class="fas fa-plus" onclick="abrir(2);"
+													style="position: absolute; font-size: 20px; margin-top: -100%; cursor: pointer;"></i>
+											</div>
+										</div>
+										<div class="row no-gutters">
+											<div class="col-12">
+												<div class="chart-note-wrap">
+													<div class="chart-note mr-0 d-block">
+														<span class="dot dot--3"></span> <span>Cuentas por pagar</span>
+													</div>
+													<div class="chart-note mr-0 d-block">
+														<span class="dot dot--4"></span> <span>Total compras</span>
+													</div>
+													<div class="chart-note mr-0 d-block">
+														<span class="dot dot--5"></span> <span>N&oacute;mina
+															empleados</span>
+													</div>
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="percent-chart">
+													<canvas id="percent-char_2"></canvas>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-10"></div>
+											<div class="col-2">
+												<i class="fas fa-minus" onclick="cerrar(2);"
+													style="position: absolute; font-size: 20px; margin-top: -60%; cursor: pointer;"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-3">
+								<div class="au-card chart-percent-card" id="cd3"
+									style="height: 170px;">
+									<div class="au-card-inner">
+										<h3 class="title-2 tm-b-5">Total Patrimonio</h3>
+										<div class="row">
+											<div class="col-10"></div>
+											<div class="col-2">
+												<i class="fas fa-plus" onclick="abrir(3);"
+													style="position: absolute; font-size: 20px; margin-top: -100%; cursor: pointer;"></i>
+											</div>
+										</div>
+										<div class="row no-gutters">
+											<div class="col-12">
+												<div class="chart-note-wrap">
+													<div class="chart-note mr-0 d-block">
+														<span class="dot dot--6"></span> <span>Inventario insumos</span>
+													</div>
+													<div class="chart-note mr-0 d-block">
+														<span class="dot dot--7"></span> <span>Inventario producto</span>
+													</div>
+												</div>
+											</div>
+											<div class="col-12">
+												<div class="percent-chart">
+													<canvas id="percent-char_3"></canvas>
+												</div>
+											</div>
+										</div>
+										<div class="row">
+											<div class="col-10"></div>
+											<div class="col-2">
+												<i class="fas fa-minus" onclick="cerrar(3);"
+													style="position: absolute; font-size: 20px; margin-top: -60%; cursor: pointer;"></i>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 							<div class="col-lg-3">
-								<h2 class="title-1 m-b-25">Otra cosa de finanzas</h2>
+							<div class="au-card chart-percent-card" id="cd4"
+									style="height: 170px;">
+									<div class="au-card-inner">
+										<div class="row">
+											<div class="col-10"></div>
+											<div class="col-2">
+												<i class="fas fa-plus" onclick="abrir(4);"
+													style="position: absolute; font-size: 20px; margin-top: -60%; cursor: pointer;"></i>
+											</div>
+										</div>
+
+								<h2 class="title-1 m-b-25">Compras por Proveedor</h2>
+							
 								<div
 									class="au-card au-card--bg-blue au-card-top-countries m-b-40">
 									<div class="au-card-inner">
 										<div class="table-responsive">
 											<table class="table table-top-countries">
 												<tbody>
-													<tr>
-														<td>United States</td>
-														<td class="text-right">$119,366.96</td>
+												
+												<?php
+
+            $prov = $compraDAO->totalComprasXProveedor();
+
+            for ($i = 0; $i < sizeof($items); $i ++) {
+                ?>
+                                                        <tr>
+														<td class='text-left'>  <?php echo($prov[$i]['proveedor']); ?> </td>
+														<td align='center'> $ <?php echo($prov[$i]['total']);  ?></td>
 													</tr>
-													<tr>
-														<td>Australia</td>
-														<td class="text-right">$70,261.65</td>
-													</tr>
-													<tr>
-														<td>United Kingdom</td>
-														<td class="text-right">$46,399.22</td>
-													</tr>
-													<tr>
-														<td>Turkey</td>
-														<td class="text-right">$35,364.90</td>
-													</tr>
-													<tr>
-														<td>Germany</td>
-														<td class="text-right">$20,366.96</td>
-													</tr>
-													<tr>
-														<td>France</td>
-														<td class="text-right">$10,366.96</td>
-													</tr>
-													<tr>
-														<td>Australia</td>
-														<td class="text-right">$5,366.96</td>
-													</tr>
-													<tr>
-														<td>Italy</td>
-														<td class="text-right">$1639.32</td>
-													</tr>
+                                                    <?php
+            }
+
+            ?>
+												
 												</tbody>
 											</table>
 										</div>
 									</div>
 								</div>
+								</div></div>
 							</div>
 						</div>
 
-						<div class="row">
-							<div class="col-md-12">
-								<div class="copyright">
-									<p>
-										Copyright Â© 2018 Colorlib. All rights reserved. Template by <a
-											href="https://colorlib.com">Colorlib</a>.
-									</p>
-								</div>
+						<!-- Indicadores de Finanzas -->
+
+
+						<!-- 					g -->
+					</div>
+
+					<div class="row">
+						<div class="col-md-12">
+							<div class="copyright">
+								<p>
+									Copyright Â© 2018 Colorlib. All rights reserved. Template by <a
+										href="https://colorlib.com">Colorlib</a>.
+								</p>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+		</div>
+		<div class="row" style="padding: 30px;">
+		
+			<?php
+$activos = $finanzas->activos();
+$pasivos = $finanzas->pasivos();
+$patrimonio = $finanzas->patrimonio();
+
+echo '<script>var activos = ' . json_encode($activos) . ';</script>';
+echo '<script>var pasivos = ' . json_encode($pasivos) . ';</script>';
+echo '<script>var patrimonio = ' . json_encode($patrimonio) . ';</script>';
+?>
 			<!-- END MAIN CONTENT-->
 			<!-- END PAGE CONTAINER-->
 		</div>
@@ -576,6 +691,26 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 
 	<!-- Main JS-->
 	<script src="../js/main.js"></script>
+	<script type="text/javascript">
+	function abrir(num){
+		if (num == 2) {
+			var x = document.getElementById("cd"+num);
+			x.style.height="480px";
+		} else {
+			var x = document.getElementById("cd"+num);
+			x.style.height="450px";
+		}
+	}
+	function cerrar(num){
+		if (num == 2) {
+			var x = document.getElementById("cd"+num);
+			x.style.height="190px";
+		} else {
+			var x = document.getElementById("cd"+num);
+			x.style.height="170px";
+		}
+	}
+	</script>
 
 </body>
 

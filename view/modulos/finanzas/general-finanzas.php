@@ -173,43 +173,33 @@ $finanzas = new FinanzasDAO();
 							<div class="header-button">
 
 
-								<!-- Información Cuenta -->
+							<!-- InformaciÃ³n Cuenta -->
 
 								<div class="account-wrap">
 									<div class="account-item clearfix js-item-menu">
 										<div class="image">
-											<?php
-
-											file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
-
-											?>
-											<img src="../../images/icon/avatar.jpg" />
+										   
+											<img src="<?php  echo($trabajador->getImagen()); ?>" />
 										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
-												<?php
-												echo utf8_encode($trabajador->nombre);
-												?>
+											<?php echo utf8_encode($trabajador->nombre); ?>
 											</a>
 										</div>
 										<div class="account-dropdown js-dropdown">
 											<div class="info clearfix">
 												<div class="image">
-													<a href="#"> <img src="../../images/icon/avatar.jpg" />
+													<a href="#"> <img src="<?php  echo($trabajador->getImagen()); ?>" />
 													</a>
 												</div>
 												<div class="content">
 													<h5 class="name">
 														<a href="#" id="nombre_cuenta_2">
-															<?php
-															echo utf8_encode($_SESSION["username"]);
-															?>
+														<?php echo utf8_encode($_SESSION["username"]); ?>
 														</a>
 													</h5>
 													<span class="email" id="correo_cuenta">
-														<?php
-														echo utf8_encode($trabajador->correo);
-														?>
+													<?php echo utf8_encode($trabajador->correo); ?>
 													</span>
 												</div>
 											</div>
@@ -219,16 +209,12 @@ $finanzas = new FinanzasDAO();
 														class="zmdi zmdi-account"></i>Cuenta
 													</a>
 												</div>
-												<div class="account-dropdown__item">
-													<a href="#"> <i class="zmdi zmdi-settings"></i>Configuraciones
-													</a>
-												</div>
 
 											</div>
 											<div class="account-dropdown__footer">
 												<form action="" method="post">
 													<button class="au-btn au-btn--block au-btn--red m-b-20"
-													type="submit" name="logout">Cerrar Sesi&oacute;n</button>
+														type="submit" name="logout">Cerrar Sesi&oacute;n</button>
 												</form>
 											</div>
 										</div>

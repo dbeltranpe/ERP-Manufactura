@@ -4139,6 +4139,33 @@ section {
     background: #fa4251;
 }
 
+.dot--1 {
+    background: #1D8348;
+}
+
+.dot--2 {
+    background: #2ECC71;
+}
+
+.dot--3 {
+    background: #7FB3D5;
+}
+
+.dot--4 {
+    background: #21618C;
+}
+
+.dot--5 {
+    background: #2E86C1;
+}
+
+.dot--6 {
+    background: #B03A2E;
+}
+
+.dot--7 {
+    background: #EC7063;
+}
 .chart-note-wrap {
     margin-top: 20px;
 }

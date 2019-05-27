@@ -200,13 +200,13 @@ if (isset($_POST['nuevoTrabajador'])) {
 							<div class="header-button">
 
 
-								<!-- Información Cuenta -->
+							<!-- Información Cuenta -->
 
 								<div class="account-wrap">
 									<div class="account-item clearfix js-item-menu">
 										<div class="image">
-										   <?php file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen); ?>
-											<img src="../../images/icon/avatar.jpg" />
+										   
+											<img src="<?php  echo($trabajador->getImagen()); ?>" />
 										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
@@ -216,7 +216,7 @@ if (isset($_POST['nuevoTrabajador'])) {
 										<div class="account-dropdown js-dropdown">
 											<div class="info clearfix">
 												<div class="image">
-													<a href="#"> <img src="../../images/icon/avatar.jpg" />
+													<a href="#"> <img src="<?php  echo($trabajador->getImagen()); ?>" />
 													</a>
 												</div>
 												<div class="content">
@@ -234,10 +234,6 @@ if (isset($_POST['nuevoTrabajador'])) {
 												<div class="account-dropdown__item">
 													<a href="../../principal/cuenta.php"> <i
 														class="zmdi zmdi-account"></i>Cuenta
-													</a>
-												</div>
-												<div class="account-dropdown__item">
-													<a href="#"> <i class="zmdi zmdi-settings"></i>Configuraciones
 													</a>
 												</div>
 
