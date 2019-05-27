@@ -166,8 +166,8 @@ if (isset($_POST['editarProveedor'])) {
         echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
         echo ' class="fas fa-dollar"></i>Finanzas</a>';
         echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-        echo '<li><a href="../finanzas/cuentas-finanzas.php">General</a></li>';
-        echo '<li><a href="../finanzas/analisis-cuentas.php">Movimientos</a></li>';
+        echo '<li><a href="../finanzas/general-finanzas.php">General</a></li>';
+        echo '<li><a href="../finanzas/movimientos-finanzas.php">Movimientos</a></li>';
         echo ' </ul></li>';
     }
     
@@ -204,11 +204,11 @@ if (isset($_POST['editarProveedor'])) {
 					<div class="container-fluid">
 						<div class="header-wrap">
 							<form class="form-header" action="" method="POST">
-								<input class="au-input au-input--xl" type="text" name="search"
-								placeholder="Search for datas &amp; reports..." />
-								<button class="au-btn--submit" type="submit">
-									<i class="zmdi zmdi-search"></i>
-								</button>
+<!-- 								<input class="au-input au-input--xl" type="text" name="search" -->
+<!-- 									placeholder="LA CORONA LA LLEVAS T&Uacute;" disabled/> -->
+<!-- 								<button class="au-btn--submit" type="submit"> -->
+<!-- 									<i class="zmdi zmdi-search"></i> -->
+<!-- 								</button> -->
 							</form>
 							<div class="header-button">
 

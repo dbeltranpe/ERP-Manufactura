@@ -2,103 +2,76 @@
 session_set_cookie_params(0);
 session_start();
 
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/RolDAO.class.php');
-require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/usuarioDAO.class.php');
+require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/TrabajadorDAO.class.php');
+require ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/FinanzasDAO.class.php');
+
 
 if ($_SESSION["loggedIn"] != true) {
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+	header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
 }
 
 if (isset($_POST['logout'])) {
-    session_unset();
-    session_destroy();
-    header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
-    exit();
+	session_unset();
+	session_destroy();
+	header("Location:http://localhost/erpbienesyservicios/view/principal/login.php");
+	exit();
 }
 
 $trabajadorDAO = new TrabajadorDAO();
 $trabajador = $trabajadorDAO->getTrabajador($_SESSION["loggedIn"]);
-$rolDAO = new RolDAO();
-$usuarioDAO = new usuarioDAO();
 
-
-if (isset($_POST['nuevoTrabajador'])) {
-    $nomTrabajador = $_POST['nomT'];
-    $conTrabajador = $_POST['passT'];
-    $telTrabajador = $_POST['telT'];
-    $corTrabajador = $_POST['corT'];
-    $rolTrabajador = $_POST['nomRol'];
-    $sueTrabajador = $_POST['sueT'];
-    
-    $val = $_FILES['imgT']['name'];
-	$src = $_FILES['imgT']['tmp_name'];
-	$file = "../../images/users/".$nomTrabajador.'_'.$val;
-	copy($src, $file);
-
-    $usuarioDAO->save($nomTrabajador, $conTrabajador, $telTrabajador, $corTrabajador, $rolTrabajador, $sueTrabajador, $file);
-}
+$finanzas = new FinanzasDAO();
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-<!-- Required meta tags-->
-<meta charset="UTF-8">
-<meta name="viewport"
+	<!-- Required meta tags-->
+	<meta charset="UTF-8">
+	<meta name="viewport"
 	content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<meta name="description" content="au theme template">
-<meta name="author" content="Hau Nguyen">
-<meta name="keywords" content="au theme template">
+	<meta name="description" content="au theme template">
+	<meta name="author" content="Hau Nguyen">
+	<meta name="keywords" content="au theme template">
 
-<!-- Angular -->
-<meta charset='utf-8'>
-<link rel="stylesheet"
-	href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css">
-<link rel="stylesheet" type="text/css" href="../../css/style.css">
-<script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+	<!-- Title Page-->
+	<title>Dashboard</title>
 
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@8"></script>
-
-<!-- Title Page-->
-<title>Dashboard</title>
-
-<!-- Fontfaces CSS-->
-<link href="../../css/font-face.css" rel="stylesheet" media="all">
-<link href="../../vendor/font-awesome-4.7/css/font-awesome.min.css"
+	<!-- Fontfaces CSS-->
+	<link href="../../css/font-face.css" rel="stylesheet" media="all">
+	<link href="../../vendor/font-awesome-4.7/css/font-awesome.min.css"
 	rel="stylesheet" media="all">
-<link href="../../vendor/font-awesome-5/css/fontawesome-all.min.css"
+	<link href="../../vendor/font-awesome-5/css/fontawesome-all.min.css"
 	rel="stylesheet" media="all">
-<link
+	<link
 	href="../../vendor/mdi-font/css/material-design-iconic-font.min.css"
 	rel="stylesheet" media="all">
 
-<!-- Bootstrap CSS-->
-<link href="../../vendor/bootstrap-4.1/bootstrap.min.css"
+	<!-- Bootstrap CSS-->
+	<link href="../../vendor/bootstrap-4.1/bootstrap.min.css"
 	rel="stylesheet" media="all">
 
-<!-- Vendor CSS-->
-<link href="../../vendor/animsition/animsition.min.css" rel="stylesheet"
+	<!-- Vendor CSS-->
+	<link href="../../vendor/animsition/animsition.min.css" rel="stylesheet"
 	media="all">
-<link
+	<link
 	href="../../vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css"
 	rel="stylesheet" media="all">
-<link href="../../vendor/wow/animate.css" rel="stylesheet" media="all">
-<link href="../../vendor/css-hamburgers/hamburgers.min.css"
+	<link href="../../vendor/wow/animate.css" rel="stylesheet" media="all">
+	<link href="../../vendor/css-hamburgers/hamburgers.min.css"
 	rel="stylesheet" media="all">
-<link href="../../vendor/slick/slick.css" rel="stylesheet" media="all">
-<link href="../../vendor/select2/select2.min.css" rel="stylesheet"
+	<link href="../../vendor/slick/slick.css" rel="stylesheet" media="all">
+	<link href="../../vendor/select2/select2.min.css" rel="stylesheet"
 	media="all">
-<link href="../../vendor/perfect-scrollbar/perfect-scrollbar.css"
+	<link href="../../vendor/perfect-scrollbar/perfect-scrollbar.css"
 	rel="stylesheet" media="all">
 
-<!-- Main CSS-->
-<link href="../../css/theme.css" rel="stylesheet" media="all">
+	<!-- Main CSS-->
+	<link href="../../css/theme.css" rel="stylesheet" media="all">
 
 </head>
-<body>
+<body class="animsition">
 	<div class="page-wrapper">
 
 		<!-- MENU SIDEBAR-->
@@ -110,7 +83,7 @@ if (isset($_POST['nuevoTrabajador'])) {
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-<?php
+					<?php
 
     if ($_SESSION["rol"] == 1) {
         echo '<li><a href="../../principal/index.php"> <i';
@@ -200,17 +173,23 @@ if (isset($_POST['nuevoTrabajador'])) {
 							<div class="header-button">
 
 
-								<!-- Información Cuenta -->
+								<!-- Informaci�n Cuenta -->
 
 								<div class="account-wrap">
 									<div class="account-item clearfix js-item-menu">
 										<div class="image">
-										   <?php file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen); ?>
+											<?php
+
+											file_put_contents($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/view/images/icon/avatar.jpg', $trabajador->imagen);
+
+											?>
 											<img src="../../images/icon/avatar.jpg" />
 										</div>
 										<div class="content">
 											<a class="js-acc-btn" href="#" id="nombre_cuenta_1">
-											<?php echo utf8_encode($trabajador->nombre); ?>
+												<?php
+												echo utf8_encode($trabajador->nombre);
+												?>
 											</a>
 										</div>
 										<div class="account-dropdown js-dropdown">
@@ -222,11 +201,15 @@ if (isset($_POST['nuevoTrabajador'])) {
 												<div class="content">
 													<h5 class="name">
 														<a href="#" id="nombre_cuenta_2">
-														<?php echo utf8_encode($_SESSION["username"]); ?>
+															<?php
+															echo utf8_encode($_SESSION["username"]);
+															?>
 														</a>
 													</h5>
 													<span class="email" id="correo_cuenta">
-													<?php echo utf8_encode($trabajador->correo); ?>
+														<?php
+														echo utf8_encode($trabajador->correo);
+														?>
 													</span>
 												</div>
 											</div>
@@ -245,7 +228,7 @@ if (isset($_POST['nuevoTrabajador'])) {
 											<div class="account-dropdown__footer">
 												<form action="" method="post">
 													<button class="au-btn au-btn--block au-btn--red m-b-20"
-														type="submit" name="logout">Cerrar Sesi&oacute;n</button>
+													type="submit" name="logout">Cerrar Sesi&oacute;n</button>
 												</form>
 											</div>
 										</div>
@@ -257,101 +240,129 @@ if (isset($_POST['nuevoTrabajador'])) {
 				</div>
 			</header>
 			<!-- HEADER DESKTOP-->
-
-			<!-- MAIN CONTENT-->
 			<div class="main-content">
-				<div class="container-fluid">
-
-					<div class="container" width="800px" id="invoice"
-						style="background-color: white;">
+				<div class="section__content section__content--p30">
+					<div class="container-fluid">
 						<div class="row">
-							<div class="col-xs-12 heading">Nuevo Empleado</div>
+							<h3 class="col-12" style="margin-bottom: 30px;">Informaci&oacute;n de finanzas</h3>
+							<?php $movimientos = $finanzas->movimientos(); ?>
+							<div class="col-4">
+								<div class="overview-item overview-item--c2">
+									<div class="overview__inner">
+										<div class="overview-box clearfix">
+											<div class="icon">
+												<i class="zmdi zmdi-money"></i>
+											</div>
+											<div class="text">
+												<h2><?php echo($movimientos[0]); ?></h2>
+												<span>Total Activos</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="overview-item overview-item--c2">
+									<div class="overview__inner">
+										<div class="overview-box clearfix">
+											<div class="icon">
+												<i class="zmdi zmdi-money"></i>
+											</div>
+											<div class="text">
+												<h2><?php echo($movimientos[1]); ?></h2>
+												<span>Total Pasivos</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="col-4">
+								<div class="overview-item overview-item--c2">
+									<div class="overview__inner">
+										<div class="overview-box clearfix">
+											<div class="icon">
+												<i class="zmdi zmdi-money"></i>
+											</div>
+											<div class="text">
+												<h2><?php echo($movimientos[2]); ?></h2>
+												<span>Total Patrimonio</span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
 						</div>
-						<form action="#" method="post" enctype="multipart/form-data">
-
-							<div class="row">
-
-								<div class="col-xs-6">
-									<div class="input-container">
-										<input type="text" placeholder="Nombre Trabajador"
-											name="nomT" />
-									</div>
-									<div class="input-container" style="margin-top: 30px;">
-										<input type="password" placeholder="Contraseña Trabajador" name="passT" />
-									</div>
-									<div class="input-container" style="margin-top: 30px;">
-										<input type="mail" placeholder="Correo Trabajador" name="corT" />
-									</div>
-									<div class="input-container" style="margin-top: 30px;">
-										<input type="text" placeholder="Teléfono Trabajador" name="telT" />
-									</div>
-									<div class="input-container" style="margin-top: 30px;">
-										<input type="number" placeholder="Sueldo Trabajador" name="sueT" />
-									</div>
-									<div class="input-container" style="margin-top: 30px;">
-										<select id='lista-rol' name="nomRol" style="font-size: 15px;">
-											<option selected disabled>Seleccione el rol</option>
-                                            <?php
-                                            $roles = $rolDAO->listarRoles();
-                                            for ($i = 1; $i < sizeof($roles); $i ++) {
-                                                echo "<option value='" . $roles[$i]->getCodigo() . "'>" . $roles[$i]->getNombre() . "</option>";
-                                            }
-
-                                            ?>
-										</select>
-									</div>
-									<div class="input-container" style="margin-top: 30px;">
-									<input type="file" name="imgT" required>
+						<div class="row">
+							<div class="col-6">
+								<div style="padding: 20px; background: #AAB7B8; border-radius: 15px;">
+									<?php 
+									$lista = $finanzas->listarFinanzas();
+									for ($i=0; $i < 6; $i++) { ?>
+										<div class="row" style="margin-top: 10px;">
+											<div class="col-6">
+												<b><?php echo($lista[$i]['nombre_proceso']); ?></b>
+											</div>
+											<div class="col-6">
+												<spa><?php echo("$ ".$lista[$i]['total_proceso']); ?></span>
+												</div>
+											</div>
+										<?php } ?>
 									</div>
 								</div>
-								<div class="col-xs-6 right">
-									<img src="../../images/users.jpg" style="width: 70%; margin-left: 20px;">	
+								<div class="col-6" style="height: 262px; overflow: auto;">
+									<div style="padding: 20px; background: #AAB7B8; border-radius: 15px;">
+									<?php 
+									$nomina = $finanzas->movimientos();
+									$data = $trabajadorDAO->listarTrabajadores();
+									for ($i=0; $i < sizeof($data); $i++) { ?>
+										<div class="row" style="margin-top: 10px;">
+											<div class="col-6">
+												<b><?php echo($data[$i]['nombre_trabajador']); ?></b>
+											</div>
+											<div class="col-6">
+												<span><?php echo("$ ".$data[$i]['sueldo']); ?></span>
+												</div>
+											</div>
+										<?php } ?>
+										</div>
+										<div class="row" style="margin-top: 10px;">
+											<div class="col-6" style="margin-top: -5px;">
+												<b style="margin-left: 20px;">Total de n&oacute;mina:</b>
+											</div>
+											<div class="col-6" style="margin-top: -5px;">
+												<span><?php echo("$ ".$nomina[3]); ?></span>
+											</div>
+										</div>
+										<hr style="border: solid 2px #AAB7B8; margin-top: 0px;">
+									</div>
 								</div>
-							</div>
-							
-							<div style="margin-top: 30px;">
-								<button name="nuevoTrabajador" type="submit"
-									class="btn btn-lg btn-info btn-block">
-									<i class="fa fa-check-circle"></i>&nbsp; <span
-										id="payment-button-amount">Enviar</span>
-								</button>
-							</div>
-						</form>
-
-					</div>
-
+							</div>  
+						</div>
+					</div> 
 				</div>
 			</div>
-			<!-- END MAIN CONTENT-->
-
-
 		</div>
-
-		<!-- END PAGE CONTAINER-->
-	</div>
-
-
-	<!-- Jquery JS-->
-	<script src="../../vendor/jquery-3.2.1.min.js"></script>
-	<!-- Bootstrap JS-->
-	<script src="../../vendor/bootstrap-4.1/popper.min.js"></script>
-	<script src="../../vendor/bootstrap-4.1/bootstrap.min.js"></script>
-	<!-- Vendor JS       -->
-	<script src="../../vendor/slick/slick.min.js">
-    </script>
-	<script src="../../vendor/wow/wow.min.js"></script>
-	<script src="../../vendor/animsition/animsition.min.js"></script>
-	<script
+		<!-- Jquery JS-->
+		<script src="../../vendor/jquery-3.2.1.min.js"></script>
+		<!-- Bootstrap JS-->
+		<script src="../../vendor/bootstrap-4.1/popper.min.js"></script>
+		<script src="../../vendor/bootstrap-4.1/bootstrap.min.js"></script>
+		<!-- Vendor JS       -->
+		<script src="../../vendor/slick/slick.min.js">
+		</script>
+		<script src="../../vendor/wow/wow.min.js"></script>
+		<script src="../../vendor/animsition/animsition.min.js"></script>
+		<script
 		src="../../vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
-    </script>
+	</script>
 	<script src="../../vendor/counter-up/jquery.waypoints.min.js"></script>
 	<script src="../../vendor/counter-up/jquery.counterup.min.js">
-    </script>
+	</script>
 	<script src="../../vendor/circle-progress/circle-progress.min.js"></script>
 	<script src="../../vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
 	<script src="../../vendor/chartjs/Chart.bundle.min.js"></script>
 	<script src="../../vendor/select2/select2.min.js">
-    </script>
+	</script>
 
 	<!-- Main JS-->
 	<script src="../../js/main.js"></script>

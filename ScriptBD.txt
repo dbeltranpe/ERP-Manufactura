@@ -301,3 +301,9 @@ fecha DATE,
     
 CONSTRAINT pk_trazabilidad_produccion PRIMARY KEY(cod_trazabilidad)
 );
+
+CREATE VIEW v_compraxproovedor AS
+SELECT proveedor.nom_proveedor proveedor, sum(compra.total_compra) total
+FROM compra, proveedor
+WHERE compra.proveedor_compra = proveedor.cod_proveedor
+GROUP BY compra.proveedor_compra;

@@ -95,7 +95,7 @@ $productoDAO = new ProductoDAO();
 			<div class="menu-sidebar__content js-scrollbar1">
 				<nav class="navbar-sidebar">
 					<ul class="list-unstyled navbar__list">
-						<?php
+			<?php
 
     if ($_SESSION["rol"] == 1) {
         echo '<li><a href="../../principal/index.php"> <i';
@@ -138,8 +138,8 @@ $productoDAO = new ProductoDAO();
         echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
         echo ' class="fas fa-dollar"></i>Finanzas</a>';
         echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-        echo '<li><a href="../finanzas/cuentas-finanzas.php">General</a></li>';
-        echo '<li><a href="../finanzas/analisis-cuentas.php">Movimientos</a></li>';
+        echo '<li><a href="../finanzas/general-finanzas.php">General</a></li>';
+        echo '<li><a href="../finanzas/movimientos-finanzas.php">Movimientos</a></li>';
         echo ' </ul></li>';
     }
     
@@ -162,7 +162,6 @@ $productoDAO = new ProductoDAO();
         echo ' </ul></li>';
     }
     ?>
-                   
 					</ul>
 				</nav>
 			</div>
@@ -177,11 +176,11 @@ $productoDAO = new ProductoDAO();
 					<div class="container-fluid">
 						<div class="header-wrap">
 							<form class="form-header" action="" method="POST">
-								<input class="au-input au-input--xl" type="text" name="search"
-									placeholder="Search for datas &amp; reports..." />
-								<button class="au-btn--submit" type="submit">
-									<i class="zmdi zmdi-search"></i>
-								</button>
+<!-- 								<input class="au-input au-input--xl" type="text" name="search" -->
+<!-- 									placeholder="LA CORONA LA LLEVAS T&Uacute;" disabled/> -->
+<!-- 								<button class="au-btn--submit" type="submit"> -->
+<!-- 									<i class="zmdi zmdi-search"></i> -->
+<!-- 								</button> -->
 							</form>
 							<div class="header-button">
 
@@ -279,7 +278,7 @@ $productoDAO = new ProductoDAO();
 											placeholder="C.C o NIT" name="ccNit" />
 									</div>
 									<div class="input-container">
-										<select id='fin_1' name="fin_1" style="width: 100%">
+										<select id='fin_1' name="fin_1" style="width: 100%" ng-model="invoice.cliente_info.finanzas">
 											<option value="1">Saldada</option>
 											<option value="2">Pendiente de Pago</option>
 										</select>
@@ -297,8 +296,15 @@ $productoDAO = new ProductoDAO();
 											placeholder="N&uacute;mero Telef&oacute;nico" name="telefono" />
 									</div>
 									<div class="input-container">
-										<input type="text" ng-model="invoice.cliente_info.medio"
-											placeholder="Medio de Pago" name="medio" />
+									    <select style="width: 100%" ng-model="invoice.cliente_info.medio"
+											placeholder="Medio de Pago" name="medio">
+											<option value="1" selected>Efectivo</option>
+											<option value="2">Tarjeta de Cr&eacute;dito</option>
+											<option value="3">Sodexo</option>
+										</select>
+										
+<!-- 										<input type="text" ng-model="invoice.cliente_info.medio" -->
+<!-- 											placeholder="Medio de Pago" name="medio" /> -->
 									</div>
 									<br>
 								</div>

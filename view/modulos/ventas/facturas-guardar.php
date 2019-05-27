@@ -2,6 +2,8 @@
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/ItemFacturaDAO.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/FacturaDAO.class.php');
 require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/InventarioProductoDAO.class.php');
+require_once ($_SERVER['DOCUMENT_ROOT'] . '/erpbienesyservicios/controller/DAO/implementation/CuentasCobrarDAO.class.php');
+
 
 $data = json_decode(file_get_contents("php://input"),true);
 
@@ -11,12 +13,17 @@ $direccion = $data[1]['direccion'];
 $telefono = $data[1]['telefono'];
 $medio = $data[1]['medio'];
 
+$finanzas = $data[1]['finanzas'];
+
 $subtotal = $data[2]['subtotal'];
 $iva = $data[2]['iva'];
 $total = $data[2]['total'];
 
 $invDAO = new InventarioProductoDAO();
 $inventarioActual = $invDAO->listarInventarioPorNombre();
+
+$cxc = new CuentasCobrarDAO();
+
 $facturable = true;
 $mensaje = "";
 
@@ -48,9 +55,18 @@ if($facturable==true)
         $key = array_search($data[0][$i]['description'], array_column($inventarioActual, 'cod_producto'));
         $invDAO = new InventarioProductoDAO();
         $invDAO->save($data[0][$i]['description'], ($data[0][$i]['qty']*-1));
-        
-
+       
     }
+    
+    //finanzas-----------------
+
+    
+    if ($finanzas == 2) 
+    {
+        $cxc->save($codFactura, $total, $medio, "Pendiente");
+    }
+    
+    //-------------------------
     
     $mensaje.="Se ha registrado la factura";
     echo $mensaje;

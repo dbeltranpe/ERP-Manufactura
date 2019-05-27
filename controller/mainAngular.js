@@ -12,7 +12,8 @@ angular.module('invoicing', [])
 		ccNit: '',
 		direccion: '',
 		telefono: '',
-		medio: ''
+		medio: '',
+		finanzas: ''
 	},
 	items:[
 

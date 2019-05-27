@@ -163,8 +163,8 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 								class="fas fa-dollar"></i>Finanzas
 						</a>
 							<ul class="list-unstyled navbar__sub-list js-sub-list">
-								<li><a href="../modulos/finanzas/cuentas-finanzas.php">General</a></li>
-								<li><a href="../modulos/finanzas/analisis-cuentas.php">Movimientos</a></li>
+								<li><a href="../modulos/finanzas/general-finanzas.php">General</a></li>
+								<li><a href="../modulos/finanzas/movimientos-finanzas.php">Movimientos</a></li>
 							</ul></li>
 
 						<li class="has-sub"><a class="js-arrow" href="#"> <i
@@ -201,11 +201,11 @@ echo '<script>var hs_ordenes = ' . json_encode($hs_ordenes) . ';</script>'
 					<div class="container-fluid">
 						<div class="header-wrap">
 							<form class="form-header" action="" method="POST">
-								<input class="au-input au-input--xl" type="text" name="search"
-									placeholder="Search for datas &amp; reports..." />
-								<button class="au-btn--submit" type="submit">
-									<i class="zmdi zmdi-search"></i>
-								</button>
+<!-- 								<input class="au-input au-input--xl" type="text" name="search" -->
+<!-- 									placeholder="Search for datas &amp; reports..." /> -->
+<!-- 								<button class="au-btn--submit" type="submit"> -->
+<!-- 									<i class="zmdi zmdi-search"></i> -->
+<!-- 								</button> -->
 							</form>
 							<div class="header-button">
 

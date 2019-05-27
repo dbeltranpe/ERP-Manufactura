@@ -177,11 +177,11 @@ if (isset($_POST['editarImagen'])) {
         echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
         echo ' class="fas fa-dollar"></i>Finanzas</a>';
         echo '<ul class="list-unstyled navbar__sub-list js-sub-list">';
-        echo '<li><a href="../finanzas/cuentas-finanzas.php">General</a></li>';
-        echo '<li><a href="../finanzas/analisis-cuentas.php">Movimientos</a></li>';
+        echo '<li><a href="../finanzas/general-finanzas.php">General</a></li>';
+        echo '<li><a href="../finanzas/movimientos-finanzas.php">Movimientos</a></li>';
         echo ' </ul></li>';
     }
-
+    
     if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 6) {
         echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
         echo ' class="fas fa-shopping-cart"></i>Compras</a>';
@@ -191,7 +191,7 @@ if (isset($_POST['editarImagen'])) {
         echo '<li><a href="../compras/informacion-compras.php">Estado de Compras</a></li>';
         echo ' </ul></li>';
     }
-
+    
     if ($_SESSION["rol"] == 1 || $_SESSION["rol"] == 7) {
         echo '<li class="has-sub"><a class="js-arrow" href="#"> <i';
         echo ' class="fas  fa-group"></i>R.R.H.H.</a>';
@@ -200,7 +200,7 @@ if (isset($_POST['editarImagen'])) {
         echo '<li><a href="../empleados/informacion-empleados.php">Informaci&oacute;n Empleados</a></li>';
         echo ' </ul></li>';
     }
- ?>
+    ?>
 					</ul>
 				</nav>
 			</div>
@@ -215,11 +215,11 @@ if (isset($_POST['editarImagen'])) {
 					<div class="container-fluid">
 						<div class="header-wrap">
 							<form class="form-header" action="" method="POST">
-								<input class="au-input au-input--xl" type="text" name="search"
-								placeholder="Search for datas &amp; reports..." />
-								<button class="au-btn--submit" type="submit">
-									<i class="zmdi zmdi-search"></i>
-								</button>
+<!-- 								<input class="au-input au-input--xl" type="text" name="search" -->
+<!-- 									placeholder="LA CORONA LA LLEVAS T&Uacute;" disabled/> -->
+<!-- 								<button class="au-btn--submit" type="submit"> -->
+<!-- 									<i class="zmdi zmdi-search"></i> -->
+<!-- 								</button> -->
 							</form>
 							<div class="header-button">
 
